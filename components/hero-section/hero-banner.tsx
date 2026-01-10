@@ -152,7 +152,7 @@ const HeroBanner = () => {
                 </p>
 
                 <p className="text-center text-sm text-slate-700 mb-4">
-                  New to BDTax?{" "}
+                  New to SmartTax?{" "}
                   <Link
                     href="#"
                     className="text-[#28a745] hover:underline font-semibold"

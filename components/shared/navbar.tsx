@@ -14,7 +14,6 @@ const navLinks = [
   { name: "FAQ", href: "/faq" },
   { name: "Contact Us", href: "/contact" },
   { name: "Log In", href: "/login" },
-  { name: "Sign Up", href: "/signup" },
 ];
 
 export function Navbar() {
