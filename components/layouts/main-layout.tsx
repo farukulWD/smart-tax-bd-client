@@ -8,10 +8,12 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <main className=" flex flex-col min-h-screen">
+    <main>
       <Navbar />
-      <div className="flex-1 overflow-y-auto">{children}</div>
-      <Footer />
+      <div className="flex flex-col min-h-screen">
+        {children}
+        <Footer />
+      </div>
     </main>
   );
 };
