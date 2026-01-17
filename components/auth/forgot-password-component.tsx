@@ -14,14 +14,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
 });
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordComponent = () => {
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const router = useRouter();
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -29,9 +35,14 @@ const ForgotPasswordComponent = () => {
     },
   });
 
-  const onSubmit = (data: ForgotPasswordFormValues) => {
-    console.log("Forgot password data:", data);
-    // TODO: Implement actual forgot password logic
+  const onSubmit = async (data: ForgotPasswordFormValues) => {
+    try {
+      const res = await forgotPassword(data).unwrap();
+      toast.success(res?.message || "Password reset successful");
+      router.push("/");
+    } catch (error) {
+      globalErrorHandler(error);
+    }
   };
 
   return (
@@ -63,8 +74,9 @@ const ForgotPasswordComponent = () => {
           <Button
             type="submit"
             className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            disabled={isLoading}
           >
-            Reset Password
+            {isLoading ? "Resetting Password..." : "Reset Password"}
           </Button>
         </form>
       </Form>

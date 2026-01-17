@@ -17,8 +17,8 @@ const profileSidebarLinks = [
     icon: <CreditCardIcon />,
   },
   {
-    title: "Order Status",
-    href: "/profile/order-status",
+    title: "Orders",
+    href: "/profile/orders",
     icon: <TruckIcon />,
   },
   {

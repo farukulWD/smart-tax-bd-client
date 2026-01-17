@@ -5,7 +5,8 @@ import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import z from "zod";
+import Cookies from "js-cookie";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,35 +14,52 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useLoginMutation } from "@/redux/api/auth/authApi";
+import { toast } from "sonner";
+import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
-  rememberMe: z.boolean(),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const destinationUrl = searchParams.get("redirect") || "/profile";
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log("Login data:", data);
-    // TODO: Implement actual login logic
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      const res = await login(data).unwrap();
+      if (res) {
+        console.log(res);
+        toast.success(res?.message || "Login successful");
+        Cookies.set("accessToken", res?.data?.accessToken);
+        form.reset();
+
+        // Redirect to the original destination or default to /profile
+        router.push(destinationUrl);
+      }
+    } catch (error) {
+      globalErrorHandler(error);
+    }
   };
 
   return (
@@ -100,34 +118,13 @@ const LoginComponent = () => {
             )}
           />
 
-          {/* Remember Me */}
-          <FormField
-            control={form.control}
-            name="rememberMe"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-2 space-y-0 mb-6">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="border-slate-300 data-[state=checked]:bg-[#28a745] data-[state=checked]:border-[#28a745]"
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm text-slate-600 font-normal">
-                    Remember me
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-
           {/* Sign In Button */}
           <Button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           >
-            Sign In
+            {isLoading ? "Logging in..." : "Sign In"}
           </Button>
         </form>
       </Form>
