@@ -17,7 +17,40 @@ const authApi = baseApi.injectEndpoints({
         data,
       }),
     }),
+    resetPassword: builder.mutation<TResponse<any>, any>({
+      query: (data) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        data,
+      }),
+    }),
+    forgotPassword: builder.mutation<TResponse<any>, any>({
+      query: (data) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        data,
+      }),
+    }),
+    getMe: builder.query<TResponse<any>, any>({
+      query: () => ({
+        url: "/users/get-me",
+        method: "GET",
+      }),
+    }),
+    logout: builder.mutation<TResponse<any>, any>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useResetPasswordMutation,
+  useForgotPasswordMutation,
+  useGetMeQuery,
+  useLogoutMutation,
+} = authApi;

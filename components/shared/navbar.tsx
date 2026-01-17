@@ -4,16 +4,46 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLogoutMutation } from "@/redux/api/auth/authApi";
+import { useRouter, usePathname } from "next/navigation";
+import Cookies from "js-cookie";
 
-const navLinks = [
-  { name: "Home", href: "/", active: true },
-  { name: "About Us", href: "/about" },
-  { name: "Contact Us", href: "/contact" },
-  { name: "Log In", href: "/login" },
-];
+const navLinks = (token: string, pathname: string) => {
+  const navItems = [
+    { name: "Home", href: "/", active: pathname === "/" },
+    { name: "About Us", href: "/about", active: pathname === "/about" },
+    { name: "Contact Us", href: "/contact", active: pathname === "/contact" },
+  ];
+  if (token) {
+    navItems.push({
+      name: "Profile",
+      href: "/profile",
+      active: pathname.startsWith("/profile"),
+    });
+  }
+
+  return navItems;
+};
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const token = Cookies.get("accessToken") || "";
+  const router = useRouter();
+  const pathname = usePathname();
+  const [logout, { isLoading }] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout({}).unwrap();
+      if (res) {
+        Cookies.remove("accessToken");
+        router.push("/");
+      }
+    } catch {
+      Cookies.remove("accessToken");
+      router.push("/");
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -34,7 +64,7 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:gap-1">
-          {navLinks.map((link) => (
+          {navLinks(token, pathname).map((link) => (
             <Link
               key={link.name}
               href={link.href}
@@ -48,6 +78,22 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
+          {token ? (
+            <button
+              disabled={isLoading}
+              onClick={handleLogout}
+              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+            >
+              {isLoading ? "Logging out..." : "Log Out"}
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+            >
+              Log In
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -63,7 +109,7 @@ export function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="lg:hidden border-t bg-white p-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
-          {navLinks.map((link) => (
+          {navLinks(token, pathname).map((link) => (
             <Link
               key={link.name}
               href={link.href}
@@ -78,6 +124,22 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
+          {token ? (
+            <button
+              disabled={isLoading}
+              onClick={handleLogout}
+              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+            >
+              {isLoading ? "Logging out..." : "Log Out"}
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+            >
+              Log In
+            </Link>
+          )}
         </div>
       )}
     </nav>

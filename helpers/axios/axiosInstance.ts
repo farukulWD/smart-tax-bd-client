@@ -8,7 +8,6 @@ const instance = axios.create({
   timeout: 60000,
 });
 
-instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["Accept"] = "application/json";
 
 // Separate instance for refreshing tokens
