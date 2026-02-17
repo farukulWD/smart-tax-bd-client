@@ -1,13 +1,29 @@
 "use client";
 
+import { useEffect } from "react";
 import { useGetMyOrdersQuery } from "@/redux/api/order/orderApi";
 import { OrderCard } from "./_components/order-card";
 import { Loader2, Package, Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useSocket } from "@/hooks/use-socket";
 
 const OrdersPage = () => {
   const { data, isLoading, isError } = useGetMyOrdersQuery(undefined);
+
+  const { socket } = useSocket();
+
+  const sendMessage = () => {
+    if (socket) {
+      socket.emit("message", { message: "Test message from client" }, () => {
+        console.log("Message sent");
+      });
+    }
+  };
+
+  useEffect(() => {
+    sendMessage();
+  }, []);
 
   if (isLoading) {
     return (

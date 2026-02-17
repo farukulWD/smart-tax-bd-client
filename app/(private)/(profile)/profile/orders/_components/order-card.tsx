@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IOrder } from "@/redux/api/order/orderApi";
+import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
 import { Calendar, CreditCard, Hash, Phone } from "lucide-react";
 
 interface OrderCardProps {
@@ -31,6 +32,17 @@ export const OrderCard = ({ order }: OrderCardProps) => {
     return isPaid ? "default" : "destructive";
   };
 
+  const [createPayment] = useCreatePaymentMutation();
+
+  const handlePayment = async () => {
+    const res = await createPayment({
+      orderId: order._id
+    });
+    if (res?.data?.success && res.data.data?.gatewayPageURL) {
+      window.location.href = res.data.data.gatewayPageURL as string;
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -53,7 +65,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             <Badge variant={getStatusVariant(order.status)}>
               {order.status}
             </Badge>
-            <Badge variant={getPaymentVariant(order.isPaid)}>
+            <Badge className="cursor-pointer" onClick={handlePayment} variant={getPaymentVariant(order.isPaid)}>
               {order.isPaid ? "Paid" : "Unpaid"}
             </Badge>
           </div>
