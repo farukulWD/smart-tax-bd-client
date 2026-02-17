@@ -1,5 +1,6 @@
 import { TResponse } from "@/types";
 import { baseApi } from "../baseApi";
+import { TaxType } from "@/components/taxes/helper/ui-data";
 
 export interface IOrder {
   mobile: string;
@@ -22,7 +23,7 @@ const orderApi = baseApi.injectEndpoints({
       }),
       providesTags: ["orders"],
     }),
-    getTaxTypes: builder.query<TResponse<any>, undefined>({
+    getTaxTypes: builder.query<TResponse<TaxType[]>, undefined>({
       query: () => ({
         url: "/tax-types/get-all-tax-types",
         method: "GET",
