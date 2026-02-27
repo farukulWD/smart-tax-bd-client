@@ -266,9 +266,7 @@ const CreateOrderPage = () => {
                                 <div
                                   className={cn(
                                     " rounded-full p-0.5",
-                                    isSelected
-                                      ? "bg-green-500"
-                                      : "bg-slate-50",
+                                    isSelected ? "bg-green-500" : "bg-slate-50",
                                   )}
                                 >
                                   <CheckCircle2
@@ -361,7 +359,7 @@ const CreateOrderPage = () => {
                               defaultValue={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-slate-50 border-slate-200 focus:bg-white focus:ring-green-500/20 focus:border-green-500 rounded-xl transition-all">
+                                <SelectTrigger className="h-12 w-full bg-slate-50 border-slate-200 focus:bg-white focus:ring-green-500/20 focus:border-green-500 rounded-xl transition-all">
                                   <SelectValue placeholder="Select year" />
                                 </SelectTrigger>
                               </FormControl>

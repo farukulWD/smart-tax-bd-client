@@ -3,8 +3,9 @@ import { baseApi } from "../baseApi";
 import { TaxType } from "@/components/taxes/helper/ui-data";
 
 export interface IOrder {
+  _id?: string;
   mobile: string;
-  userId: string;
+  userId?: string;
   tax_or_vat_number: string;
   is_taxable_income: boolean;
   tax_types: string[];
@@ -12,6 +13,7 @@ export interface IOrder {
   isPaid: boolean;
   payable_amount: number;
   tax_year: string;
+  createdAt?: string;
 }
 
 const orderApi = baseApi.injectEndpoints({
@@ -37,6 +39,13 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["orders"],
     }),
+    cancelOrder: builder.mutation<TResponse<any>, string>({
+      query: (orderId) => ({
+        url: `/tax-orders/cancel-order/${orderId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["orders"],
+    }),
   }),
 });
 
@@ -44,6 +53,7 @@ export const {
   useGetMyOrdersQuery,
   useCreateOrderMutation,
   useGetTaxTypesQuery,
+  useCancelOrderMutation,
 } = orderApi;
 
 // const taxModel = new Schema(
