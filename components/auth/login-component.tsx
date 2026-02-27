@@ -49,12 +49,9 @@ const LoginComponent = () => {
     try {
       const res = await login(data).unwrap();
       if (res) {
-        console.log(res);
         toast.success(res?.message || "Login successful");
         Cookies.set("accessToken", res?.data?.accessToken);
         form.reset();
-
-        // Redirect to the original destination or default to /profile
         router.push(destinationUrl);
       }
     } catch (error) {

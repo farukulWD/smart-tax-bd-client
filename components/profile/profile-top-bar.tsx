@@ -9,7 +9,7 @@ const ProfileTopBar = () => {
     }),
   });
   return (
-    <div className="h-16 bg-white rounded-2xl shadow-lg flex items-center px-4 ">
+    <div className="h-16 bg-white rounded-2xl shadow-lg flex items-center px-4 py-2 ">
       <h1 className="text-2xl font-semibold">
         Welcome to your profile, {profileData?.name}
       </h1>
