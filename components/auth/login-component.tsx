@@ -75,7 +75,7 @@ const LoginComponent = () => {
                 <FormControl>
                   <Input
                     placeholder="Email Address *"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#28a745] focus-visible:ring-offset-0 focus:bg-white transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
                 </FormControl>
@@ -94,7 +94,7 @@ const LoginComponent = () => {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password *"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#28a745] focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -119,7 +119,7 @@ const LoginComponent = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           >
             {isLoading ? "Logging in..." : "Sign In"}
           </Button>
@@ -131,7 +131,7 @@ const LoginComponent = () => {
         By clicking Sign In, you accept the{" "}
         <Link
           href="/terms"
-          className="text-[#28a745] hover:underline font-semibold"
+          className="text-green-600 hover:underline font-semibold"
         >
           Terms of service
         </Link>
@@ -141,7 +141,7 @@ const LoginComponent = () => {
         New to SmartTax?{" "}
         <Link
           href="/register"
-          className="text-[#28a745] hover:underline font-semibold"
+          className="text-green-600 hover:underline font-semibold"
         >
           Create Account
         </Link>
@@ -150,7 +150,7 @@ const LoginComponent = () => {
       <p className="text-center mb-6">
         <Link
           href="/forgot-password"
-          className="text-[#28a745] hover:underline text-sm font-semibold"
+          className="text-green-600 hover:underline text-sm font-semibold"
         >
           Forgot Password?
         </Link>

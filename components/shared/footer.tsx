@@ -30,12 +30,12 @@ const Footer = () => {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="relative flex items-center justify-center h-10 w-10">
-                <div className="absolute inset-0 rotate-45 bg-[#b20000] rounded-sm shadow-sm" />
+                <div className="absolute inset-0 rotate-45 bg-green-800 rounded-sm shadow-sm" />
                 <span className="relative z-10 text-xs font-black tracking-tighter text-white uppercase ml-1">
                   Smart
                 </span>
               </div>
-              <span className="text-2xl font-bold tracking-tight text-[#28a745]">
+              <span className="text-2xl font-bold tracking-tight text-green-600">
                 Tax
               </span>
             </Link>
@@ -53,7 +53,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-[#28a745] transition-colors"
+                    className="text-sm hover:text-green-600 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -70,7 +70,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-[#28a745] transition-colors"
+                    className="text-sm hover:text-green-600 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -87,7 +87,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm hover:text-[#28a745] transition-colors"
+                    className="text-sm hover:text-green-600 transition-colors"
                   >
                     {link.name}
                   </Link>
