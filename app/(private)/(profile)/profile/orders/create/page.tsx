@@ -30,6 +30,7 @@ import {
   useCreateOrderMutation,
   useGetTaxTypesQuery,
 } from "@/redux/api/order/orderApi";
+import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowLeft,
@@ -82,7 +83,9 @@ const CreateOrderPage = () => {
   const router = useRouter();
   const params = useSearchParams();
   const taxType = params.get("taxType");
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  const [createPayment, { isLoading: isInitializingPayment }] =
+    useCreatePaymentMutation();
 
   const { data: taxTypes, isLoading: taxTypesLoading } = useGetTaxTypesQuery(
     undefined,
@@ -139,11 +142,27 @@ const CreateOrderPage = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await createOrder({
+      const orderResponse = await createOrder({
         ...values,
         is_taxable_income: false,
       } as any).unwrap();
-      toast.success("Order created successfully");
+
+      const orderId = orderResponse?.data?._id;
+      if (!orderId) {
+        toast.error("Order created, but payment could not be initialized");
+        router.push("/profile/orders");
+        return;
+      }
+
+      const paymentResponse = await createPayment({ orderId }).unwrap();
+      const gatewayUrl = paymentResponse?.data?.gatewayPageURL;
+
+      if (gatewayUrl) {
+        window.location.href = gatewayUrl;
+        return;
+      }
+
+      toast.error("Payment link was not found");
       router.push("/profile/orders");
     } catch (error: any) {
       globalErrorHandler(error);
@@ -151,12 +170,13 @@ const CreateOrderPage = () => {
   };
 
   const selectedTaxTypes = form.watch("tax_types");
+  const isSubmitting = isCreatingOrder || isInitializingPayment;
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-12">
       {/* Decorative background components */}
       <div className="fixed top-0 left-1/4 w-96 h-96 bg-green-100/20 rounded-full blur-3xl -z-10" />
-      <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-100/10 rounded-full blur-3xl -z-10" />
+      <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-green-100/10 rounded-full blur-3xl -z-10" />
 
       <div className="max-w-5xl mx-auto space-y-8">
         {/* Header Section */}
@@ -172,7 +192,7 @@ const CreateOrderPage = () => {
               </Button>
             </Link>
             <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold mb-2 border border-emerald-100">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-green-50 text-green-700 text-xs font-bold mb-2 border border-green-100">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>SECURE CHECKOUT</span>
               </div>
@@ -232,8 +252,8 @@ const CreateOrderPage = () => {
                               className={cn(
                                 "relative group cursor-pointer h-full transition-all duration-300 rounded-2xl p-4 border-2 flex flex-col gap-3",
                                 isSelected
-                                  ? "bg-emerald-50/50 border-emerald-500 shadow-md shadow-emerald-100"
-                                  : "bg-white border-slate-100 hover:border-emerald-200 hover:shadow-sm shadow-sm",
+                                  ? "bg-green-50/50 border-green-500 shadow-md shadow-green-100"
+                                  : "bg-white border-slate-100 hover:border-green-200 hover:shadow-sm shadow-sm",
                               )}
                             >
                               <div className="flex items-start justify-between">
@@ -241,8 +261,8 @@ const CreateOrderPage = () => {
                                   className={cn(
                                     "w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-300",
                                     isSelected
-                                      ? "bg-emerald-600 text-white"
-                                      : "bg-slate-50 text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-600",
+                                      ? "bg-green-600 text-white"
+                                      : "bg-slate-50 text-slate-500 group-hover:bg-green-50 group-hover:text-green-600",
                                   )}
                                 >
                                   <Icon className="w-5 h-5" />
@@ -252,7 +272,7 @@ const CreateOrderPage = () => {
                                     className={cn(
                                       "font-bold text-base transition-colors",
                                       isSelected
-                                        ? "text-emerald-900"
+                                        ? "text-green-900"
                                         : "text-slate-800",
                                     )}
                                   >
@@ -266,9 +286,7 @@ const CreateOrderPage = () => {
                                 <div
                                   className={cn(
                                     " rounded-full p-0.5",
-                                    isSelected
-                                      ? "bg-emerald-500"
-                                      : "bg-slate-50",
+                                    isSelected ? "bg-green-500" : "bg-slate-50",
                                   )}
                                 >
                                   <CheckCircle2
@@ -361,7 +379,7 @@ const CreateOrderPage = () => {
                               defaultValue={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="h-12 bg-slate-50 border-slate-200 focus:bg-white focus:ring-green-500/20 focus:border-green-500 rounded-xl transition-all">
+                                <SelectTrigger className="h-12 w-full bg-slate-50 border-slate-200 focus:bg-white focus:ring-green-500/20 focus:border-green-500 rounded-xl transition-all">
                                   <SelectValue placeholder="Select year" />
                                 </SelectTrigger>
                               </FormControl>
@@ -370,7 +388,7 @@ const CreateOrderPage = () => {
                                   <SelectItem
                                     key={year}
                                     value={year.toString()}
-                                    className="hover:bg-emerald-50 transition-colors"
+                                    className="hover:bg-green-50 transition-colors"
                                   >
                                     {year}
                                   </SelectItem>
@@ -418,10 +436,10 @@ const CreateOrderPage = () => {
                       <div className="pt-6 border-t border-slate-800">
                         <Button
                           type="submit"
-                          disabled={isLoading}
+                          disabled={isSubmitting}
                           className="w-full h-14 bg-green-600 hover:bg-green-500 text-white font-bold rounded-2xl shadow-lg shadow-green-900/40 transition-all active:scale-[0.98] group"
                         >
-                          {isLoading ? (
+                          {isSubmitting ? (
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                           ) : (
                             <span className="flex items-center justify-center gap-2">

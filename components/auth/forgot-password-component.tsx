@@ -61,7 +61,7 @@ const ForgotPasswordComponent = () => {
                 <FormControl>
                   <Input
                     placeholder="Email Address *"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#28a745] focus-visible:ring-offset-0 focus:bg-white transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
                 </FormControl>
@@ -73,7 +73,7 @@ const ForgotPasswordComponent = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
             {isLoading ? "Resetting Password..." : "Reset Password"}
@@ -85,7 +85,7 @@ const ForgotPasswordComponent = () => {
         Remember your password?{" "}
         <Link
           href="/login"
-          className="text-[#28a745] hover:underline font-semibold"
+          className="text-green-600 hover:underline font-semibold"
         >
           Sign In
         </Link>

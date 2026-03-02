@@ -14,7 +14,7 @@ const RegisterComponent = () => {
         Already have an account?{" "}
         <Link
           href="/login"
-          className="text-[#28a745] hover:underline font-semibold"
+          className="text-green-600 hover:underline font-semibold"
         >
           Sign In
         </Link>

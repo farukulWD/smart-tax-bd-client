@@ -8,21 +8,12 @@ import { useLogoutMutation } from "@/redux/api/auth/authApi";
 import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 
-const navLinks = (token: string, pathname: string) => {
-  const navItems = [
+const navLinks = (pathname: string) => {
+  return [
     { name: "Home", href: "/", active: pathname === "/" },
     { name: "About Us", href: "/about", active: pathname === "/about" },
     { name: "Contact Us", href: "/contact", active: pathname === "/contact" },
   ];
-  if (token) {
-    navItems.push({
-      name: "Profile",
-      href: "/profile",
-      active: pathname.startsWith("/profile"),
-    });
-  }
-
-  return navItems;
 };
 
 export function Navbar() {
@@ -52,44 +43,57 @@ export function Navbar() {
         <Link href="/" className="flex items-center gap-2 group">
           <div className="relative flex items-center justify-center h-10 w-10">
             {/* Red Diamond Background */}
-            <div className="absolute inset-0 rotate-45 bg-[#b20000] rounded-sm shadow-sm transition-transform group-hover:rotate-90 duration-300" />
+            <div className="absolute inset-0 rotate-45 bg-green-800 rounded-sm shadow-sm transition-transform group-hover:rotate-90 duration-300" />
             <span className="relative z-10 text-xs font-black tracking-tighter text-white uppercase ml-1">
               Smart
             </span>
           </div>
-          <span className="text-2xl font-bold tracking-tight text-[#28a745]">
+          <span className="text-2xl font-bold tracking-tight text-green-600">
             Tax
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:gap-1">
-          {navLinks(token, pathname).map((link) => (
+          {navLinks(pathname).map((link) => (
             <Link
               key={link.name}
               href={link.href}
               className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]",
+                "px-4 py-2 text-sm font-medium transition-colors hover:text-green-600",
                 link.active
-                  ? "bg-[#e7f3ea] text-[#004a1b] border-2 border-[#004a1b] rounded-full"
-                  : "text-[#001d3d]"
+                  ? "bg-green-100 text-green-900 border-2 border-green-900 rounded-full"
+                  : "text-slate-900"
               )}
             >
               {link.name}
             </Link>
           ))}
           {token ? (
-            <button
-              disabled={isLoading}
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
-            >
-              {isLoading ? "Logging out..." : "Log Out"}
-            </button>
+            <>
+              <Link
+                href="/profile"
+                className={cn(
+                  "ml-2 rounded-full px-5 py-2 text-sm font-semibold text-white transition-colors",
+                  pathname.startsWith("/profile")
+                    ? "bg-green-800"
+                    : "bg-green-600 hover:bg-green-700"
+                )}
+              >
+                Profile
+              </Link>
+              <button
+                disabled={isLoading}
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm font-medium transition-colors text-slate-900 hover:text-green-600"
+              >
+                {isLoading ? "Logging out..." : "Log Out"}
+              </button>
+            </>
           ) : (
             <Link
               href="/login"
-              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+              className="ml-2 rounded-full bg-green-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-700"
             >
               Log In
             </Link>
@@ -109,15 +113,15 @@ export function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="lg:hidden border-t bg-white p-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
-          {navLinks(token, pathname).map((link) => (
+          {navLinks(pathname).map((link) => (
             <Link
               key={link.name}
               href={link.href}
               className={cn(
-                "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-[#28a745] rounded-md",
+                "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
                 link.active
-                  ? "bg-[#e7f3ea] text-[#004a1b] border-l-4 border-[#004a1b]"
-                  : "text-[#001d3d]"
+                  ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                  : "text-slate-900"
               )}
               onClick={() => setIsOpen(false)}
             >
@@ -125,17 +129,32 @@ export function Navbar() {
             </Link>
           ))}
           {token ? (
-            <button
-              disabled={isLoading}
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
-            >
-              {isLoading ? "Logging out..." : "Log Out"}
-            </button>
+            <>
+              <Link
+                href="/profile"
+                className={cn(
+                  "block rounded-md px-4 py-3 text-base font-semibold text-white",
+                  pathname.startsWith("/profile")
+                    ? "bg-green-800"
+                    : "bg-green-600"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                Profile
+              </Link>
+              <button
+                disabled={isLoading}
+                onClick={handleLogout}
+                className="w-full rounded-md border border-slate-200 px-4 py-3 text-left text-base font-medium text-slate-900 transition-colors hover:bg-slate-50"
+              >
+                {isLoading ? "Logging out..." : "Log Out"}
+              </button>
+            </>
           ) : (
             <Link
               href="/login"
-              className="px-4 py-2 text-sm font-medium transition-colors hover:text-[#28a745]"
+              className="block rounded-md bg-green-600 px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700"
+              onClick={() => setIsOpen(false)}
             >
               Log In
             </Link>

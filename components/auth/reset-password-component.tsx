@@ -84,7 +84,7 @@ const ResetPasswordComponent = () => {
                     <Input
                       type={showNewPassword ? "text" : "password"}
                       placeholder="New Password *"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#28a745] focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -115,7 +115,7 @@ const ResetPasswordComponent = () => {
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm Password *"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#28a745] focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -140,7 +140,7 @@ const ResetPasswordComponent = () => {
 
           <Button
             type="submit"
-            className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
             {isLoading ? "Resetting Password..." : "Reset Password"}
@@ -152,7 +152,7 @@ const ResetPasswordComponent = () => {
         Remember your password?{" "}
         <Link
           href="/login"
-          className="text-[#28a745] hover:underline font-semibold"
+          className="text-green-600 hover:underline font-semibold"
         >
           Sign In
         </Link>

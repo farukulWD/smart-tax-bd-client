@@ -71,7 +71,7 @@ const OTPVerificationComponent = () => {
 
           <Button
             type="submit"
-            className="w-full bg-[#28a745] hover:bg-[#1f7a33] text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           >
             Verify OTP
           </Button>
@@ -83,7 +83,7 @@ const OTPVerificationComponent = () => {
         <button
           type="button"
           onClick={() => console.log("Resend OTP")}
-          className="text-[#28a745] hover:underline font-semibold bg-transparent border-none cursor-pointer p-0"
+          className="text-green-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0"
         >
           Resend
         </button>
