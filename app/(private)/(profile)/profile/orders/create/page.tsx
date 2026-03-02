@@ -30,6 +30,7 @@ import {
   useCreateOrderMutation,
   useGetTaxTypesQuery,
 } from "@/redux/api/order/orderApi";
+import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowLeft,
@@ -82,7 +83,9 @@ const CreateOrderPage = () => {
   const router = useRouter();
   const params = useSearchParams();
   const taxType = params.get("taxType");
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  const [createPayment, { isLoading: isInitializingPayment }] =
+    useCreatePaymentMutation();
 
   const { data: taxTypes, isLoading: taxTypesLoading } = useGetTaxTypesQuery(
     undefined,
@@ -139,11 +142,27 @@ const CreateOrderPage = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await createOrder({
+      const orderResponse = await createOrder({
         ...values,
         is_taxable_income: false,
       } as any).unwrap();
-      toast.success("Order created successfully");
+
+      const orderId = orderResponse?.data?._id;
+      if (!orderId) {
+        toast.error("Order created, but payment could not be initialized");
+        router.push("/profile/orders");
+        return;
+      }
+
+      const paymentResponse = await createPayment({ orderId }).unwrap();
+      const gatewayUrl = paymentResponse?.data?.gatewayPageURL;
+
+      if (gatewayUrl) {
+        window.location.href = gatewayUrl;
+        return;
+      }
+
+      toast.error("Payment link was not found");
       router.push("/profile/orders");
     } catch (error: any) {
       globalErrorHandler(error);
@@ -151,6 +170,7 @@ const CreateOrderPage = () => {
   };
 
   const selectedTaxTypes = form.watch("tax_types");
+  const isSubmitting = isCreatingOrder || isInitializingPayment;
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-12">
@@ -416,10 +436,10 @@ const CreateOrderPage = () => {
                       <div className="pt-6 border-t border-slate-800">
                         <Button
                           type="submit"
-                          disabled={isLoading}
+                          disabled={isSubmitting}
                           className="w-full h-14 bg-green-600 hover:bg-green-500 text-white font-bold rounded-2xl shadow-lg shadow-green-900/40 transition-all active:scale-[0.98] group"
                         >
-                          {isLoading ? (
+                          {isSubmitting ? (
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                           ) : (
                             <span className="flex items-center justify-center gap-2">
