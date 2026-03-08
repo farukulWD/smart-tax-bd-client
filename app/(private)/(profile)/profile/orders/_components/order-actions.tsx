@@ -2,17 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -21,8 +10,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
-import { IOrder, useCancelOrderMutation } from "@/redux/api/order/orderApi";
+import {
+  IOrder,
+  useInitTaxStepThreePaymentMutation,
+} from "@/redux/api/order/orderApi";
 import { Eye, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -31,34 +22,25 @@ interface OrderActionsProps {
 }
 
 export function OrderActions({ order }: OrderActionsProps) {
-  const [createPayment, { isLoading: isPaying }] = useCreatePaymentMutation();
-  const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
+  const [initTaxStepThreePayment, { isLoading: isPaying }] =
+    useInitTaxStepThreePaymentMutation();
 
-  const status = order.status?.toLowerCase() || "pending";
-  const isPaid = Boolean(order.isPaid);
-  const canCancel = !["cancelled", "completed"].includes(status);
+  const status = order.status?.toLowerCase() || "draft";
+  const isPaid = Number(order.fee_due_amount || 0) <= 0;
+  const canPay = !isPaid && ["draft", "in_progress", "submitted"].includes(status);
 
   const handlePay = async () => {
     if (!order._id) return;
     try {
-      const res = await createPayment({ orderId: order._id }).unwrap();
-      if (res?.success && res.data?.gatewayPageURL) {
-        window.location.href = res.data.gatewayPageURL;
+      const res = await initTaxStepThreePayment(order._id).unwrap();
+      const gatewayUrl = res?.data?.gatewayPageURL;
+      if (res?.success && gatewayUrl) {
+        window.location.href = gatewayUrl;
         return;
       }
       toast.error("Payment link was not found");
     } catch {
-      toast.error("Failed to initialize payment");
-    }
-  };
-
-  const handleCancel = async () => {
-    if (!order._id) return;
-    try {
-      await cancelOrder(order._id).unwrap();
-      toast.success("Order cancelled successfully");
-    } catch {
-      toast.error("Failed to cancel order");
+      toast.error("Failed to initialize payment. Complete required documents first.");
     }
   };
 
@@ -76,17 +58,25 @@ export function OrderActions({ order }: OrderActionsProps) {
             <DialogTitle>
               Order #{order._id?.slice(-6).toUpperCase() || "N/A"}
             </DialogTitle>
-            <DialogDescription>Order details and tax information.</DialogDescription>
+            <DialogDescription>Tax order details and step status.</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             <p>
-              <span className="text-muted-foreground">Mobile:</span>{" "}
-              <span className="font-medium">{order.mobile || "N/A"}</span>
+              <span className="text-muted-foreground">Name:</span>{" "}
+              <span className="font-medium">
+                {order.personal_iformation?.name || "N/A"}
+              </span>
             </p>
             <p>
-              <span className="text-muted-foreground">Tax/VAT No:</span>{" "}
+              <span className="text-muted-foreground">Email:</span>{" "}
               <span className="font-medium">
-                {order.tax_or_vat_number || "N/A"}
+                {order.personal_iformation?.email || "N/A"}
+              </span>
+            </p>
+            <p>
+              <span className="text-muted-foreground">Phone:</span>{" "}
+              <span className="font-medium">
+                {order.personal_iformation?.phone || "N/A"}
               </span>
             </p>
             <p>
@@ -94,25 +84,27 @@ export function OrderActions({ order }: OrderActionsProps) {
               <span className="font-medium">{order.tax_year || "N/A"}</span>
             </p>
             <p>
-              <span className="text-muted-foreground">Amount:</span>{" "}
+              <span className="text-muted-foreground">Current Step:</span>{" "}
+              <span className="font-medium">{order.current_step || "N/A"}</span>
+            </p>
+            <p>
+              <span className="text-muted-foreground">Fee Due:</span>{" "}
               <span className="font-medium">
                 {new Intl.NumberFormat("en-BD", {
                   style: "currency",
                   currency: "BDT",
-                }).format(Number(order.payable_amount || 0))}
+                }).format(Number(order.fee_due_amount || 0))}
               </span>
             </p>
             <div className="flex flex-wrap gap-2">
-              {(order.tax_types || []).length ? (
-                order.tax_types.map((type, index) => (
+              {(order.source_of_income || []).length ? (
+                order.source_of_income.map((type, index) => (
                   <Badge key={`${type}-${index}`} variant="outline">
-                    {type
-                      .replace(/_/g, " ")
-                      .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    {type}
                   </Badge>
                 ))
               ) : (
-                <span className="text-muted-foreground">No tax types</span>
+                <span className="text-muted-foreground">No income sources</span>
               )}
             </div>
           </div>
@@ -123,38 +115,11 @@ export function OrderActions({ order }: OrderActionsProps) {
         variant={isPaid ? "secondary" : "default"}
         size="sm"
         onClick={handlePay}
-        disabled={isPaid || isPaying || !order._id}
+        disabled={!canPay || isPaying || !order._id}
       >
         {isPaying && <Loader2 className="h-4 w-4 animate-spin" />}
         {isPaid ? "Paid" : "Pay"}
       </Button>
-
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button
-            variant="destructive"
-            size="sm"
-            disabled={!canCancel || isCancelling || !order._id}
-          >
-            {isCancelling && <Loader2 className="h-4 w-4 animate-spin" />}
-            Cancel
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action will change the order status to cancelled.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Back</AlertDialogCancel>
-            <AlertDialogAction onClick={handleCancel} disabled={isCancelling}>
-              Confirm Cancel
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

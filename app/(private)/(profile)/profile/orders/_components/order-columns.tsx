@@ -8,9 +8,9 @@ import { OrderActions } from "./order-actions";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
-  if (normalized === "completed") return "default";
-  if (normalized === "pending") return "secondary";
-  if (normalized === "cancelled") return "destructive";
+  if (normalized === "order_placed" || normalized === "completed") return "default";
+  if (normalized === "draft" || normalized === "in_progress") return "secondary";
+  if (normalized === "cancelled" || normalized === "rejected") return "destructive";
   return "outline";
 };
 
@@ -28,10 +28,14 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Tax Year",
   },
   {
-    accessorKey: "payable_amount",
-    header: "Amount",
+    accessorKey: "current_step",
+    header: "Step",
+  },
+  {
+    accessorKey: "fee_due_amount",
+    header: "Fee Due",
     cell: ({ row }) => {
-      const amount = Number(row.getValue("payable_amount") || 0);
+      const amount = Number(row.getValue("fee_due_amount") || 0);
       return (
         <span className="font-medium">
           {new Intl.NumberFormat("en-BD", {
@@ -46,19 +50,19 @@ export const columns: ColumnDef<IOrder>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = (row.getValue("status") as string) || "pending";
+      const status = (row.getValue("status") as string) || "draft";
       return (
         <Badge variant={statusVariant(status)}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+          {status.replace(/_/g, " ")}
         </Badge>
       );
     },
   },
   {
-    accessorKey: "isPaid",
+    accessorKey: "fee_due_amount_paid",
     header: "Payment",
     cell: ({ row }) => {
-      const isPaid = Boolean(row.getValue("isPaid"));
+      const isPaid = Number(row.original.fee_due_amount || 0) <= 0;
       return <Badge variant={isPaid ? "default" : "destructive"}>{isPaid ? "Paid" : "Unpaid"}</Badge>;
     },
   },

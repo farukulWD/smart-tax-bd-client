@@ -6,8 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IOrder } from "@/redux/api/order/orderApi";
-import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
+import { IOrder, useInitTaxStepThreePaymentMutation } from "@/redux/api/order/orderApi";
 import { Calendar, CreditCard, Hash, Phone } from "lucide-react";
 
 interface OrderCardProps {
@@ -16,32 +15,32 @@ interface OrderCardProps {
 
 export const OrderCard = ({ order }: OrderCardProps) => {
   const getStatusVariant = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch ((status || "").toLowerCase()) {
+      case "order_placed":
       case "completed":
         return "default";
-      case "pending":
+      case "draft":
+      case "in_progress":
         return "secondary";
       case "cancelled":
+      case "rejected":
         return "destructive";
       default:
         return "outline";
     }
   };
 
-  const getPaymentVariant = (isPaid: boolean) => {
-    return isPaid ? "default" : "destructive";
-  };
+  const isPaid = Number(order.fee_due_amount || 0) <= 0;
 
-  const [createPayment] = useCreatePaymentMutation();
+  const [initTaxStepThreePayment] = useInitTaxStepThreePaymentMutation();
 
   const handlePayment = async () => {
-    const res = await createPayment({
-      orderId: order._id
-    });
-    if (res?.data?.success && res.data.data?.gatewayPageURL) {
-      window.location.href = res.data.data.gatewayPageURL as string;
+    if (!order._id || isPaid) return;
+    const res = await initTaxStepThreePayment(order._id).unwrap();
+    if (res?.success && res.data?.gatewayPageURL) {
+      window.location.href = res.data.gatewayPageURL as string;
     }
-  }
+  };
 
   return (
     <Card>
@@ -62,11 +61,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </CardDescription>
           </div>
           <div className="flex gap-2">
-            <Badge variant={getStatusVariant(order.status)}>
-              {order.status}
-            </Badge>
-            <Badge className="cursor-pointer" onClick={handlePayment} variant={getPaymentVariant(order.isPaid)}>
-              {order.isPaid ? "Paid" : "Unpaid"}
+            <Badge variant={getStatusVariant(order.status)}>{order.status}</Badge>
+            <Badge className="cursor-pointer" onClick={handlePayment} variant={isPaid ? "default" : "destructive"}>
+              {isPaid ? "Paid" : "Unpaid"}
             </Badge>
           </div>
         </div>
@@ -76,12 +73,12 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           <div className="flex items-center gap-2 text-sm">
             <Phone className="h-4 w-4 text-muted-foreground" />
             <span className="text-muted-foreground">Mobile:</span>
-            <span className="font-medium">{order.mobile}</span>
+            <span className="font-medium">{order.personal_iformation?.phone || "N/A"}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <Hash className="h-4 w-4 text-muted-foreground" />
-            <span className="text-muted-foreground">Tax/VAT:</span>
-            <span className="font-medium">{order.tax_or_vat_number}</span>
+            <span className="text-muted-foreground">Current Step:</span>
+            <span className="font-medium">{order.current_step}</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -90,35 +87,25 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           </div>
           <div className="flex items-center gap-2 text-sm">
             <CreditCard className="h-4 w-4 text-muted-foreground" />
-            <span className="text-muted-foreground">Amount:</span>
-            <span className="font-medium">৳{order.payable_amount}</span>
+            <span className="text-muted-foreground">Fee Due:</span>
+            <span className="font-medium">৳{order.fee_due_amount || 0}</span>
           </div>
         </div>
 
         <div className="space-y-2">
-          <div className="text-sm text-muted-foreground">Tax Types:</div>
+          <div className="text-sm text-muted-foreground">Source of Income:</div>
           <div className="flex flex-wrap gap-2">
-            {order.tax_types && order.tax_types.length > 0 ? (
-              order.tax_types.map((type, index) => (
+            {order.source_of_income && order.source_of_income.length > 0 ? (
+              order.source_of_income.map((type, index) => (
                 <Badge key={index} variant="outline">
-                  {type
-                    .replace(/_/g, " ")
-                    .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  {type}
                 </Badge>
               ))
             ) : (
-              <span className="text-sm text-muted-foreground">
-                No tax types
-              </span>
+              <span className="text-sm text-muted-foreground">No sources provided</span>
             )}
           </div>
         </div>
-
-        {order.is_taxable_income && (
-          <div className="flex items-center gap-2 text-sm">
-            <Badge variant="secondary">Taxable Income</Badge>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
