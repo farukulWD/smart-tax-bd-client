@@ -51,10 +51,10 @@ const formSchema = z.object({
     .array(z.nativeEnum(IncomeSource))
     .min(1, "Please select at least one source of income"),
   tax_year: z.string().min(1, "Tax year is required"),
-  income_from_ldt_company: z.boolean().default(false),
-  income_from_partnership_firm: z.boolean().default(false),
-  are_you_get_notice_from_tax_office: z.boolean().default(false),
-  for_other_person: z.boolean().default(false),
+  income_from_ldt_company: z.boolean(),
+  income_from_partnership_firm: z.boolean(),
+  are_you_get_notice_from_tax_office: z.boolean(),
+  for_other_person: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -71,7 +71,10 @@ const INCOME_SOURCES: { value: IncomeSource; label: string }[] = [
   { value: IncomeSource.FinancialAsset, label: "Income from Financial Asset" },
   { value: IncomeSource.CapitalGain, label: "Income from Capital Gain" },
   { value: IncomeSource.OthersSource, label: "Income from Other Source" },
-  { value: IncomeSource.ForignRemitance, label: "Income from Foreign Remittance" },
+  {
+    value: IncomeSource.ForignRemitance,
+    label: "Income from Foreign Remittance",
+  },
 ];
 
 const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
@@ -159,7 +162,7 @@ const CreateOrderPage = () => {
       }
 
       toast.success("Step 1 completed. Upload required documents next.");
-      router.push(`/profile/orders?taxId=${orderId}`);
+      router.push(`/profile/orders/create/${orderId}`);
     } catch (error: any) {
       globalErrorHandler(error);
     }
@@ -172,6 +175,10 @@ const CreateOrderPage = () => {
   const selectedTaxYear = useWatch({
     control: form.control,
     name: "tax_year",
+  });
+  const forOtherPerson = useWatch({
+    control: form.control,
+    name: "for_other_person",
   });
 
   return (
@@ -209,7 +216,26 @@ const CreateOrderPage = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold text-slate-800">Personal Information</h2>
+              <h2 className="text-xl font-bold text-slate-800">
+                Personal Information
+              </h2>
+              <FormField
+                control={form.control}
+                name={"for_other_person"}
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center gap-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {`This filing is for another person (e.g. family member)`}
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -218,7 +244,11 @@ const CreateOrderPage = () => {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your full name" {...field} />
+                        <Input
+                          placeholder="Enter your full name"
+                          {...field}
+                          disabled={!forOtherPerson}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -231,7 +261,11 @@ const CreateOrderPage = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your email" {...field} />
+                        <Input
+                          disabled={!forOtherPerson}
+                          placeholder="Enter your email"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -256,10 +290,16 @@ const CreateOrderPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tax Filing Year</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select year" />
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              className="w-full"
+                              placeholder="Select year"
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -278,7 +318,9 @@ const CreateOrderPage = () => {
             </div>
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold text-slate-800">Source of Income</h2>
+              <h2 className="text-xl font-bold text-slate-800">
+                Source of Income
+              </h2>
               <FormField
                 control={form.control}
                 name="source_of_income"
@@ -296,15 +338,22 @@ const CreateOrderPage = () => {
                               checked={checked}
                               onCheckedChange={(nextChecked) => {
                                 if (nextChecked) {
-                                  field.onChange([...field.value, source.value]);
+                                  field.onChange([
+                                    ...field.value,
+                                    source.value,
+                                  ]);
                                   return;
                                 }
                                 field.onChange(
-                                  field.value.filter((value) => value !== source.value),
+                                  field.value.filter(
+                                    (value) => value !== source.value,
+                                  ),
                                 );
                               }}
                             />
-                            <span className="text-sm text-slate-700">{source.label}</span>
+                            <span className="text-sm text-slate-700">
+                              {source.label}
+                            </span>
                           </label>
                         );
                       })}
@@ -316,7 +365,9 @@ const CreateOrderPage = () => {
             </div>
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-              <h2 className="text-xl font-bold text-slate-800">Additional Information</h2>
+              <h2 className="text-xl font-bold text-slate-800">
+                Additional Information
+              </h2>
               {[
                 {
                   name: "income_from_ldt_company" as const,
@@ -330,10 +381,6 @@ const CreateOrderPage = () => {
                   name: "are_you_get_notice_from_tax_office" as const,
                   label: "Received notice from tax office",
                 },
-                {
-                  name: "for_other_person" as const,
-                  label: "This filing is for another person",
-                },
               ].map((option) => (
                 <FormField
                   key={option.name}
@@ -342,9 +389,14 @@ const CreateOrderPage = () => {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center gap-3 space-y-0">
                       <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
                       </FormControl>
-                      <FormLabel className="font-normal">{option.label}</FormLabel>
+                      <FormLabel className="font-normal">
+                        {option.label}
+                      </FormLabel>
                     </FormItem>
                   )}
                 />
@@ -362,7 +414,9 @@ const CreateOrderPage = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Income sources</span>
-                    <span className="font-bold">{selectedIncomeSources.length} selected</span>
+                    <span className="font-bold">
+                      {selectedIncomeSources.length} selected
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Tax year</span>
@@ -379,7 +433,7 @@ const CreateOrderPage = () => {
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   ) : (
                     <span className="flex items-center justify-center gap-2">
-                      Confirm Step 1
+                      Next
                       <CheckCircle2 className="w-5 h-5" />
                     </span>
                   )}

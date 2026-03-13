@@ -1,4 +1,4 @@
-import { PaymentStatusView } from "@/components/payment/payment-status-view";
+import PaymentStatusView from "@/components/payment/payment-status-view";
 
 const PaymentSuccessPage = () => {
   return (
@@ -11,4 +11,3 @@ const PaymentSuccessPage = () => {
 };
 
 export default PaymentSuccessPage;
-

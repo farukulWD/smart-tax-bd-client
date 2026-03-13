@@ -63,7 +63,7 @@ export function Navbar() {
                 "px-4 py-2 text-sm font-medium transition-colors hover:text-green-600",
                 link.active
                   ? "bg-green-100 text-green-900 border-2 border-green-900 rounded-full"
-                  : "text-slate-900"
+                  : "text-slate-900",
               )}
             >
               {link.name}
@@ -77,11 +77,12 @@ export function Navbar() {
                   "ml-2 rounded-full px-5 py-2 text-sm font-semibold text-white transition-colors",
                   pathname.startsWith("/profile")
                     ? "bg-green-800"
-                    : "bg-green-600 hover:bg-green-700"
+                    : "bg-green-600 hover:bg-green-700",
                 )}
               >
                 Profile
               </Link>
+
               <button
                 disabled={isLoading}
                 onClick={handleLogout}
@@ -121,7 +122,7 @@ export function Navbar() {
                 "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
                 link.active
                   ? "bg-green-100 text-green-900 border-l-4 border-green-900"
-                  : "text-slate-900"
+                  : "text-slate-900",
               )}
               onClick={() => setIsOpen(false)}
             >
@@ -133,14 +134,53 @@ export function Navbar() {
               <Link
                 href="/profile"
                 className={cn(
-                  "block rounded-md px-4 py-3 text-base font-semibold text-white",
-                  pathname.startsWith("/profile")
-                    ? "bg-green-800"
-                    : "bg-green-600"
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  pathname.includes("/profile") &&
+                    !pathname.includes("/profile/payments") &&
+                    !pathname.includes("/profile/orders") &&
+                    !pathname.includes("/profile/my-files")
+                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    : "text-slate-900",
                 )}
                 onClick={() => setIsOpen(false)}
               >
                 Profile
+              </Link>
+              <Link
+                href="/profile/payments"
+                className={cn(
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  pathname.includes("/profile/payments")
+                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    : "text-slate-900",
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                Payments
+              </Link>
+              <Link
+                href="/profile/orders"
+                className={cn(
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  pathname.includes("/profile/orders")
+                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    : "text-slate-900",
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                Orders
+              </Link>
+              <Link
+                href="/profile/my-files"
+                className={cn(
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  pathname.includes("/profile/my-files")
+                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    : "text-slate-900",
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                My Files
               </Link>
               <button
                 disabled={isLoading}

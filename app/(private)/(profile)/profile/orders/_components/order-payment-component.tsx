@@ -1,8 +1,10 @@
 "use client";
 
-import { useGetTaxOrderByIdQuery, useInitTaxStepThreePaymentMutation } from "@/redux/api/order/orderApi";
+import {
+  useGetTaxOrderByIdQuery,
+  useInitTaxStepThreePaymentMutation,
+} from "@/redux/api/order/orderApi";
 import { Loader2, CheckCircle2, CircleAlert } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,10 +13,7 @@ import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import Link from "next/link";
 
-const OrderPaymentPage = () => {
-  const searchParams = useSearchParams();
-  const taxId = searchParams.get("taxId");
-
+const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   const { data, isLoading, isError, refetch } = useGetTaxOrderByIdQuery(
     taxId || skipToken,
   );
@@ -43,14 +42,17 @@ const OrderPaymentPage = () => {
   if (isError || !data?.data?.tax_order) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-destructive">Failed to load order payment status.</p>
+        <p className="text-sm text-destructive">
+          Failed to load order payment status.
+        </p>
         <Button onClick={() => refetch()}>Retry</Button>
       </div>
     );
   }
 
   const order = data.data.tax_order;
-  const isPaid = Number(order.fee_due_amount || 0) <= 0 || order.status === "order_placed";
+  const isPaid =
+    Number(order.fee_due_amount || 0) <= 0 || order.status === "order_placed";
 
   const handleStartPayment = async () => {
     if (!taxId) return;
@@ -77,7 +79,9 @@ const OrderPaymentPage = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Step 3: Payment</h1>
-        <p className="text-muted-foreground">Complete payment to place your tax order.</p>
+        <p className="text-muted-foreground">
+          Complete payment to place your tax order.
+        </p>
       </div>
 
       <Card>
@@ -106,7 +110,9 @@ const OrderPaymentPage = () => {
           {isPaid ? (
             <div className="rounded-lg border border-green-200 bg-green-50 p-4 flex items-center gap-2 text-green-700">
               <CheckCircle2 className="h-5 w-5" />
-              <span className="text-sm font-medium">Payment successful. Order placed.</span>
+              <span className="text-sm font-medium">
+                Payment successful. Order placed.
+              </span>
             </div>
           ) : (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-center gap-2 text-amber-700">
@@ -116,15 +122,23 @@ const OrderPaymentPage = () => {
           )}
 
           <div className="flex gap-3">
-            <Button type="button" onClick={handleStartPayment} disabled={isStartingPayment || isPaid}>
-              {isStartingPayment && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            <Button
+              type="button"
+              onClick={handleStartPayment}
+              disabled={isStartingPayment || isPaid}
+            >
+              {isStartingPayment && (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              )}
               Start Payment
             </Button>
             <Button type="button" variant="outline" onClick={() => refetch()}>
               Refresh Status
             </Button>
             <Link href={`/profile/orders?taxId=${taxId}`}>
-              <Button type="button" variant="ghost">Back to Step 2</Button>
+              <Button type="button" variant="ghost">
+                Back to Step 2
+              </Button>
             </Link>
           </div>
         </CardContent>
@@ -133,4 +147,4 @@ const OrderPaymentPage = () => {
   );
 };
 
-export default OrderPaymentPage;
+export default OrderPaymentComponent;

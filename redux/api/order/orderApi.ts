@@ -68,10 +68,11 @@ export interface ITaxStepThreeResponse {
 }
 
 const orderApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getTaxOrderById: builder.query<TResponse<ITaxStepOneResponse>, string>({
       query: (taxId) => ({
-        url: `/tax-orders/order-tax/${taxId}`,
+        url: `/tax-orders/${taxId}`,
         method: "GET",
       }),
       providesTags: ["orders"],
@@ -87,7 +88,7 @@ const orderApi = baseApi.injectEndpoints({
       ICreateTaxStepOnePayload
     >({
       query: (data) => ({
-        url: "/tax-orders/order-tax/step-1",
+        url: "/tax-orders/step-1",
         method: "POST",
         data,
       }),
@@ -98,7 +99,7 @@ const orderApi = baseApi.injectEndpoints({
       { taxId: string; data: ICreateTaxStepOnePayload }
     >({
       query: ({ taxId, data }) => ({
-        url: `/tax-orders/order-tax/${taxId}/step-1`,
+        url: `/tax-orders/${taxId}/step-1`,
         method: "PATCH",
         data,
       }),
@@ -109,18 +110,28 @@ const orderApi = baseApi.injectEndpoints({
       { taxId: string; documentIds: string[] }
     >({
       query: ({ taxId, documentIds }) => ({
-        url: `/tax-orders/order-tax/${taxId}/step-2`,
+        url: `/tax-orders/${taxId}/step-2`,
         method: "PATCH",
         data: { documents: documentIds },
       }),
       invalidatesTags: ["orders"],
     }),
-    initTaxStepThreePayment: builder.mutation<TResponse<ITaxStepThreeResponse>, string>({
+    initTaxStepThreePayment: builder.mutation<
+      TResponse<ITaxStepThreeResponse>,
+      string
+    >({
       query: (taxId) => ({
-        url: `/tax-orders/order-tax/${taxId}/step-3`,
+        url: `/tax-orders/${taxId}/step-3`,
         method: "POST",
       }),
       invalidatesTags: ["orders"],
+    }),
+    getMyOrders: builder.query<TResponse<IOrder[]>, undefined>({
+      query: () => ({
+        url: "/tax-orders/my-orders",
+        method: "GET",
+      }),
+      providesTags: ["orders"],
     }),
   }),
 });
@@ -132,4 +143,5 @@ export const {
   useUpdateTaxStepOneMutation,
   useUploadTaxStepTwoDocumentsMutation,
   useInitTaxStepThreePaymentMutation,
+  useGetMyOrdersQuery,
 } = orderApi;

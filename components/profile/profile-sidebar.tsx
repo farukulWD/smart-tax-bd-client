@@ -5,7 +5,7 @@ import { CreditCardIcon, FileIcon, TruckIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const profileSidebarLinks = [
+export const profileSidebarLinks = [
   {
     title: "Profile",
     href: "/profile",
@@ -32,7 +32,7 @@ const ProfileSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col gap-4 bg-white p-4 h-full shadow-xl rounded-lg">
+    <div className="flex flex-col gap-4 bg-primary/5 p-4 h-full shadow-xl rounded-lg">
       <div>
         {profileSidebarLinks.map((link) => (
           <Link
@@ -40,7 +40,7 @@ const ProfileSidebar = () => {
             href={link.href}
             className={cn(
               "flex items-center gap-2 p-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors",
-              pathname === link.href && "bg-primary text-primary-foreground"
+              pathname === link.href && "bg-primary text-primary-foreground",
             )}
           >
             {link.icon}
