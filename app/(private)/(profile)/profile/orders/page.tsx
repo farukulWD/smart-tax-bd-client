@@ -4,10 +4,12 @@ import { Package, Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useGetMyOrdersQuery } from "@/redux/api/order/orderApi";
+import { DataTable } from "@/components/shared/data-table";
+import { columns } from "./_components/order-columns";
 
 const OrdersPage = () => {
   const { data, isLoading } = useGetMyOrdersQuery(undefined);
-  console.log(data);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -23,15 +25,23 @@ const OrdersPage = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4 border-2 border-dashed rounded-lg">
-        <Package className="h-16 w-16 text-muted-foreground" />
-        <div className="text-center">
-          <h3 className="text-lg font-semibold">No Order found</h3>
-          <p className="text-sm text-muted-foreground">
-            Create a new order to get started.
-          </p>
+      {!isLoading && (!data?.data || data.data.length === 0) ? (
+        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4 border-2 border-dashed rounded-lg">
+          <Package className="h-16 w-16 text-muted-foreground" />
+          <div className="text-center">
+            <h3 className="text-lg font-semibold">No Order found</h3>
+            <p className="text-sm text-muted-foreground">
+              Create a new order to get started.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={data?.data || []}
+          loading={isLoading}
+        />
+      )}
     </div>
   );
 };

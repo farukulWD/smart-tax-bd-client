@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -85,7 +85,7 @@ const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
   import_duty: IncomeSource.Business,
 };
 
-const CreateOrderPage = () => {
+const CreateOrderForm = () => {
   const router = useRouter();
   const params = useSearchParams();
   const taxType = params.get("taxType") || "";
@@ -446,5 +446,13 @@ const CreateOrderPage = () => {
     </div>
   );
 };
+
+const CreateOrderPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-green-600" /></div>}>
+      <CreateOrderForm />
+    </Suspense>
+  )
+}
 
 export default CreateOrderPage;

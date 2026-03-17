@@ -38,9 +38,13 @@ import z from "zod";
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   type: z.string().min(1, "Type is required"),
-  file: z
-    .instanceof(FileList)
-    .refine((files) => files.length > 0, "File is required"),
+  file: z.custom<FileList>((val) => {
+    if (typeof window === "undefined") return true;
+    return val instanceof FileList;
+  }).refine((files) => {
+    if (typeof window === "undefined") return true;
+    return files && files.length > 0;
+  }, "File is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
