@@ -40,7 +40,9 @@ const ProfileSidebar = () => {
             href={link.href}
             className={cn(
               "flex items-center gap-2 p-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors",
-              pathname === link.href && "bg-primary text-primary-foreground",
+              pathname === link.href
+                ? "bg-primary text-primary-foreground"
+                : "",
             )}
           >
             {link.icon}
