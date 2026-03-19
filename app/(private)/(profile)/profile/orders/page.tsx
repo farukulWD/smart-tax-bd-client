@@ -1,47 +1,21 @@
 "use client";
 
-import { useGetMyOrdersQuery } from "@/redux/api/order/orderApi";
-import { Loader2, Package, Plus } from "lucide-react";
+import { Package, Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useGetMyOrdersQuery } from "@/redux/api/order/orderApi";
 import { DataTable } from "@/components/shared/data-table";
 import { columns } from "./_components/order-columns";
 
 const OrdersPage = () => {
-  const { data, isLoading, isError } = useGetMyOrdersQuery(undefined);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <Package className="h-16 w-16 text-muted-foreground" />
-        <div className="text-center">
-          <h3 className="text-lg font-semibold">Error Loading Orders</h3>
-          <p className="text-sm text-muted-foreground">
-            Failed to load your orders. Please try again later.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const orders = data?.data || [];
+  const { data, isLoading } = useGetMyOrdersQuery(undefined);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-          <p className="text-muted-foreground">
-            Manage your tax orders and create new ones
-          </p>
+          <p className="text-muted-foreground">Manage your orders here.</p>
         </div>
         <Link href="/profile/orders/create">
           <Button>
@@ -51,26 +25,22 @@ const OrdersPage = () => {
         </Link>
       </div>
 
-      {orders.length === 0 ? (
+      {!isLoading && (!data?.data || data.data.length === 0) ? (
         <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4 border-2 border-dashed rounded-lg">
           <Package className="h-16 w-16 text-muted-foreground" />
           <div className="text-center">
-            <h3 className="text-lg font-semibold">No Orders Yet</h3>
+            <h3 className="text-lg font-semibold">No Order found</h3>
             <p className="text-sm text-muted-foreground">
-              Create your first order to get started
+              Create a new order to get started.
             </p>
           </div>
-          <Link href="/profile/orders/create">
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Order
-            </Button>
-          </Link>
         </div>
       ) : (
-        <div className="rounded-md border">
-          <DataTable columns={columns} data={orders} />
-        </div>
+        <DataTable
+          columns={columns}
+          data={data?.data || []}
+          loading={isLoading}
+        />
       )}
     </div>
   );

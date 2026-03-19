@@ -2,6 +2,7 @@ import { TResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const authApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     register: builder.mutation<TResponse<any>, any>({
       query: (data) => ({

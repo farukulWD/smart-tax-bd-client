@@ -1,5 +1,5 @@
 import ProfileSidebar from "@/components/profile/profile-sidebar";
-import ProfileTopBar from "@/components/profile/profile-top-bar";
+// import ProfileTopBar from "@/components/profile/profile-top-bar";
 import { Navbar } from "@/components/shared/navbar";
 import React from "react";
 
@@ -12,7 +12,7 @@ export default function ProfileLayout({
     <div>
       <Navbar />
       <div className="container mx-auto px-4 py-4 lg:px-8 flex flex-col gap-4 h-[calc(100vh-85px)] overflow-hidden">
-        <ProfileTopBar />
+        {/* <ProfileTopBar /> */}
         <div className="flex gap-4 h-full overflow-hidden">
           <div className="w-64 hidden md:block">
             <ProfileSidebar />

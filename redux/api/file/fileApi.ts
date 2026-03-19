@@ -2,6 +2,7 @@ import { TResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const fileApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     uploadFile: builder.mutation<TResponse<any>, any>({
       query: (data) => ({
