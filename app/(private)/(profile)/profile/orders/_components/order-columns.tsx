@@ -8,9 +8,12 @@ import { OrderActions } from "./order-actions";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
-  if (normalized === "order_placed" || normalized === "completed") return "default";
-  if (normalized === "draft" || normalized === "in_progress") return "secondary";
-  if (normalized === "cancelled" || normalized === "rejected") return "destructive";
+  if (normalized === "order_placed" || normalized === "completed")
+    return "default";
+  if (normalized === "draft" || normalized === "in_progress")
+    return "secondary";
+  if (normalized === "cancelled" || normalized === "rejected")
+    return "destructive";
   return "outline";
 };
 
@@ -20,7 +23,9 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Order ID",
     cell: ({ row }) => {
       const id = row.getValue("_id") as string;
-      return <span className="font-medium">#{id?.slice(-6).toUpperCase()}</span>;
+      return (
+        <span className="font-medium">#{id?.slice(-6).toUpperCase()}</span>
+      );
     },
   },
   {
@@ -28,8 +33,26 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Tax Year",
   },
   {
-    accessorKey: "current_step",
-    header: "Step",
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = (row.getValue("status") as string) || "draft";
+      return (
+        <Badge className="capitalize" variant={statusVariant(status)}>
+          {status.replace(/_/g, " ")}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Order Date",
+    cell: ({ row }) => {
+      const createdAt = row.getValue("createdAt") as string;
+      return (
+        <span>{createdAt ? format(new Date(createdAt), "PPP") : "N/A"}</span>
+      );
+    },
   },
   {
     accessorKey: "fee_due_amount",
@@ -47,31 +70,35 @@ export const columns: ColumnDef<IOrder>[] = [
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "tax_payable_amount",
+    header: "Tax Payable Amount",
     cell: ({ row }) => {
-      const status = (row.getValue("status") as string) || "draft";
+      const amount = Number(row.getValue("tax_payable_amount") || 0);
       return (
-        <Badge variant={statusVariant(status)}>
-          {status.replace(/_/g, " ")}
-        </Badge>
+        <span className="font-medium">
+          {new Intl.NumberFormat("en-BD", {
+            style: "currency",
+            currency: "BDT",
+          }).format(amount)}
+        </span>
       );
     },
   },
   {
-    accessorKey: "fee_due_amount_paid",
-    header: "Payment",
+    id: "totalPayableAmount",
+    header: "Total Payable Amount",
     cell: ({ row }) => {
-      const isPaid = Number(row.original.fee_due_amount || 0) <= 0;
-      return <Badge variant={isPaid ? "default" : "destructive"}>{isPaid ? "Paid" : "Unpaid"}</Badge>;
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Created",
-    cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt") as string;
-      return <span>{createdAt ? format(new Date(createdAt), "PPP") : "N/A"}</span>;
+      const amount = Number(row.getValue("tax_payable_amount") || 0);
+      const feeAmount = Number(row.getValue("fee_due_amount") || 0);
+      const totalAmount = amount + feeAmount;
+      return (
+        <span className="font-medium">
+          {new Intl.NumberFormat("en-BD", {
+            style: "currency",
+            currency: "BDT",
+          }).format(totalAmount)}
+        </span>
+      );
     },
   },
   {
