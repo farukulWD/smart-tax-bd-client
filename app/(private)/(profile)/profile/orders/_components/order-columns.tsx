@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { IOrder } from "@/redux/api/order/orderApi";
 import { format } from "date-fns";
 import { OrderActions } from "./order-actions";
+import { PayableAmountCell } from "./payable-amount-cell";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
@@ -58,14 +59,14 @@ export const columns: ColumnDef<IOrder>[] = [
     accessorKey: "fee_due_amount",
     header: "Fee Due",
     cell: ({ row }) => {
-      const amount = Number(row.getValue("fee_due_amount") || 0);
+      const order = row.original;
       return (
-        <span className="font-medium">
-          {new Intl.NumberFormat("en-BD", {
-            style: "currency",
-            currency: "BDT",
-          }).format(amount)}
-        </span>
+        <PayableAmountCell
+          amount={Number(order.fee_due_amount || 0)}
+          orderId={order._id!}
+          paymentFor="fee_due_amount"
+          isPaid={order.is_fee_due_amount_paid}
+        />
       );
     },
   },
@@ -73,14 +74,14 @@ export const columns: ColumnDef<IOrder>[] = [
     accessorKey: "tax_payable_amount",
     header: "Tax Payable Amount",
     cell: ({ row }) => {
-      const amount = Number(row.getValue("tax_payable_amount") || 0);
+      const order = row.original;
       return (
-        <span className="font-medium">
-          {new Intl.NumberFormat("en-BD", {
-            style: "currency",
-            currency: "BDT",
-          }).format(amount)}
-        </span>
+        <PayableAmountCell
+          amount={Number(order.tax_payable_amount || 0)}
+          orderId={order._id!}
+          paymentFor="tax_payable_amount"
+          isPaid={order.is_tax_payable_amount_paid}
+        />
       );
     },
   },
@@ -88,16 +89,22 @@ export const columns: ColumnDef<IOrder>[] = [
     id: "totalPayableAmount",
     header: "Total Payable Amount",
     cell: ({ row }) => {
-      const amount = Number(row.getValue("tax_payable_amount") || 0);
-      const feeAmount = Number(row.getValue("fee_due_amount") || 0);
-      const totalAmount = amount + feeAmount;
+      const order = row.original;
+      const unpaidTax = order.is_tax_payable_amount_paid
+        ? 0
+        : Number(order.tax_payable_amount || 0);
+      const unpaidFee = order.is_fee_due_amount_paid
+        ? 0
+        : Number(order.fee_due_amount || 0);
+      const totalAmount = unpaidTax + unpaidFee;
+      const isPaid = totalAmount === 0;
       return (
-        <span className="font-medium">
-          {new Intl.NumberFormat("en-BD", {
-            style: "currency",
-            currency: "BDT",
-          }).format(totalAmount)}
-        </span>
+        <PayableAmountCell
+          amount={totalAmount}
+          orderId={order._id!}
+          paymentFor="remaining_all_amount"
+          isPaid={isPaid}
+        />
       );
     },
   },

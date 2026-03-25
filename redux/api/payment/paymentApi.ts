@@ -13,11 +13,17 @@ const paymentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["payments"],
     }),
-    paymentSuccess: builder.mutation<TResponse<IPayment>, { tran_id: string }>({
-      query: (data) => ({
-        url: "/tax-orders/payment/success",
+    paymentSuccess: builder.mutation<
+      TResponse<IPayment>,
+      { tran_id: string; paymentFor?: string }
+    >({
+      query: ({ tran_id, paymentFor }) => ({
+        url:
+          paymentFor === "fee_amount"
+            ? "/tax-orders/payment/success"
+            : "/payments/success",
         method: "POST",
-        data,
+        data: { tran_id },
       }),
       invalidatesTags: ["payments"],
     }),
