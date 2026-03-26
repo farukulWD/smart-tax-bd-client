@@ -39,12 +39,13 @@ const PaymentStatusView = ({
     params.get("tran_id") ||
     params.get("transaction_id") ||
     params.get("val_id");
+  const paymentFor = params.get("paymentFor") || undefined;
 
   const [paymentSuccess, { isLoading }] = usePaymentSuccessMutation();
 
   useEffect(() => {
     if (status === "success" && transactionId && !isLoading) {
-      paymentSuccess({ tran_id: transactionId });
+      paymentSuccess({ tran_id: transactionId, paymentFor });
     }
   }, [transactionId, paymentSuccess, status]);
 

@@ -2,8 +2,7 @@
 
 import { UploadDialog } from "./_components/upload-dialog";
 import { useGetMyFilesQuery } from "@/redux/api/file/fileApi";
-import { DataTable } from "@/components/shared/data-table";
-import { columns } from "./_components/columns";
+import { FileX } from "lucide-react";
 
 const MyFilesPage = () => {
   const { data: files, isLoading } = useGetMyFilesQuery(undefined, {
@@ -13,13 +12,35 @@ const MyFilesPage = () => {
     }),
   });
 
+  const isEmpty = !isLoading && (!files || files.length === 0);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold tracking-tight">My Files</h2>
         <UploadDialog />
       </div>
-      <DataTable columns={columns} data={files || []} loading={isLoading} />
+
+      {isEmpty && (
+        <div className="flex flex-col items-center justify-center gap-6 rounded-xl border border-dashed bg-muted/30 py-24 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+            <FileX className="h-10 w-10 text-primary/60" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-semibold">No files uploaded yet</h3>
+            <p className="text-sm text-muted-foreground">
+              Upload your documents to keep them safe and accessible.
+            </p>
+          </div>
+          <UploadDialog />
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="flex items-center justify-center py-24">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      )}
     </div>
   );
 };

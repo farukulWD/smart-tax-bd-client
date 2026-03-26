@@ -52,7 +52,7 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
 
   const order = data.data.tax_order;
   const isPaid =
-    Number(order.fee_due_amount || 0) <= 0 || order.status === "order_placed";
+    Number(order.fee_amount || 0) <= 0 || order.status === "order_placed";
 
   const handleStartPayment = async () => {
     if (!taxId) return;
@@ -98,12 +98,12 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
             <span className="font-semibold">{order.current_step}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Fee Due</span>
+            <span className="text-muted-foreground">Fee</span>
             <span className="font-semibold">
               {new Intl.NumberFormat("en-BD", {
                 style: "currency",
                 currency: "BDT",
-              }).format(Number(order.fee_due_amount || 0))}
+              }).format(Number(order.fee_amount || 0))}
             </span>
           </div>
 

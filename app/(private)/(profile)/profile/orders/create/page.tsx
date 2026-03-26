@@ -54,13 +54,15 @@ const formSchema = z.object({
   income_from_ldt_company: z.boolean(),
   income_from_partnership_firm: z.boolean(),
   are_you_get_notice_from_tax_office: z.boolean(),
-  for_other_person: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 const CURRENT_YEAR = new Date().getFullYear();
-const TAX_YEARS = Array.from({ length: 10 }, (_, i) => CURRENT_YEAR - i);
+const TAX_YEARS = Array.from({ length: 10 }, (_, i) => {
+  const year = CURRENT_YEAR - i;
+  return `${year}-${year + 1}`;
+});
 
 const INCOME_SOURCES: { value: IncomeSource; label: string }[] = [
   { value: IncomeSource.GovtJob, label: "Income from Govt. Job" },
@@ -105,11 +107,10 @@ const CreateOrderForm = () => {
       email: "",
       mobile: "",
       source_of_income: [],
-      tax_year: CURRENT_YEAR.toString(),
+      tax_year: `${CURRENT_YEAR}-${CURRENT_YEAR + 1}`,
       income_from_ldt_company: false,
       income_from_partnership_firm: false,
       are_you_get_notice_from_tax_office: false,
-      for_other_person: false,
     },
   });
 
@@ -150,8 +151,6 @@ const CreateOrderForm = () => {
         income_from_partnership_firm: values.income_from_partnership_firm,
         are_you_get_notice_from_tax_office:
           values.are_you_get_notice_from_tax_office,
-        for_other_person: values.for_other_person,
-        is_self: !values.for_other_person,
       }).unwrap();
 
       const orderId = orderResponse?.data?.tax_order?._id;
@@ -175,10 +174,6 @@ const CreateOrderForm = () => {
   const selectedTaxYear = useWatch({
     control: form.control,
     name: "tax_year",
-  });
-  const forOtherPerson = useWatch({
-    control: form.control,
-    name: "for_other_person",
   });
 
   return (
@@ -219,23 +214,7 @@ const CreateOrderForm = () => {
               <h2 className="text-xl font-bold text-slate-800">
                 Personal Information
               </h2>
-              <FormField
-                control={form.control}
-                name={"for_other_person"}
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center gap-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      {`This filing is for another person (e.g. family member)`}
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -247,7 +226,7 @@ const CreateOrderForm = () => {
                         <Input
                           placeholder="Enter your full name"
                           {...field}
-                          disabled={!forOtherPerson}
+                          disabled
                         />
                       </FormControl>
                       <FormMessage />
@@ -262,7 +241,7 @@ const CreateOrderForm = () => {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                          disabled={!forOtherPerson}
+                          disabled
                           placeholder="Enter your email"
                           {...field}
                         />
@@ -304,7 +283,7 @@ const CreateOrderForm = () => {
                         </FormControl>
                         <SelectContent>
                           {TAX_YEARS.map((year) => (
-                            <SelectItem key={year} value={year.toString()}>
+                            <SelectItem key={year} value={year}>
                               {year}
                             </SelectItem>
                           ))}
@@ -449,10 +428,16 @@ const CreateOrderForm = () => {
 
 const CreateOrderPage = () => {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-green-600" /></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+        </div>
+      }
+    >
       <CreateOrderForm />
     </Suspense>
-  )
-}
+  );
+};
 
 export default CreateOrderPage;

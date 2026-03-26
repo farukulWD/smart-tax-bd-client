@@ -5,12 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { IOrder } from "@/redux/api/order/orderApi";
 import { format } from "date-fns";
 import { OrderActions } from "./order-actions";
+import { PayableAmountCell } from "./payable-amount-cell";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
-  if (normalized === "order_placed" || normalized === "completed") return "default";
-  if (normalized === "draft" || normalized === "in_progress") return "secondary";
-  if (normalized === "cancelled" || normalized === "rejected") return "destructive";
+  if (normalized === "order_placed" || normalized === "completed")
+    return "default";
+  if (normalized === "draft" || normalized === "in_progress")
+    return "secondary";
+  if (normalized === "cancelled" || normalized === "rejected")
+    return "destructive";
   return "outline";
 };
 
@@ -20,7 +24,9 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Order ID",
     cell: ({ row }) => {
       const id = row.getValue("_id") as string;
-      return <span className="font-medium">#{id?.slice(-6).toUpperCase()}</span>;
+      return (
+        <span className="font-medium">#{id?.slice(-6).toUpperCase()}</span>
+      );
     },
   },
   {
@@ -28,50 +34,78 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Tax Year",
   },
   {
-    accessorKey: "current_step",
-    header: "Step",
-  },
-  {
-    accessorKey: "fee_due_amount",
-    header: "Fee Due",
-    cell: ({ row }) => {
-      const amount = Number(row.getValue("fee_due_amount") || 0);
-      return (
-        <span className="font-medium">
-          {new Intl.NumberFormat("en-BD", {
-            style: "currency",
-            currency: "BDT",
-          }).format(amount)}
-        </span>
-      );
-    },
-  },
-  {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
       const status = (row.getValue("status") as string) || "draft";
       return (
-        <Badge variant={statusVariant(status)}>
+        <Badge className="capitalize" variant={statusVariant(status)}>
           {status.replace(/_/g, " ")}
         </Badge>
       );
     },
   },
   {
-    accessorKey: "fee_due_amount_paid",
-    header: "Payment",
+    accessorKey: "createdAt",
+    header: "Order Date",
     cell: ({ row }) => {
-      const isPaid = Number(row.original.fee_due_amount || 0) <= 0;
-      return <Badge variant={isPaid ? "default" : "destructive"}>{isPaid ? "Paid" : "Unpaid"}</Badge>;
+      const createdAt = row.getValue("createdAt") as string;
+      return (
+        <span>{createdAt ? format(new Date(createdAt), "PPP") : "N/A"}</span>
+      );
     },
   },
   {
-    accessorKey: "createdAt",
-    header: "Created",
+    accessorKey: "fee_due_amount",
+    header: "Fee Due",
     cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt") as string;
-      return <span>{createdAt ? format(new Date(createdAt), "PPP") : "N/A"}</span>;
+      const order = row.original;
+      return (
+        <PayableAmountCell
+          amount={Number(order.fee_due_amount || 0)}
+          orderId={order._id!}
+          paymentFor="fee_due_amount"
+          isPaid={order.is_fee_due_amount_paid}
+        />
+      );
+    },
+  },
+  {
+    accessorKey: "tax_payable_amount",
+    header: "Tax Payable Amount",
+    cell: ({ row }) => {
+      const order = row.original;
+      return (
+        <PayableAmountCell
+          amount={Number(order.tax_payable_amount || 0)}
+          orderId={order._id!}
+          paymentFor="tax_payable_amount"
+          isPaid={order.is_tax_payable_amount_paid}
+        />
+      );
+    },
+  },
+  {
+    id: "totalPayableAmount",
+    header: "Total Payable Amount",
+    cell: ({ row }) => {
+      const order = row.original;
+      const unpaidTax = order.is_tax_payable_amount_paid
+        ? 0
+        : Number(order.tax_payable_amount || 0);
+      const unpaidFee = order.is_fee_due_amount_paid
+        ? 0
+        : Number(order.fee_due_amount || 0);
+      const totalAmount = unpaidTax + unpaidFee;
+      const isPaid = totalAmount === 0;
+      return (
+        <PayableAmountCell
+          amount={totalAmount}
+          orderId={order._id!}
+          paymentFor="remaining_all_amount"
+          isPaid={isPaid}
+        />
+      );
     },
   },
   {

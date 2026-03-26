@@ -22,6 +22,13 @@ const fileApi = baseApi.injectEndpoints({
       }),
       providesTags: ["files"],
     }),
+    getSingleFile: builder.query<TResponse<any>, string>({
+      query: (id) => ({
+        url: `/files/get-single-file/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["files"],
+    }),
     deleteFile: builder.mutation<TResponse<any>, string>({
       query: (id) => ({
         url: `/files/delete-file/${id}`,
@@ -35,5 +42,6 @@ const fileApi = baseApi.injectEndpoints({
 export const {
   useUploadFileMutation,
   useGetMyFilesQuery,
+  useGetSingleFileQuery,
   useDeleteFileMutation,
 } = fileApi;

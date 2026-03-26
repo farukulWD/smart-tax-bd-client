@@ -15,6 +15,7 @@ import {
 import { useDeleteFileMutation } from "@/redux/api/file/fileApi";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { usePathname, useRouter } from "next/navigation";
 
 interface DeleteFileActionProps {
   fileId: string;
@@ -23,11 +24,16 @@ interface DeleteFileActionProps {
 
 export function DeleteFileAction({ fileId, fileName }: DeleteFileActionProps) {
   const [deleteFile, { isLoading }] = useDeleteFileMutation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleDelete = async () => {
     try {
       await deleteFile(fileId).unwrap();
       toast.success("File deleted successfully");
+      if (pathname.includes(`/my-files/${fileId}`)) {
+        router.push("/profile/my-files");
+      }
     } catch (error) {
       toast.error("Failed to delete file");
       console.error("Delete error:", error);

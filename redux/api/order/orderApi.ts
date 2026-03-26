@@ -37,9 +37,12 @@ export interface IOrder {
   tax_year: string;
   documents?: string[];
   tax_payable_amount: number;
+  is_tax_payable_amount_paid: boolean;
   tax_paid_amount: number;
   fee_amount: number;
+  is_fee_amount_paid: boolean;
   fee_due_amount: number;
+  is_fee_due_amount_paid: boolean;
   tax_paid_date?: string;
   createdAt?: string;
 }

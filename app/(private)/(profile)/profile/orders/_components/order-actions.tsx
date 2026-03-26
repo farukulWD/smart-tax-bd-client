@@ -10,40 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import {
-  IOrder,
-  useInitTaxStepThreePaymentMutation,
-} from "@/redux/api/order/orderApi";
-import { Eye, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { IOrder } from "@/redux/api/order/orderApi";
+import { Eye } from "lucide-react";
 
 interface OrderActionsProps {
   order: IOrder;
 }
 
 export function OrderActions({ order }: OrderActionsProps) {
-  const [initTaxStepThreePayment, { isLoading: isPaying }] =
-    useInitTaxStepThreePaymentMutation();
-
-  const status = order.status?.toLowerCase() || "draft";
-  const isPaid = Number(order.fee_due_amount || 0) <= 0;
-  const canPay = !isPaid && ["draft", "in_progress", "submitted"].includes(status);
-
-  const handlePay = async () => {
-    if (!order._id) return;
-    try {
-      const res = await initTaxStepThreePayment(order._id).unwrap();
-      const gatewayUrl = res?.data?.gatewayPageURL;
-      if (res?.success && gatewayUrl) {
-        window.location.href = gatewayUrl;
-        return;
-      }
-      toast.error("Payment link was not found");
-    } catch {
-      toast.error("Failed to initialize payment. Complete required documents first.");
-    }
-  };
-
   return (
     <div className="flex items-center gap-2">
       <Dialog>
@@ -110,16 +84,6 @@ export function OrderActions({ order }: OrderActionsProps) {
           </div>
         </DialogContent>
       </Dialog>
-
-      <Button
-        variant={isPaid ? "secondary" : "default"}
-        size="sm"
-        onClick={handlePay}
-        disabled={!canPay || isPaying || !order._id}
-      >
-        {isPaying && <Loader2 className="h-4 w-4 animate-spin" />}
-        {isPaid ? "Paid" : "Pay"}
-      </Button>
     </div>
   );
 }
