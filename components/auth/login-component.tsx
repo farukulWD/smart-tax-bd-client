@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 const loginSchema = z.object({
-  email: z.email({ message: "Invalid email address" }),
+  mobile: z.string().min(1, { message: "Mobile number is required" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
@@ -40,7 +40,7 @@ const LoginComponent = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      mobile: "",
       password: "",
     },
   });
@@ -69,12 +69,12 @@ const LoginComponent = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-6">
           <FormField
             control={form.control}
-            name="email"
+            name="mobile"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Email Address *"
+                    placeholder="Mobile Number *"
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />

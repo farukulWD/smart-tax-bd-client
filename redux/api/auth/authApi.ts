@@ -1,10 +1,11 @@
 import { TResponse } from "@/types";
 import { baseApi } from "../baseApi";
+import { RegisterFormValues } from "@/components/auth/register-form";
 
 const authApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
-    register: builder.mutation<TResponse<any>, any>({
+    register: builder.mutation<TResponse<any>, Omit<RegisterFormValues, "confirmPassword">>({
       query: (data) => ({
         url: "/users/register",
         method: "POST",

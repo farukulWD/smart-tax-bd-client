@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 const registerSchema = z
   .object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Invalid email address" }),
+    email: z.string().email({ message: "Invalid email address" }).optional(),
     mobile: z
       .string()
       .min(11, { message: "Phone number must be at least 11 characters" }),
@@ -66,7 +66,9 @@ export const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      const res = await register(data).unwrap();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...payload } = data;
+      const res = await register(payload).unwrap();
       if (res) {
         toast.success("Your account has been created successfully");
         form.reset();
@@ -96,24 +98,6 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Email Address *"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <FormField
           control={form.control}
           name="mobile"
@@ -122,6 +106,22 @@ export const RegisterForm = () => {
               <FormControl>
                 <Input
                   placeholder="Phone Number *"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Email Address *"
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                   {...field}
                 />
