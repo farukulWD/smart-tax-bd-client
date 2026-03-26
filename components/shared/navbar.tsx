@@ -12,6 +12,7 @@ const navLinks = (pathname: string) => {
   return [
     { name: "Home", href: "/", active: pathname === "/" },
     { name: "About Us", href: "/about", active: pathname === "/about" },
+    { name: "News", href: "/news", active: pathname === "/news" },
     { name: "Contact Us", href: "/contact", active: pathname === "/contact" },
   ];
 };
