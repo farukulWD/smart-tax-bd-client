@@ -82,9 +82,21 @@ const INCOME_SOURCES: { value: IncomeSource; label: string }[] = [
 const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
   income_tax: IncomeSource.PrivateJob,
   sales_tax: IncomeSource.Business,
+  vat: IncomeSource.Business,
   value_added_tax: IncomeSource.Business,
   service_tax: IncomeSource.Business,
   import_duty: IncomeSource.Business,
+  business_tax: IncomeSource.Business,
+  excise_duty: IncomeSource.Business,
+  customs_duty: IncomeSource.Business,
+  entertainment_tax: IncomeSource.Business,
+  environmental_tax: IncomeSource.Business,
+  house_rental_tax: IncomeSource.Rent,
+  property_tax: IncomeSource.Rent,
+  capital_gains_tax: IncomeSource.CapitalGain,
+  gift_tax: IncomeSource.OthersSource,
+  inheritance_tax: IncomeSource.OthersSource,
+  wealth_tax: IncomeSource.FinancialAsset,
 };
 
 const CreateOrderForm = () => {

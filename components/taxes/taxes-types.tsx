@@ -18,15 +18,35 @@ import {
   Globe2,
   ArrowRight,
   ShieldCheck,
+  Home,
+  Building2,
+  TrendingUp,
+  Gift,
+  Landmark,
+  Coins,
+  Leaf,
+  Wallet,
 } from "lucide-react";
 import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
 
 const iconMap: Record<string, any> = {
   income_tax: CircleDollarSign,
   sales_tax: ShoppingCart,
+  vat: ReceiptText,
   value_added_tax: ReceiptText,
   service_tax: Briefcase,
   import_duty: Globe2,
+  business_tax: Building2,
+  house_rental_tax: Home,
+  property_tax: Landmark,
+  capital_gains_tax: TrendingUp,
+  excise_duty: Coins,
+  customs_duty: Globe2,
+  gift_tax: Gift,
+  inheritance_tax: Wallet,
+  entertainment_tax: CircleDollarSign,
+  environmental_tax: Leaf,
+  wealth_tax: Wallet,
 };
 
 const TaxesTypes: FC = () => {
