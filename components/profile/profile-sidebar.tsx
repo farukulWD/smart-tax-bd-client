@@ -14,32 +14,21 @@ import {
   TruckIcon,
   UserIcon,
 } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, Link } from "@/i18n/navigation";
 import { useState } from "react";
-
-export const profileSidebarLinks = [
-  {
-    title: "Profile",
-    href: "/profile",
-    icon: <UserIcon />,
-  },
-  {
-    title: "Payments",
-    href: "/profile/payments",
-    icon: <CreditCardIcon />,
-  },
-  {
-    title: "Orders",
-    href: "/profile/orders",
-    icon: <TruckIcon />,
-  },
-];
+import { useTranslations } from "next-intl";
 
 const ProfileSidebar = () => {
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   const isOnMyFiles = pathname.startsWith("/profile/my-files");
   const [open, setOpen] = useState(isOnMyFiles);
+
+  const profileSidebarLinks = [
+    { title: t("profile"), href: "/profile" as const, icon: <UserIcon /> },
+    { title: t("payments"), href: "/profile/payments" as const, icon: <CreditCardIcon /> },
+    { title: t("orders"), href: "/profile/orders" as const, icon: <TruckIcon /> },
+  ];
 
   const { data: filesData } = useGetMyFilesQuery(undefined, {
     selectFromResult: (result) => ({
@@ -54,7 +43,7 @@ const ProfileSidebar = () => {
       <div>
         {profileSidebarLinks.map((link) => (
           <Link
-            key={link.title}
+            key={link.href}
             href={link.href}
             className={cn(
               "flex items-center gap-2 p-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors",
@@ -78,7 +67,7 @@ const ProfileSidebar = () => {
           >
             <span className="flex items-center gap-2">
               <FileIcon className="h-5 w-5" />
-              My Files
+              {t("myFiles")}
             </span>
             <ChevronDownIcon
               className={cn(
@@ -92,7 +81,7 @@ const ProfileSidebar = () => {
             <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l pl-3">
               {files.length === 0 ? (
                 <p className="text-xs text-muted-foreground py-1 px-2">
-                  No files yet
+                  {t("noFiles")}
                 </p>
               ) : (
                 files.map((file) => (

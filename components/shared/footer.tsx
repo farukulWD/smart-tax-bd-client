@@ -1,27 +1,30 @@
-import Link from "next/link";
-
-const footerLinks = {
-  product: [
-    { name: "Features", href: "#" },
-    { name: "Pricing", href: "#" },
-    { name: "Security", href: "#" },
-    { name: "Roadmap", href: "#" },
-  ],
-  company: [
-    { name: "About Us", href: "/about" },
-    { name: "Blog", href: "/blog" },
-    { name: "Careers", href: "#" },
-    { name: "Contact", href: "/contact" },
-  ],
-  legal: [
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
-    { name: "Cookies", href: "#" },
-    { name: "License", href: "#" },
-  ],
-};
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const Footer = () => {
+  const t = useTranslations("footer");
+
+  const footerLinks = {
+    product: [
+      { nameKey: "features", href: "#" },
+      { nameKey: "pricing", href: "#" },
+      { nameKey: "security", href: "#" },
+      { nameKey: "roadmap", href: "#" },
+    ],
+    company: [
+      { nameKey: "aboutUs", href: "/about" },
+      { nameKey: "blog", href: "/blog" },
+      { nameKey: "careers", href: "#" },
+      { nameKey: "contact", href: "/contact" },
+    ],
+    legal: [
+      { nameKey: "privacy", href: "#" },
+      { nameKey: "terms", href: "#" },
+      { nameKey: "cookies", href: "#" },
+      { nameKey: "license", href: "#" },
+    ],
+  };
+
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
       <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
@@ -39,23 +42,20 @@ const Footer = () => {
                 Tax
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-slate-400">
-              Professional tax services for individuals and businesses in
-              Bangladesh.
-            </p>
+            <p className="text-sm leading-relaxed text-slate-400">{t("tagline")}</p>
           </div>
 
           {/* Product Links */}
           <div>
-            <h3 className="font-semibold text-white mb-4">Product</h3>
+            <h3 className="font-semibold text-white mb-4">{t("product")}</h3>
             <ul className="space-y-2">
               {footerLinks.product.map((link) => (
-                <li key={link.name}>
+                <li key={link.nameKey}>
                   <Link
-                    href={link.href}
+                    href={link.href as "/"}
                     className="text-sm hover:text-green-600 transition-colors"
                   >
-                    {link.name}
+                    {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
                 </li>
               ))}
@@ -64,15 +64,15 @@ const Footer = () => {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-semibold text-white mb-4">Company</h3>
+            <h3 className="font-semibold text-white mb-4">{t("company")}</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
-                <li key={link.name}>
+                <li key={link.nameKey}>
                   <Link
-                    href={link.href}
+                    href={link.href as "/"}
                     className="text-sm hover:text-green-600 transition-colors"
                   >
-                    {link.name}
+                    {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
                 </li>
               ))}
@@ -81,15 +81,15 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h3 className="font-semibold text-white mb-4">Legal</h3>
+            <h3 className="font-semibold text-white mb-4">{t("legal")}</h3>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
-                <li key={link.name}>
+                <li key={link.nameKey}>
                   <Link
-                    href={link.href}
+                    href={link.href as "/"}
                     className="text-sm hover:text-green-600 transition-colors"
                   >
-                    {link.name}
+                    {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
                 </li>
               ))}
@@ -99,7 +99,7 @@ const Footer = () => {
 
         <div className="border-t border-slate-800 mt-12 pt-8">
           <p className="text-center text-sm text-slate-500">
-            © {new Date().getFullYear()} Smart Tax BD. All rights reserved.
+            © {new Date().getFullYear()} Smart Tax BD. {t("allRightsReserved")}
           </p>
         </div>
       </div>
