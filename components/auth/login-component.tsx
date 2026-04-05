@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -17,23 +16,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { useLoginMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
-
-const loginSchema = z.object({
-  mobile: z.string().min(1, { message: "Mobile number is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const destinationUrl = searchParams.get("redirect") || "/profile";
+  const t = useTranslations("auth.login");
+  const tV = useTranslations("auth.validation");
+
+  const loginSchema = z.object({
+    mobile: z.string().min(1, { message: tV("mobileRequired") }),
+    password: z.string().min(1, { message: tV("passwordRequired") }),
+  });
+
+  type LoginFormValues = z.infer<typeof loginSchema>;
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -61,9 +65,7 @@ const LoginComponent = () => {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
-      <p className="text-slate-600 mb-6 font-medium">
-        Hassle-free tax season starts here
-      </p>
+      <p className="text-slate-600 mb-6 font-medium">{t("tagline")}</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-6">
@@ -74,7 +76,7 @@ const LoginComponent = () => {
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Mobile Number *"
+                    placeholder={t("mobilePlaceholder")}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
@@ -93,7 +95,7 @@ const LoginComponent = () => {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Password *"
+                      placeholder={t("passwordPlaceholder")}
                       className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
@@ -115,35 +117,33 @@ const LoginComponent = () => {
             )}
           />
 
-          {/* Sign In Button */}
           <Button
             type="submit"
             disabled={isLoading}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           >
-            {isLoading ? "Logging in..." : "Sign In"}
+            {isLoading ? t("signingIn") : t("signIn")}
           </Button>
         </form>
       </Form>
 
-      {/* Footer Links */}
       <p className="text-center text-xs text-slate-600 mb-4">
-        By clicking Sign In, you accept the{" "}
+        {t("termsPrefix")}{" "}
         <Link
           href="/terms"
           className="text-green-600 hover:underline font-semibold"
         >
-          Terms of service
+          {t("termsLink")}
         </Link>
       </p>
 
       <p className="text-center text-sm text-slate-700 mb-4">
-        New to SmartTax?{" "}
+        {t("newToSmartTax")}{" "}
         <Link
           href="/register"
           className="text-green-600 hover:underline font-semibold"
         >
-          Create Account
+          {t("createAccount")}
         </Link>
       </p>
 
@@ -152,7 +152,7 @@ const LoginComponent = () => {
           href="/forgot-password"
           className="text-green-600 hover:underline text-sm font-semibold"
         >
-          Forgot Password?
+          {t("forgotPassword")}
         </Link>
       </p>
     </div>

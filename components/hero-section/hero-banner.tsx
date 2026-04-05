@@ -1,8 +1,11 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const HeroBanner = () => {
+  const t = useTranslations("hero");
+
   return (
-    <section className="relative w-full min-h-[65vh] bg-gradient-to-b from-green-100 to-green-200 overflow-hidden">
+    <section className="relative w-full min-h-[65vh] bg-linear-to-b from-green-100 to-green-200 overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <svg className="w-full h-full" preserveAspectRatio="none">
           <defs>
@@ -47,24 +50,23 @@ const HeroBanner = () => {
         <div className="min-h-[360px] md:min-h-[420px] flex flex-col items-center justify-center space-y-8">
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-green-600">
-              Professional Tax <br /> Services in Bangladesh
+              {t("title")}
             </h1>
             <p className="text-lg text-slate-700 font-medium text-center max-w-xl mx-auto">
-              Simplifying tax compliance for individuals and businesses with
-              expert guidance and modern digital tools.
+              {t("subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
               <Link
                 href="/profile/orders/create"
                 className="inline-flex items-center justify-center rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700"
               >
-                Get Started
+                {t("getStarted")}
               </Link>
               <Link
-                href="#tax-categories"
+                href="/#tax-categories"
                 className="inline-flex items-center justify-center rounded-full border border-green-600/50 bg-white/80 px-6 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-white"
               >
-                View Tax Categories
+                {t("viewTaxCategories")}
               </Link>
             </div>
           </div>

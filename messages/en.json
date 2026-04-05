@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "Home",
+    "aboutUs": "About Us",
+    "news": "News",
+    "contactUs": "Contact Us",
+    "logIn": "Log In",
+    "logOut": "Log Out",
+    "loggingOut": "Logging out...",
+    "profile": "Profile",
+    "payments": "Payments",
+    "orders": "Orders",
+    "myFiles": "My Files",
+    "openMenu": "Open main menu"
+  },
+  "footer": {
+    "tagline": "Professional tax services for individuals and businesses in Bangladesh.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "allRightsReserved": "All rights reserved.",
+    "links": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "security": "Security",
+      "roadmap": "Roadmap",
+      "aboutUs": "About Us",
+      "blog": "Blog",
+      "careers": "Careers",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies",
+      "license": "License"
+    }
+  },
+  "hero": {
+    "title": "Professional Tax Services in Bangladesh",
+    "subtitle": "Simplifying tax compliance for individuals and businesses with expert guidance and modern digital tools.",
+    "getStarted": "Get Started",
+    "viewTaxCategories": "View Tax Categories"
+  },
+  "auth": {
+    "login": {
+      "tagline": "Hassle-free tax season starts here",
+      "mobilePlaceholder": "Mobile Number *",
+      "passwordPlaceholder": "Password *",
+      "signIn": "Sign In",
+      "signingIn": "Logging in...",
+      "termsPrefix": "By clicking Sign In, you accept the",
+      "termsLink": "Terms of service",
+      "newToSmartTax": "New to SmartTax?",
+      "createAccount": "Create Account",
+      "forgotPassword": "Forgot Password?"
+    },
+    "validation": {
+      "mobileRequired": "Mobile number is required",
+      "passwordRequired": "Password is required"
+    }
+  },
+  "sidebar": {
+    "profile": "Profile",
+    "payments": "Payments",
+    "orders": "Orders",
+    "myFiles": "My Files",
+    "noFiles": "No files yet"
+  }
+}

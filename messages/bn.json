@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "হোম",
+    "aboutUs": "আমাদের সম্পর্কে",
+    "news": "সংবাদ",
+    "contactUs": "যোগাযোগ",
+    "logIn": "লগ ইন",
+    "logOut": "লগ আউট",
+    "loggingOut": "লগ আউট হচ্ছে...",
+    "profile": "প্রোফাইল",
+    "payments": "পেমেন্ট",
+    "orders": "অর্ডার",
+    "myFiles": "আমার ফাইল",
+    "openMenu": "মেনু খুলুন"
+  },
+  "footer": {
+    "tagline": "বাংলাদেশে ব্যক্তি ও ব্যবসার জন্য পেশাদার কর সেবা।",
+    "product": "পণ্য",
+    "company": "কোম্পানি",
+    "legal": "আইনি",
+    "allRightsReserved": "সর্বস্বত্ব সংরক্ষিত।",
+    "links": {
+      "features": "বৈশিষ্ট্য",
+      "pricing": "মূল্য",
+      "security": "নিরাপত্তা",
+      "roadmap": "রোডম্যাপ",
+      "aboutUs": "আমাদের সম্পর্কে",
+      "blog": "ব্লগ",
+      "careers": "ক্যারিয়ার",
+      "contact": "যোগাযোগ",
+      "privacy": "গোপনীয়তা",
+      "terms": "শর্তাবলী",
+      "cookies": "কুকিজ",
+      "license": "লাইসেন্স"
+    }
+  },
+  "hero": {
+    "title": "বাংলাদেশে পেশাদার কর সেবা",
+    "subtitle": "বিশেষজ্ঞ নির্দেশনা ও আধুনিক ডিজিটাল সরঞ্জাম দিয়ে ব্যক্তি ও ব্যবসার কর মেনে চলা সহজ করছি।",
+    "getStarted": "শুরু করুন",
+    "viewTaxCategories": "কর বিভাগ দেখুন"
+  },
+  "auth": {
+    "login": {
+      "tagline": "ঝামেলামুক্ত কর মৌসুম শুরু হোক এখানেই",
+      "mobilePlaceholder": "মোবাইল নম্বর *",
+      "passwordPlaceholder": "পাসওয়ার্ড *",
+      "signIn": "সাইন ইন",
+      "signingIn": "লগ ইন হচ্ছে...",
+      "termsPrefix": "সাইন ইন করে আপনি গ্রহণ করছেন",
+      "termsLink": "সেবার শর্তাবলী",
+      "newToSmartTax": "SmartTax-এ নতুন?",
+      "createAccount": "অ্যাকাউন্ট তৈরি করুন",
+      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?"
+    },
+    "validation": {
+      "mobileRequired": "মোবাইল নম্বর আবশ্যক",
+      "passwordRequired": "পাসওয়ার্ড আবশ্যক"
+    }
+  },
+  "sidebar": {
+    "profile": "প্রোফাইল",
+    "payments": "পেমেন্ট",
+    "orders": "অর্ডার",
+    "myFiles": "আমার ফাইল",
+    "noFiles": "এখনো কোনো ফাইল নেই"
+  }
+}
