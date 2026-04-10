@@ -1,41 +1,43 @@
 import Link from "next/link";
 import { Mail, MapPin, PhoneCall } from "lucide-react";
-
-const contactCards = [
-  {
-    title: "Phone",
-    value: "+880 1700-000000",
-    subtext: "Sat-Thu, 10:00 AM - 7:00 PM",
-    icon: PhoneCall,
-  },
-  {
-    title: "Email",
-    value: "support@smarttaxbd.com",
-    subtext: "We usually reply within 24 hours",
-    icon: Mail,
-  },
-  {
-    title: "Office",
-    value: "Dhaka, Bangladesh",
-    subtext: "Remote and in-person consultation",
-    icon: MapPin,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function ContactPage() {
+  const t = useTranslations("contact");
+
+  const contactCards = [
+    {
+      title: t("phone.title"),
+      value: t("phone.value"),
+      subtext: t("phone.subtext"),
+      icon: PhoneCall,
+    },
+    {
+      title: t("email.title"),
+      value: t("email.value"),
+      subtext: t("email.subtext"),
+      icon: Mail,
+    },
+    {
+      title: t("office.title"),
+      value: t("office.value"),
+      subtext: t("office.subtext"),
+      icon: MapPin,
+    },
+  ];
+
   return (
     <main className="bg-gradient-to-b from-white via-green-50/50 to-slate-50">
       <section className="container mx-auto px-4 lg:px-8 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
           <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-            Contact Smart Tax
+            {t("badge")}
           </p>
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-5xl">
-            Let&apos;s discuss your tax needs
+            {t("title")}
           </h1>
           <p className="text-base leading-relaxed text-slate-600 md:text-lg">
-            Reach out to our team for service details, onboarding support, or
-            help with your ongoing tax requests.
+            {t("description")}
           </p>
         </div>
       </section>
@@ -61,24 +63,23 @@ export default function ContactPage() {
 
         <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-8 lg:p-10">
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Next Steps
+            {t("nextSteps")}
           </h2>
           <p className="mt-2 max-w-2xl text-slate-600">
-            Already have an account? Create a tax order directly and we&apos;ll
-            follow up with document requirements and estimated timelines.
+            {t("nextStepsDesc")}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/profile/orders/create"
               className="rounded-full bg-green-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700"
             >
-              Create Tax Order
+              {t("createOrder")}
             </Link>
             <Link
               href="/login"
               className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-100"
             >
-              Log In
+              {t("logIn")}
             </Link>
           </div>
         </div>

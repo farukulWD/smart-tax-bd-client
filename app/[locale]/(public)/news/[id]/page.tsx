@@ -4,12 +4,14 @@ import { useGetSingleNewsQuery } from "@/redux/api/news/newsApi";
 import { CalendarDays, ArrowLeft, ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SingleNewsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const t = useTranslations("newsArticle");
   const { id } = use(params);
   const { data, isLoading } = useGetSingleNewsQuery(id);
   const news = data?.data;
@@ -17,7 +19,7 @@ export default function SingleNewsPage({
   if (isLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-50 via-white to-slate-50">
-        <p className="text-slate-500">Loading...</p>
+        <p className="text-slate-500">{t("loading")}</p>
       </main>
     );
   }
@@ -26,13 +28,13 @@ export default function SingleNewsPage({
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gradient-to-b from-green-50 via-white to-slate-50">
         <p className="text-lg font-semibold text-slate-700">
-          News article not found.
+          {t("notFound")}
         </p>
         <Link
           href="/news"
           className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 hover:bg-green-50"
         >
-          Back to News
+          {t("backToNews")}
         </Link>
       </main>
     );
@@ -47,7 +49,7 @@ export default function SingleNewsPage({
           className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-green-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to News
+          {t("backToNews")}
         </Link>
 
         {/* Attachment */}

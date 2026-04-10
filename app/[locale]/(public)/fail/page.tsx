@@ -1,13 +1,15 @@
 import PaymentStatusView from "@/components/payment/payment-status-view";
 import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 
 const PaymentFailPage = () => {
+  const t = useTranslations("paymentStatus");
   return (
     <Suspense fallback={null}>
       <PaymentStatusView
         status="failed"
-        title="Payment Failed"
-        description="Your payment could not be completed. Please try again."
+        title={t("failed.title")}
+        description={t("failed.description")}
       />
     </Suspense>
   );

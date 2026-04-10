@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
+import { useTranslations } from "next-intl";
 
 const otpSchema = z.object({
   otp: z.string().min(6, { message: "Your one-time password must be 6 characters." }),
@@ -30,6 +31,7 @@ const otpSchema = z.object({
 type OTPFormValues = z.infer<typeof otpSchema>;
 
 const OTPVerificationComponent = () => {
+  const t = useTranslations("auth.otpVerification");
   const router = useRouter();
   const searchParams = useSearchParams();
   const mobile = searchParams.get("mobile") ?? "";
@@ -66,7 +68,7 @@ const OTPVerificationComponent = () => {
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
       <p className="text-slate-600 mb-1 font-medium text-center">
-        Enter the 6-digit code sent to
+        {t("tagline")}
       </p>
       <p className="text-green-600 font-semibold text-center mb-6">{mobile}</p>
 
@@ -99,20 +101,20 @@ const OTPVerificationComponent = () => {
             disabled={isLoading}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 text-base"
           >
-            {isLoading ? "Verifying..." : "Verify OTP"}
+            {isLoading ? t("verifying") : t("verifyOtp")}
           </Button>
         </form>
       </Form>
 
       <p className="text-center text-sm text-slate-700">
-        Didn&apos;t receive code?{" "}
+        {t("didntReceive")}{" "}
         <button
           type="button"
           onClick={handleResend}
           disabled={isResending}
           className="text-green-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
         >
-          {isResending ? "Resending..." : "Resend"}
+          {isResending ? t("resending") : t("resend")}
         </button>
       </p>
     </div>

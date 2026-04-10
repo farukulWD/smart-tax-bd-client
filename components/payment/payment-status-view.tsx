@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, CircleX, AlertTriangle, Loader2 } from "lucide-react";
 import { usePaymentSuccessMutation } from "@/redux/api/payment/paymentApi";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type StatusType = "success" | "failed" | "cancelled";
 
@@ -32,6 +33,7 @@ const PaymentStatusView = ({
   title,
   description,
 }: PaymentStatusViewProps) => {
+  const t = useTranslations("paymentStatus");
   const Icon = iconMap[status];
   const iconClassName = iconClassMap[status];
   const params = useSearchParams();
@@ -55,11 +57,9 @@ const PaymentStatusView = ({
         <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-12 text-center shadow-sm flex flex-col items-center justify-center">
           <Loader2 className="h-12 w-12 animate-spin text-slate-400 mb-4" />
           <h1 className="text-xl font-semibold text-slate-700">
-            Verifying Payment...
+            {t("verifying")}
           </h1>
-          <p className="mt-2 text-slate-500">
-            Please wait while we confirm your transaction.
-          </p>
+          <p className="mt-2 text-slate-500">{t("pleaseWait")}</p>
         </div>
       </div>
     );
@@ -74,18 +74,18 @@ const PaymentStatusView = ({
 
         {transactionId ? (
           <p className="mt-4 text-sm text-slate-500">
-            Transaction ID:{" "}
+            {t("transactionId")}{" "}
             <span className="font-semibold">{transactionId}</span>
           </p>
         ) : null}
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link href="/profile/orders">
-            <Button className="w-full sm:w-auto">Go To Orders</Button>
+            <Button className="w-full sm:w-auto">{t("goToOrders")}</Button>
           </Link>
           <Link href="/profile/payments">
             <Button variant="outline" className="w-full sm:w-auto">
-              View Payments
+              {t("viewPayments")}
             </Button>
           </Link>
         </div>

@@ -6,21 +6,23 @@ import { Button } from "@/components/ui/button";
 import { useGetMyOrdersQuery } from "@/redux/api/order/orderApi";
 import { DataTable } from "@/components/shared/data-table";
 import { columns } from "./_components/order-columns";
+import { useTranslations } from "next-intl";
 
 const OrdersPage = () => {
+  const t = useTranslations("ordersPage");
   const { data, isLoading } = useGetMyOrdersQuery(undefined);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-          <p className="text-muted-foreground">Manage your orders here.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("description")}</p>
         </div>
         <Link href="/profile/orders/create">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Create Order
+            {t("createOrder")}
           </Button>
         </Link>
       </div>
@@ -29,10 +31,8 @@ const OrdersPage = () => {
         <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4 border-2 border-dashed rounded-lg">
           <Package className="h-16 w-16 text-muted-foreground" />
           <div className="text-center">
-            <h3 className="text-lg font-semibold">No Order found</h3>
-            <p className="text-sm text-muted-foreground">
-              Create a new order to get started.
-            </p>
+            <h3 className="text-lg font-semibold">{t("noOrderTitle")}</h3>
+            <p className="text-sm text-muted-foreground">{t("noOrderDesc")}</p>
           </div>
         </div>
       ) : (

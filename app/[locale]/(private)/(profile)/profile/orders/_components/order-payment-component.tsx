@@ -12,8 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
+  const t = useTranslations("orderPayment");
   const { data, isLoading, isError, refetch } = useGetTaxOrderByIdQuery(
     taxId || skipToken,
   );
@@ -23,9 +25,9 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   if (!taxId) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">No order selected.</p>
+        <p className="text-sm text-muted-foreground">{t("noOrderSelected")}</p>
         <Link href="/profile/orders/create">
-          <Button>Create Order</Button>
+          <Button>{t("createOrder")}</Button>
         </Link>
       </div>
     );
@@ -42,10 +44,8 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   if (isError || !data?.data?.tax_order) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-destructive">
-          Failed to load order payment status.
-        </p>
-        <Button onClick={() => refetch()}>Retry</Button>
+        <p className="text-sm text-destructive">{t("failedToLoad")}</p>
+        <Button onClick={() => refetch()}>{t("retry")}</Button>
       </div>
     );
   }
@@ -78,27 +78,25 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Step 3: Payment</h1>
-        <p className="text-muted-foreground">
-          Complete payment to place your tax order.
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
+        <p className="text-muted-foreground">{t("description")}</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Order Payment Status</CardTitle>
+          <CardTitle>{t("cardTitle")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Order Status</span>
+            <span className="text-muted-foreground">{t("orderStatus")}</span>
             <Badge>{order.status}</Badge>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Current Step</span>
+            <span className="text-muted-foreground">{t("currentStep")}</span>
             <span className="font-semibold">{order.current_step}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Fee</span>
+            <span className="text-muted-foreground">{t("fee")}</span>
             <span className="font-semibold">
               {new Intl.NumberFormat("en-BD", {
                 style: "currency",
@@ -110,14 +108,12 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
           {isPaid ? (
             <div className="rounded-lg border border-green-200 bg-green-50 p-4 flex items-center gap-2 text-green-700">
               <CheckCircle2 className="h-5 w-5" />
-              <span className="text-sm font-medium">
-                Payment successful. Order placed.
-              </span>
+              <span className="text-sm font-medium">{t("paymentSuccessful")}</span>
             </div>
           ) : (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-center gap-2 text-amber-700">
               <CircleAlert className="h-5 w-5" />
-              <span className="text-sm font-medium">Payment pending.</span>
+              <span className="text-sm font-medium">{t("paymentPending")}</span>
             </div>
           )}
 
@@ -130,14 +126,14 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
               {isStartingPayment && (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               )}
-              Start Payment
+              {t("startPayment")}
             </Button>
             <Button type="button" variant="outline" onClick={() => refetch()}>
-              Refresh Status
+              {t("refreshStatus")}
             </Button>
             <Link href={`/profile/orders?taxId=${taxId}`}>
               <Button type="button" variant="ghost">
-                Back to Step 2
+                {t("backToStep2")}
               </Button>
             </Link>
           </div>
