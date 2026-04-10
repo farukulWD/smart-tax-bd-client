@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,11 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForgotPasswordMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 const forgotPasswordSchema = z.object({
-  email: z.email({ message: "Invalid email address" }),
+  mobile: z.string().min(1, { message: "Mobile number is required" }),
 });
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
@@ -28,18 +28,17 @@ type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 const ForgotPasswordComponent = () => {
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const router = useRouter();
+
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: {
-      email: "",
-    },
+    defaultValues: { mobile: "" },
   });
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     try {
-      const res = await forgotPassword(data).unwrap();
-      toast.success(res?.message || "Password reset successful");
-      router.push("/");
+      const res = await forgotPassword({ mobile: data.mobile }).unwrap();
+      toast.success(res?.message || "OTP sent to your mobile number");
+      router.push(`/otp-verification?mobile=${encodeURIComponent(data.mobile)}`);
     } catch (error) {
       globalErrorHandler(error);
     }
@@ -48,19 +47,19 @@ const ForgotPasswordComponent = () => {
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
       <p className="text-slate-600 mb-6 font-medium">
-        Enter your email to reset your password
+        Enter your mobile number to receive an OTP
       </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-6">
           <FormField
             control={form.control}
-            name="email"
+            name="mobile"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Email Address *"
+                    placeholder="Mobile Number (e.g. 01XXXXXXXXX) *"
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
@@ -70,13 +69,12 @@ const ForgotPasswordComponent = () => {
             )}
           />
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
-            {isLoading ? "Resetting Password..." : "Reset Password"}
+            {isLoading ? "Sending OTP..." : "Send OTP"}
           </Button>
         </form>
       </Form>

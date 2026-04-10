@@ -42,7 +42,7 @@ const ResetPasswordComponent = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get("resetToken");
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
   const form = useForm<ResetPasswordFormValues>({
@@ -56,7 +56,7 @@ const ResetPasswordComponent = () => {
   const onSubmit = async (data: ResetPasswordFormValues) => {
     try {
       const res = await resetPassword({
-        token,
+        resetToken: token,
         newPassword: data.newPassword,
       }).unwrap();
       toast.success(res?.message || "Password reset successful");
