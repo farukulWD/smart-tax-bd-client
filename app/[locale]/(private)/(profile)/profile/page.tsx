@@ -6,8 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 export default function ProfilePage() {
+  const t = useTranslations("profilePage");
   const { data: profileData, isLoading } = useGetMeQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
       data: data?.data,
@@ -69,19 +71,19 @@ export default function ProfilePage() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">{t("fullName")}</Label>
               <Input id="name" value={user?.name || ""} readOnly />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">{t("emailAddress")}</Label>
               <Input id="email" value={user?.email || ""} readOnly />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="mobile">Mobile Number</Label>
+              <Label htmlFor="mobile">{t("mobileNumber")}</Label>
               <Input id="mobile" value={user?.mobile || "N/A"} readOnly />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="role">{t("role")}</Label>
               <Input
                 id="role"
                 value={user?.role || ""}
@@ -90,7 +92,7 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="memberType">Member Type</Label>
+              <Label htmlFor="memberType">{t("memberType")}</Label>
               <Input
                 id="memberType"
                 value={user?.memberType || "N/A"}

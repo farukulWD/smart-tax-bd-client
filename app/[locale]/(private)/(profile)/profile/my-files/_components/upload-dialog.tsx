@@ -34,6 +34,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -50,6 +51,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const UploadDialog = () => {
+  const t = useTranslations("myFiles");
   const [open, setOpen] = useState(false);
   const [uploadFile, { isLoading }] = useUploadFileMutation();
 
@@ -90,15 +92,13 @@ export const UploadDialog = () => {
       <DialogTrigger asChild>
         <Button>
           <Upload className="mr-2 h-4 w-4" />
-          Upload File
+          {t("uploadFile")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Upload File</DialogTitle>
-          <DialogDescription>
-            Upload your documents here. Click save when you&apos;re done.
-          </DialogDescription>
+          <DialogTitle>{t("uploadDialogTitle")}</DialogTitle>
+          <DialogDescription>{t("uploadDialogDesc")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -107,7 +107,7 @@ export const UploadDialog = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("name")}</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. TIN Certificate" {...field} />
                   </FormControl>
@@ -120,14 +120,14 @@ export const UploadDialog = () => {
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type</FormLabel>
+                  <FormLabel>{t("type")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a type" />
+                        <SelectValue placeholder={t("selectType")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -150,7 +150,7 @@ export const UploadDialog = () => {
               name="file"
               render={() => (
                 <FormItem>
-                  <FormLabel>File</FormLabel>
+                  <FormLabel>{t("file")}</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
@@ -166,7 +166,7 @@ export const UploadDialog = () => {
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Upload
+                {t("upload")}
               </Button>
             </DialogFooter>
           </form>

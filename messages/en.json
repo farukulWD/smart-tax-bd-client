@@ -56,6 +56,47 @@
     "validation": {
       "mobileRequired": "Mobile number is required",
       "passwordRequired": "Password is required"
+    },
+    "register": {
+      "tagline": "Create your account to get started",
+      "fullNamePlaceholder": "Full Name *",
+      "phonePlaceholder": "Phone Number *",
+      "emailPlaceholder": "Email Address *",
+      "passwordPlaceholder": "Password *",
+      "confirmPasswordPlaceholder": "Confirm Password *",
+      "termsPrefix": "I agree to the",
+      "termsLink": "Terms of Service",
+      "termsAnd": "and",
+      "privacyLink": "Privacy Policy",
+      "createAccount": "Create Account",
+      "creating": "Creating...",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign In"
+    },
+    "forgotPassword": {
+      "tagline": "Enter your mobile number to receive an OTP",
+      "mobilePlaceholder": "Mobile Number (e.g. 01XXXXXXXXX) *",
+      "sendOtp": "Send OTP",
+      "sendingOtp": "Sending OTP...",
+      "rememberPassword": "Remember your password?",
+      "signIn": "Sign In"
+    },
+    "otpVerification": {
+      "tagline": "Enter the 6-digit code sent to",
+      "verifyOtp": "Verify OTP",
+      "verifying": "Verifying...",
+      "didntReceive": "Didn't receive code?",
+      "resend": "Resend",
+      "resending": "Resending..."
+    },
+    "resetPassword": {
+      "tagline": "Enter your new password below",
+      "newPasswordPlaceholder": "New Password *",
+      "confirmPasswordPlaceholder": "Confirm Password *",
+      "resetPassword": "Reset Password",
+      "resetting": "Resetting Password...",
+      "rememberPassword": "Remember your password?",
+      "signIn": "Sign In"
     }
   },
   "sidebar": {
@@ -64,5 +105,219 @@
     "orders": "Orders",
     "myFiles": "My Files",
     "noFiles": "No files yet"
+  },
+  "about": {
+    "badge": "About Smart Tax",
+    "title": "Helping Bangladesh stay tax-ready with clarity and confidence",
+    "description": "Smart Tax BD combines tax expertise with a modern client experience. We simplify filing, documentation, and advisory support so you can focus on your work while we handle the complexity.",
+    "highlights": {
+      "expertGuidance": {
+        "title": "Expert Guidance",
+        "description": "Our tax specialists help individuals and businesses make confident tax decisions."
+      },
+      "trustedCompliance": {
+        "title": "Trusted Compliance",
+        "description": "We keep your filings aligned with current regulations and reduce compliance risk."
+      },
+      "fastDigitalWorkflow": {
+        "title": "Fast Digital Workflow",
+        "description": "Track requests, upload files, and manage tax orders from a single portal."
+      }
+    },
+    "whyChooseUs": "Why clients choose us",
+    "reason1": "Personalized support for salaried professionals, freelancers, and businesses.",
+    "reason2": "Clear process from document collection to final filing.",
+    "reason3": "Secure, transparent communication throughout every step.",
+    "startOrder": "Start a Tax Order",
+    "contactUs": "Contact Us"
+  },
+  "contact": {
+    "badge": "Contact Smart Tax",
+    "title": "Let's discuss your tax needs",
+    "description": "Reach out to our team for service details, onboarding support, or help with your ongoing tax requests.",
+    "phone": {
+      "title": "Phone",
+      "value": "+880 1700-000000",
+      "subtext": "Sat-Thu, 10:00 AM - 7:00 PM"
+    },
+    "email": {
+      "title": "Email",
+      "value": "support@smarttaxbd.com",
+      "subtext": "We usually reply within 24 hours"
+    },
+    "office": {
+      "title": "Office",
+      "value": "Dhaka, Bangladesh",
+      "subtext": "Remote and in-person consultation"
+    },
+    "nextSteps": "Next Steps",
+    "nextStepsDesc": "Already have an account? Create a tax order directly and we'll follow up with document requirements and estimated timelines.",
+    "createOrder": "Create Tax Order",
+    "logIn": "Log In"
+  },
+  "news": {
+    "badge": "Latest Updates",
+    "title": "News & Announcements",
+    "description": "Stay up to date with the latest tax news, regulatory changes, and important announcements from Smart Tax BD.",
+    "loading": "Loading news...",
+    "noArticles": "No news articles yet.",
+    "checkBack": "Check back later for updates.",
+    "backToHome": "Back to Home"
+  },
+  "newsArticle": {
+    "loading": "Loading...",
+    "notFound": "News article not found.",
+    "backToNews": "Back to News"
+  },
+  "paymentStatus": {
+    "success": {
+      "title": "Payment Successful",
+      "description": "Your payment has been completed successfully."
+    },
+    "failed": {
+      "title": "Payment Failed",
+      "description": "Your payment could not be completed. Please try again."
+    },
+    "cancelled": {
+      "title": "Payment Cancelled",
+      "description": "You cancelled the payment. You can try again from your orders."
+    },
+    "error": {
+      "title": "Payment Error",
+      "description": "Something went wrong while processing your payment."
+    },
+    "verifying": "Verifying Payment...",
+    "pleaseWait": "Please wait while we confirm your transaction.",
+    "transactionId": "Transaction ID:",
+    "goToOrders": "Go To Orders",
+    "viewPayments": "View Payments"
+  },
+  "profilePage": {
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "mobileNumber": "Mobile Number",
+    "role": "Role",
+    "memberType": "Member Type"
+  },
+  "myFiles": {
+    "title": "My Files",
+    "noFilesTitle": "No files uploaded yet",
+    "noFilesDesc": "Upload your documents to keep them safe and accessible.",
+    "uploadFile": "Upload File",
+    "uploadDialogTitle": "Upload File",
+    "uploadDialogDesc": "Upload your documents here. Click save when you're done.",
+    "name": "Name",
+    "type": "Type",
+    "file": "File",
+    "upload": "Upload",
+    "selectType": "Select a type",
+    "filePreview": "File Preview",
+    "fileInformation": "File Information",
+    "fileName": "File Name",
+    "uploadedOn": "Uploaded On",
+    "downloadFile": "Download File",
+    "secureStorage": "Secure Storage",
+    "secureStorageDesc": "This file is stored securely and encrypted.",
+    "errorLoading": "Error loading file details.",
+    "previewNotAvailable": "Preview not available for this file type"
+  },
+  "paymentsPage": {
+    "title": "Payments",
+    "description": "View and manage your recent payment transactions",
+    "errorTitle": "Error Loading Payments",
+    "errorDesc": "Failed to load your payment history. Please try again later."
+  },
+  "ordersPage": {
+    "title": "Orders",
+    "description": "Manage your orders here.",
+    "createOrder": "Create Order",
+    "noOrderTitle": "No Order found",
+    "noOrderDesc": "Create a new order to get started."
+  },
+  "createOrder": {
+    "badge": "TAX STEP 1",
+    "title": "Create Tax Order",
+    "subtitle": "Submit step-1 details to create your tax order draft.",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "mobileNumber": "Mobile Number",
+    "mobilePlaceholder": "e.g. 01712345678",
+    "taxFilingYear": "Tax Filing Year",
+    "selectYear": "Select year",
+    "sourceOfIncome": "Source of Income",
+    "additionalInfo": "Additional Information",
+    "incomeLtdCompany": "Income from LTD company",
+    "incomePartnershipFirm": "Income from partnership firm",
+    "receivedNotice": "Received notice from tax office",
+    "orderSummary": "Order Summary",
+    "orderSummaryDesc": "Step 1 will create a draft order.",
+    "incomeSources": "Income sources",
+    "selected": "selected",
+    "taxYear": "Tax year",
+    "next": "Next",
+    "incomeGovtJob": "Income from Govt. Job",
+    "incomePrivateJob": "Income from Private Job",
+    "incomeBusiness": "Income from Business",
+    "incomeRent": "Income from Rent",
+    "incomeAgriculture": "Income from Agriculture",
+    "incomeFinancialAsset": "Income from Financial Asset",
+    "incomeCapitalGain": "Income from Capital Gain",
+    "incomeOtherSource": "Income from Other Source",
+    "incomeForeignRemittance": "Income from Foreign Remittance"
+  },
+  "taxTypes": {
+    "badge": "Expert Compliance",
+    "title": "Tax Services",
+    "titleSuffix": "Categories",
+    "description": "Navigate the complexities of Bangladeshi tax law with our specialized services. We provide accurate, timely, and compliant solutions for every tax category.",
+    "exploreDetails": "Explore Details",
+    "noCategories": "No tax categories found right now",
+    "noCategoriesDesc": "Please check back shortly or contact support for assistance."
+  },
+  "stepTwo": {
+    "title": "Step 2: Documents",
+    "description": "Upload and submit the required tax documents.",
+    "requiredDocuments": "Required Documents",
+    "fileUploaded": "File uploaded",
+    "noFileYet": "No file yet",
+    "clickToReplace": "Click to replace",
+    "clickToUpload": "Click to upload",
+    "view": "View",
+    "missing": "Missing",
+    "replace": "Replace",
+    "goToPayment": "Go To Payment",
+    "missingDocs": "Missing:",
+    "previewTitle": "Preview",
+    "previewImageDesc": "Preview the image and download if needed.",
+    "previewPdfDesc": "Preview the PDF and download if needed.",
+    "previewOtherDesc": "Download the file to view it.",
+    "noPreview": "No preview available.",
+    "pdfNotInBrowser": "PDF preview may not always work in-browser.",
+    "openPdfNewTab": "Open PDF in new tab",
+    "previewNotAvailable": "Preview not available for this file type.",
+    "downloadToView": "Download to view.",
+    "close": "Close",
+    "downloading": "Downloading\u2026",
+    "download": "Download"
+  },
+  "orderPayment": {
+    "title": "Step 3: Payment",
+    "description": "Complete payment to place your tax order.",
+    "cardTitle": "Order Payment Status",
+    "orderStatus": "Order Status",
+    "currentStep": "Current Step",
+    "fee": "Fee",
+    "paymentSuccessful": "Payment successful. Order placed.",
+    "paymentPending": "Payment pending.",
+    "startPayment": "Start Payment",
+    "refreshStatus": "Refresh Status",
+    "backToStep2": "Back to Step 2",
+    "noOrderSelected": "No order selected.",
+    "createOrder": "Create Order",
+    "failedToLoad": "Failed to load order payment status.",
+    "retry": "Retry"
   }
 }

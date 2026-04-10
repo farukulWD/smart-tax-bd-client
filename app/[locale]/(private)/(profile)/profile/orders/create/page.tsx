@@ -39,6 +39,7 @@ import { toast } from "sonner";
 import z from "zod";
 import Link from "next/link";
 import { useGetMeQuery } from "@/redux/api/auth/authApi";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -64,21 +65,6 @@ const TAX_YEARS = Array.from({ length: 10 }, (_, i) => {
   return `${year}-${year + 1}`;
 });
 
-const INCOME_SOURCES: { value: IncomeSource; label: string }[] = [
-  { value: IncomeSource.GovtJob, label: "Income from Govt. Job" },
-  { value: IncomeSource.PrivateJob, label: "Income from Private Job" },
-  { value: IncomeSource.Business, label: "Income from Business" },
-  { value: IncomeSource.Rent, label: "Income from Rent" },
-  { value: IncomeSource.Agriculture, label: "Income from Agriculture" },
-  { value: IncomeSource.FinancialAsset, label: "Income from Financial Asset" },
-  { value: IncomeSource.CapitalGain, label: "Income from Capital Gain" },
-  { value: IncomeSource.OthersSource, label: "Income from Other Source" },
-  {
-    value: IncomeSource.ForignRemitance,
-    label: "Income from Foreign Remittance",
-  },
-];
-
 const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
   income_tax: IncomeSource.PrivateJob,
   sales_tax: IncomeSource.Business,
@@ -100,6 +86,7 @@ const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
 };
 
 const CreateOrderForm = () => {
+  const t = useTranslations("createOrder");
   const router = useRouter();
   const params = useSearchParams();
   const taxType = params.get("taxType") || "";
@@ -179,6 +166,36 @@ const CreateOrderForm = () => {
     }
   };
 
+  const incomeSources: { value: IncomeSource; label: string }[] = [
+    { value: IncomeSource.GovtJob, label: t("incomeGovtJob") },
+    { value: IncomeSource.PrivateJob, label: t("incomePrivateJob") },
+    { value: IncomeSource.Business, label: t("incomeBusiness") },
+    { value: IncomeSource.Rent, label: t("incomeRent") },
+    { value: IncomeSource.Agriculture, label: t("incomeAgriculture") },
+    { value: IncomeSource.FinancialAsset, label: t("incomeFinancialAsset") },
+    { value: IncomeSource.CapitalGain, label: t("incomeCapitalGain") },
+    { value: IncomeSource.OthersSource, label: t("incomeOtherSource") },
+    {
+      value: IncomeSource.ForignRemitance,
+      label: t("incomeForeignRemittance"),
+    },
+  ];
+
+  const additionalOptions = [
+    {
+      name: "income_from_ldt_company" as const,
+      label: t("incomeLtdCompany"),
+    },
+    {
+      name: "income_from_partnership_firm" as const,
+      label: t("incomePartnershipFirm"),
+    },
+    {
+      name: "are_you_get_notice_from_tax_office" as const,
+      label: t("receivedNotice"),
+    },
+  ];
+
   const selectedIncomeSources = useWatch({
     control: form.control,
     name: "source_of_income",
@@ -208,14 +225,12 @@ const CreateOrderForm = () => {
             <div>
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-green-50 text-green-700 text-xs font-bold mb-2 border border-green-100">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>TAX STEP 1</span>
+                <span>{t("badge")}</span>
               </div>
               <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-                Create Tax Order
+                {t("title")}
               </h1>
-              <p className="text-slate-500 font-medium">
-                Submit step-1 details to create your tax order draft.
-              </p>
+              <p className="text-slate-500 font-medium">{t("subtitle")}</p>
             </div>
           </div>
         </div>
@@ -224,7 +239,7 @@ const CreateOrderForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
               <h2 className="text-xl font-bold text-slate-800">
-                Personal Information
+                {t("personalInfo")}
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -233,10 +248,10 @@ const CreateOrderForm = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full Name</FormLabel>
+                      <FormLabel>{t("fullName")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter your full name"
+                          placeholder={t("fullNamePlaceholder")}
                           {...field}
                           disabled
                         />
@@ -250,11 +265,11 @@ const CreateOrderForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("email")}</FormLabel>
                       <FormControl>
                         <Input
                           disabled
-                          placeholder="Enter your email"
+                          placeholder={t("emailPlaceholder")}
                           {...field}
                         />
                       </FormControl>
@@ -267,9 +282,9 @@ const CreateOrderForm = () => {
                   name="mobile"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
+                      <FormLabel>{t("mobileNumber")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. 01712345678" {...field} />
+                        <Input placeholder={t("mobilePlaceholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -280,7 +295,7 @@ const CreateOrderForm = () => {
                   name="tax_year"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tax Filing Year</FormLabel>
+                      <FormLabel>{t("taxFilingYear")}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -289,7 +304,7 @@ const CreateOrderForm = () => {
                           <SelectTrigger className="w-full">
                             <SelectValue
                               className="w-full"
-                              placeholder="Select year"
+                              placeholder={t("selectYear")}
                             />
                           </SelectTrigger>
                         </FormControl>
@@ -310,7 +325,7 @@ const CreateOrderForm = () => {
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
               <h2 className="text-xl font-bold text-slate-800">
-                Source of Income
+                {t("sourceOfIncome")}
               </h2>
               <FormField
                 control={form.control}
@@ -318,7 +333,7 @@ const CreateOrderForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {INCOME_SOURCES.map((source) => {
+                      {incomeSources.map((source) => {
                         const checked = field.value.includes(source.value);
                         return (
                           <label
@@ -357,22 +372,9 @@ const CreateOrderForm = () => {
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
               <h2 className="text-xl font-bold text-slate-800">
-                Additional Information
+                {t("additionalInfo")}
               </h2>
-              {[
-                {
-                  name: "income_from_ldt_company" as const,
-                  label: "Income from LTD company",
-                },
-                {
-                  name: "income_from_partnership_firm" as const,
-                  label: "Income from partnership firm",
-                },
-                {
-                  name: "are_you_get_notice_from_tax_office" as const,
-                  label: "Received notice from tax office",
-                },
-              ].map((option) => (
+              {additionalOptions.map((option) => (
                 <FormField
                   key={option.name}
                   control={form.control}
@@ -396,21 +398,21 @@ const CreateOrderForm = () => {
 
             <Card className="bg-slate-900 text-white rounded-3xl border-none shadow-xl overflow-hidden">
               <CardHeader className="pb-0">
-                <CardTitle className="text-xl">Order Summary</CardTitle>
+                <CardTitle className="text-xl">{t("orderSummary")}</CardTitle>
                 <CardDescription className="text-slate-400">
-                  Step 1 will create a draft order.
+                  {t("orderSummaryDesc")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Income sources</span>
+                    <span className="text-slate-400">{t("incomeSources")}</span>
                     <span className="font-bold">
-                      {selectedIncomeSources.length} selected
+                      {selectedIncomeSources.length} {t("selected")}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Tax year</span>
+                    <span className="text-slate-400">{t("taxYear")}</span>
                     <span className="font-bold">{selectedTaxYear}</span>
                   </div>
                 </div>
@@ -424,7 +426,7 @@ const CreateOrderForm = () => {
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   ) : (
                     <span className="flex items-center justify-center gap-2">
-                      Next
+                      {t("next")}
                       <CheckCircle2 className="w-5 h-5" />
                     </span>
                   )}

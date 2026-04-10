@@ -3,8 +3,10 @@
 import { useGetAllNewsQuery } from "@/redux/api/news/newsApi";
 import { CalendarDays, ImageIcon, Newspaper, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function NewsPage() {
+  const t = useTranslations("news");
   const { data, isLoading } = useGetAllNewsQuery();
   const newsList = data?.data ?? [];
 
@@ -13,14 +15,13 @@ export default function NewsPage() {
       <section className="container mx-auto px-4 lg:px-8 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
           <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-            Latest Updates
+            {t("badge")}
           </p>
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-5xl">
-            News &amp; Announcements
+            {t("title")}
           </h1>
           <p className="text-base leading-relaxed text-slate-600 md:text-lg">
-            Stay up to date with the latest tax news, regulatory changes, and
-            important announcements from Smart Tax BD.
+            {t("description")}
           </p>
         </div>
       </section>
@@ -28,13 +29,13 @@ export default function NewsPage() {
       <section className="container mx-auto px-4 lg:px-8 pb-16">
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <p className="text-slate-500">Loading news...</p>
+            <p className="text-slate-500">{t("loading")}</p>
           </div>
         ) : newsList.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-20 text-slate-500">
             <Newspaper className="h-12 w-12 text-slate-300" />
-            <p className="text-base font-medium">No news articles yet.</p>
-            <p className="text-sm">Check back later for updates.</p>
+            <p className="text-base font-medium">{t("noArticles")}</p>
+            <p className="text-sm">{t("checkBack")}</p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -86,7 +87,7 @@ export default function NewsPage() {
             href="/"
             className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
           >
-            Back to Home
+            {t("backToHome")}
           </Link>
         </div>
       </section>

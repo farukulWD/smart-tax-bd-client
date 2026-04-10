@@ -22,6 +22,7 @@ import { useRegisterMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const registerSchema = z
   .object({
@@ -46,6 +47,7 @@ const registerSchema = z
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const RegisterForm = () => {
+  const t = useTranslations("auth.register");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
@@ -89,7 +91,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Full Name *"
+                  placeholder={t("fullNamePlaceholder")}
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                   {...field}
                 />
@@ -105,7 +107,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Phone Number *"
+                  placeholder={t("phonePlaceholder")}
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                   {...field}
                 />
@@ -121,7 +123,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="Email Address *"
+                  placeholder={t("emailPlaceholder")}
                   className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                   {...field}
                 />
@@ -140,7 +142,7 @@ export const RegisterForm = () => {
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password *"
+                    placeholder={t("passwordPlaceholder")}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                     {...field}
                   />
@@ -171,7 +173,7 @@ export const RegisterForm = () => {
                 <div className="relative">
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm Password *"
+                    placeholder={t("confirmPasswordPlaceholder")}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                     {...field}
                   />
@@ -208,19 +210,19 @@ export const RegisterForm = () => {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel className="text-sm text-slate-600 font-normal">
-                  I agree to the{" "}
+                  {t("termsPrefix")}{" "}
                   <Link
                     href="#"
                     className="text-green-600 hover:underline font-semibold"
                   >
-                    Terms of Service
+                    {t("termsLink")}
                   </Link>{" "}
-                  and{" "}
+                  {t("termsAnd")}{" "}
                   <Link
                     href="#"
                     className="text-green-600 hover:underline font-semibold"
                   >
-                    Privacy Policy
+                    {t("privacyLink")}
                   </Link>
                 </FormLabel>
                 <FormMessage />
@@ -229,13 +231,12 @@ export const RegisterForm = () => {
           )}
         />
 
-        {/* Sign Up Button */}
         <Button
           type="submit"
           className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           disabled={isLoading}
         >
-          {isLoading ? "Creating..." : "Create Account"}
+          {isLoading ? t("creating") : t("createAccount")}
         </Button>
       </form>
     </Form>

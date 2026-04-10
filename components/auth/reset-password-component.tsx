@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useResetPasswordMutation } from "@/redux/api/auth/authApi";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
+import { useTranslations } from "next-intl";
 
 const resetPasswordSchema = z
   .object({
@@ -38,6 +39,7 @@ const resetPasswordSchema = z
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 const ResetPasswordComponent = () => {
+  const t = useTranslations("auth.resetPassword");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
@@ -68,9 +70,7 @@ const ResetPasswordComponent = () => {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
-      <p className="text-slate-600 mb-6 font-medium">
-        Enter your new password below
-      </p>
+      <p className="text-slate-600 mb-6 font-medium">{t("tagline")}</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-6">
@@ -83,7 +83,7 @@ const ResetPasswordComponent = () => {
                   <div className="relative">
                     <Input
                       type={showNewPassword ? "text" : "password"}
-                      placeholder="New Password *"
+                      placeholder={t("newPasswordPlaceholder")}
                       className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
@@ -114,7 +114,7 @@ const ResetPasswordComponent = () => {
                   <div className="relative">
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm Password *"
+                      placeholder={t("confirmPasswordPlaceholder")}
                       className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
@@ -143,18 +143,18 @@ const ResetPasswordComponent = () => {
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
-            {isLoading ? "Resetting Password..." : "Reset Password"}
+            {isLoading ? t("resetting") : t("resetPassword")}
           </Button>
         </form>
       </Form>
 
       <p className="text-center text-sm text-slate-700 mb-4">
-        Remember your password?{" "}
+        {t("rememberPassword")}{" "}
         <Link
           href="/login"
           className="text-green-600 hover:underline font-semibold"
         >
-          Sign In
+          {t("signIn")}
         </Link>
       </p>
     </div>

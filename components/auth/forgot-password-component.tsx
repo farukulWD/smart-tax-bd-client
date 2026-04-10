@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
+import { useTranslations } from "next-intl";
 
 const forgotPasswordSchema = z.object({
   mobile: z.string().min(1, { message: "Mobile number is required" }),
@@ -26,6 +27,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordComponent = () => {
+  const t = useTranslations("auth.forgotPassword");
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const router = useRouter();
 
@@ -46,9 +48,7 @@ const ForgotPasswordComponent = () => {
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
-      <p className="text-slate-600 mb-6 font-medium">
-        Enter your mobile number to receive an OTP
-      </p>
+      <p className="text-slate-600 mb-6 font-medium">{t("tagline")}</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-6">
@@ -59,7 +59,7 @@ const ForgotPasswordComponent = () => {
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Mobile Number (e.g. 01XXXXXXXXX) *"
+                    placeholder={t("mobilePlaceholder")}
                     className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
@@ -74,18 +74,18 @@ const ForgotPasswordComponent = () => {
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
-            {isLoading ? "Sending OTP..." : "Send OTP"}
+            {isLoading ? t("sendingOtp") : t("sendOtp")}
           </Button>
         </form>
       </Form>
 
       <p className="text-center text-sm text-slate-700 mb-4">
-        Remember your password?{" "}
+        {t("rememberPassword")}{" "}
         <Link
           href="/login"
           className="text-green-600 hover:underline font-semibold"
         >
-          Sign In
+          {t("signIn")}
         </Link>
       </p>
     </div>

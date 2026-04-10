@@ -15,8 +15,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { use } from "react";
+import { useTranslations } from "next-intl";
 
 const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) => {
+  const t = useTranslations("myFiles");
   const { fileId } = use(params);
   const { data, isLoading, isError } = useGetSingleFileQuery(fileId);
 
@@ -31,7 +33,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
   if (isError || !data?.data) {
     return (
       <div className="flex h-[400px] w-full items-center justify-center text-destructive">
-        Error loading file details.
+        {t("errorLoading")}
       </div>
     );
   }
@@ -53,7 +55,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
         {/* File Preview */}
         <Card className="lg:col-span-8 overflow-hidden bg-muted/30">
           <CardHeader className="border-b bg-card">
-            <CardTitle className="text-lg font-medium">File Preview</CardTitle>
+            <CardTitle className="text-lg font-medium">{t("filePreview")}</CardTitle>
           </CardHeader>
           <CardContent className="flex min-h-[500px] items-center justify-center p-4">
             {isImage ? (
@@ -75,7 +77,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
               <div className="flex flex-col items-center gap-4 text-muted-foreground">
                 <FileIcon className="h-24 w-24" />
                 <p className="text-xl font-semibold">{fileData.name}</p>
-                <p>Preview not available for this file type</p>
+                <p>{t("previewNotAvailable")}</p>
               </div>
             )}
           </CardContent>
@@ -85,12 +87,12 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
         <div className="lg:col-span-4 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">File Information</CardTitle>
+              <CardTitle className="text-xl">{t("fileInformation")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-1">
                 <p className="text-sm font-medium text-muted-foreground">
-                  File Name
+                  {t("fileName")}
                 </p>
                 <p className="font-semibold break-words">{fileData.name}</p>
               </div>
@@ -100,7 +102,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">
-                    Type
+                    {t("type")}
                   </p>
                   <Badge variant="secondary" className="uppercase">
                     {fileData.type}
@@ -108,7 +110,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">
-                    Uploaded On
+                    {t("uploadedOn")}
                   </p>
                   <p className="text-sm">
                     {fileData.createdAt
@@ -140,7 +142,7 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
                   }
                 }}
               >
-                <Download className="mr-2 h-4 w-4" /> Download File
+                <Download className="mr-2 h-4 w-4" /> {t("downloadFile")}
               </Button>
             </CardContent>
           </Card>
@@ -156,9 +158,9 @@ const FileDetailsPage = ({ params }: { params: Promise<{ fileId: string }> }) =>
                   )}
                 </div>
                 <div>
-                  <p className="text-sm font-bold">Secure Storage</p>
+                  <p className="text-sm font-bold">{t("secureStorage")}</p>
                   <p className="text-xs text-muted-foreground">
-                    This file is stored securely and encrypted.
+                    {t("secureStorageDesc")}
                   </p>
                 </div>
               </div>

@@ -27,8 +27,10 @@ import {
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
+import { useTranslations } from "next-intl";
 
 const StepTwo = ({ taxId }: { taxId: string }) => {
+  const t = useTranslations("stepTwo");
   const [activeDocToUpload, setActiveDocToUpload] = useState("");
   const [previewFile, setPreviewFile] = useState<{
     url: string;
@@ -210,18 +212,14 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Step 2: Documents
-          </h1>
-          <p className="text-muted-foreground">
-            Upload and submit the required tax documents.
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("description")}</p>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Required Documents</CardTitle>
+          <CardTitle>{t("requiredDocuments")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -273,12 +271,12 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                           </div>
                         ) : (
                           <span className="text-xs text-muted-foreground">
-                            File uploaded
+                            {t("fileUploaded")}
                           </span>
                         )
                       ) : (
                         <span className="text-xs text-muted-foreground">
-                          No file yet
+                          {t("noFileYet")}
                         </span>
                       )}
                     </div>
@@ -286,7 +284,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                     <div>
                       <span className="text-sm font-medium">{doc}</span>
                       <p className="text-xs text-muted-foreground">
-                        {file ? "Click to replace" : "Click to upload"}
+                        {file ? t("clickToReplace") : t("clickToUpload")}
                       </p>
                     </div>
 
@@ -306,10 +304,10 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                           onMouseEnter={() => setHoveredViewDoc(doc)}
                           onMouseLeave={() => setHoveredViewDoc(null)}
                         >
-                          View
+                          {t("view")}
                         </button>
                       ) : (
-                        <Badge variant="secondary">Missing</Badge>
+                        <Badge variant="secondary">{t("missing")}</Badge>
                       )}
                       {isUploadingFile && isActive ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -326,7 +324,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                     )}
                   >
                     <span className="text-sm font-semibold text-white">
-                      Replace
+                      {t("replace")}
                     </span>
                   </div>
 
@@ -352,14 +350,11 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
           <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
             <DialogContent className="max-w-3xl">
               <DialogHeader>
-                <DialogTitle>{previewFile?.name || "Preview"}</DialogTitle>
+                <DialogTitle>{previewFile?.name || t("previewTitle")}</DialogTitle>
                 <DialogDescription>
-                  {previewFile?.type === "image" &&
-                    "Preview the image and download if needed."}
-                  {previewFile?.type === "pdf" &&
-                    "Preview the PDF and download if needed."}
-                  {previewFile?.type === "other" &&
-                    "Download the file to view it."}
+                  {previewFile?.type === "image" && t("previewImageDesc")}
+                  {previewFile?.type === "pdf" && t("previewPdfDesc")}
+                  {previewFile?.type === "other" && t("previewOtherDesc")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -369,7 +364,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                     <div className="relative h-full w-full">
                       <Image
                         src={previewFile.url}
-                        alt={previewFile.name || "Preview"}
+                        alt={previewFile.name || t("previewTitle")}
                         fill
                         className="object-contain"
                       />
@@ -382,7 +377,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                     >
                       <div className="flex h-full flex-col items-center justify-center gap-3 text-center p-4">
                         <p className="text-sm text-muted-foreground">
-                          PDF preview may not always work in-browser.
+                          {t("pdfNotInBrowser")}
                         </p>
                         <a
                           href={previewFile.url}
@@ -390,19 +385,19 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                           rel="noreferrer"
                           className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
                         >
-                          Open PDF in new tab
+                          {t("openPdfNewTab")}
                         </a>
                       </div>
                     </object>
                   ) : (
                     <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center text-sm text-muted-foreground">
-                      <p>Preview not available for this file type.</p>
-                      <p>Download to view.</p>
+                      <p>{t("previewNotAvailable")}</p>
+                      <p>{t("downloadToView")}</p>
                     </div>
                   )
                 ) : (
                   <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                    No preview available.
+                    {t("noPreview")}
                   </div>
                 )}
               </div>
@@ -413,7 +408,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                   variant="secondary"
                   onClick={() => setIsPreviewOpen(false)}
                 >
-                  Close
+                  {t("close")}
                 </Button>
                 {previewFile && (
                   <Button
@@ -426,7 +421,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
                     className="inline-flex items-center gap-2"
                   >
                     <Download className="h-4 w-4" />
-                    {isDownloading ? "Downloading…" : "Download"}
+                    {isDownloading ? t("downloading") : t("download")}
                   </Button>
                 )}
               </DialogFooter>
@@ -435,7 +430,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
 
           {!stepTwoReady && (
             <p className="text-xs text-amber-600">
-              Missing: {missingDocuments.join(", ")}
+              {t("missingDocs")} {missingDocuments.join(", ")}
             </p>
           )}
           <Button
@@ -447,7 +442,7 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
             {isSubmittingStepTwo && (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             )}
-            Go To Payment
+            {t("goToPayment")}
           </Button>
         </CardContent>
       </Card>

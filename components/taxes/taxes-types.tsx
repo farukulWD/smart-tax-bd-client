@@ -28,6 +28,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
+import { useTranslations } from "next-intl";
 
 const iconMap: Record<string, any> = {
   income_tax: CircleDollarSign,
@@ -50,6 +51,7 @@ const iconMap: Record<string, any> = {
 };
 
 const TaxesTypes: FC = () => {
+  const t = useTranslations("taxTypes");
   const { data: taxTypes, isLoading } = useGetTaxTypesQuery(undefined, {
     selectFromResult: (result) => ({
       data: result.data?.data,
@@ -71,15 +73,14 @@ const TaxesTypes: FC = () => {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4">
               <ShieldCheck className="w-4 h-4" />
-              <span>Expert Compliance</span>
+              <span>{t("badge")}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
-              Tax Services <span className="text-green-600">&</span> Categories
+              {t("title")} <span className="text-green-600">&</span>{" "}
+              {t("titleSuffix")}
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed">
-              Navigate the complexities of Bangladeshi tax law with our
-              specialized services. We provide accurate, timely, and compliant
-              solutions for every tax category.
+              {t("description")}
             </p>
           </div>
         </div>
@@ -132,9 +133,9 @@ const TaxesTypes: FC = () => {
                         {taxType.description}
                       </CardDescription>
 
-                      <div className="flex  items-center text-sm font-bold text-green-600 pt-4 border-t border-slate-100 group-hover:border-green-100 transition-colors">
+                      <div className="flex items-center text-sm font-bold text-green-600 pt-4 border-t border-slate-100 group-hover:border-green-100 transition-colors">
                         <span className="uppercase tracking-wider">
-                          Explore Details
+                          {t("exploreDetails")}
                         </span>
                         <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -148,11 +149,9 @@ const TaxesTypes: FC = () => {
         {!isLoading && (!taxTypes || taxTypes.length === 0) && (
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white/70 p-8 text-center">
             <h3 className="text-xl font-bold text-slate-800">
-              No tax categories found right now
+              {t("noCategories")}
             </h3>
-            <p className="mt-2 text-slate-600">
-              Please check back shortly or contact support for assistance.
-            </p>
+            <p className="mt-2 text-slate-600">{t("noCategoriesDesc")}</p>
           </div>
         )}
       </div>
