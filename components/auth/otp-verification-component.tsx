@@ -17,33 +17,58 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useVerifyForgotOtpMutation, useForgotPasswordMutation } from "@/redux/api/auth/authApi";
+import { toast } from "sonner";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 const otpSchema = z.object({
-  otp: z.string().min(6, {
-    message: "Your one-time password must be 6 characters.",
-  }),
+  otp: z.string().min(6, { message: "Your one-time password must be 6 characters." }),
 });
 
 type OTPFormValues = z.infer<typeof otpSchema>;
 
 const OTPVerificationComponent = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const mobile = searchParams.get("mobile") ?? "";
+
+  const [verifyForgotOtp, { isLoading }] = useVerifyForgotOtpMutation();
+  const [forgotPassword, { isLoading: isResending }] = useForgotPasswordMutation();
+
   const form = useForm<OTPFormValues>({
     resolver: zodResolver(otpSchema),
-    defaultValues: {
-      otp: "",
-    },
+    defaultValues: { otp: "" },
   });
 
-  const onSubmit = (data: OTPFormValues) => {
-    console.log("OTP data:", data);
-    // TODO: Implement actual OTP verification logic
+  const onSubmit = async (data: OTPFormValues) => {
+    try {
+      const res = await verifyForgotOtp({ mobile, otp: data.otp }).unwrap();
+      toast.success("OTP verified successfully");
+      router.push(`/reset-password?resetToken=${encodeURIComponent(res.data.resetToken)}`);
+    } catch (error) {
+      globalErrorHandler(error);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!mobile) return;
+    try {
+      await forgotPassword({ mobile }).unwrap();
+      toast.success("OTP resent to your mobile number");
+      form.reset();
+    } catch (error) {
+      globalErrorHandler(error);
+    }
   };
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-lg p-8 w-full">
-      <p className="text-slate-600 mb-6 font-medium text-center">
-        Enter the 6-digit code sent to your email
+      <p className="text-slate-600 mb-1 font-medium text-center">
+        Enter the 6-digit code sent to
       </p>
+      <p className="text-green-600 font-semibold text-center mb-6">{mobile}</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mb-6">
@@ -71,21 +96,23 @@ const OTPVerificationComponent = () => {
 
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            disabled={isLoading}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 text-base"
           >
-            Verify OTP
+            {isLoading ? "Verifying..." : "Verify OTP"}
           </Button>
         </form>
       </Form>
 
-      <p className="text-center text-sm text-slate-700 mb-4">
+      <p className="text-center text-sm text-slate-700">
         Didn&apos;t receive code?{" "}
         <button
           type="button"
-          onClick={() => console.log("Resend OTP")}
-          className="text-green-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0"
+          onClick={handleResend}
+          disabled={isResending}
+          className="text-green-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
         >
-          Resend
+          {isResending ? "Resending..." : "Resend"}
         </button>
       </p>
     </div>

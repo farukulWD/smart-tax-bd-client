@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 export default function page() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center min-h-[calc(100vh-116px)]">
       <div className="flex justify-center items-center max-w-md mx-auto">
         <Suspense fallback={null}>
           <ResetPasswordComponent />

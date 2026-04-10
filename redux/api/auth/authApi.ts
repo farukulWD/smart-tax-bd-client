@@ -26,9 +26,16 @@ const authApi = baseApi.injectEndpoints({
         data,
       }),
     }),
-    forgotPassword: builder.mutation<TResponse<any>, any>({
+    forgotPassword: builder.mutation<TResponse<any>, { mobile: string }>({
       query: (data) => ({
-        url: "/auth/forgot-password",
+        url: "/auth/forget-password",
+        method: "POST",
+        data,
+      }),
+    }),
+    verifyForgotOtp: builder.mutation<TResponse<{ resetToken: string }>, { mobile: string; otp: string }>({
+      query: (data) => ({
+        url: "/auth/verify-forgot-otp",
         method: "POST",
         data,
       }),
@@ -53,6 +60,7 @@ export const {
   useRegisterMutation,
   useResetPasswordMutation,
   useForgotPasswordMutation,
+  useVerifyForgotOtpMutation,
   useGetMeQuery,
   useLogoutMutation,
 } = authApi;
