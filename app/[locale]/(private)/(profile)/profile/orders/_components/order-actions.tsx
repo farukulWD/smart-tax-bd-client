@@ -32,25 +32,27 @@ export function OrderActions({ order }: OrderActionsProps) {
             <DialogTitle>
               Order #{order._id?.slice(-6).toUpperCase() || "N/A"}
             </DialogTitle>
-            <DialogDescription>Tax order details and step status.</DialogDescription>
+            <DialogDescription>
+              Tax order details and step status.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             <p>
               <span className="text-muted-foreground">Name:</span>{" "}
               <span className="font-medium">
-                {order.personal_iformation?.name || "N/A"}
+                {order.personal_information?.name || "N/A"}
               </span>
             </p>
             <p>
               <span className="text-muted-foreground">Email:</span>{" "}
               <span className="font-medium">
-                {order.personal_iformation?.email || "N/A"}
+                {order.personal_information?.email || "N/A"}
               </span>
             </p>
             <p>
               <span className="text-muted-foreground">Phone:</span>{" "}
               <span className="font-medium">
-                {order.personal_iformation?.phone || "N/A"}
+                {order.personal_information?.phone || "N/A"}
               </span>
             </p>
             <p>

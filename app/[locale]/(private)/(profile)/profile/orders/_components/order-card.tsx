@@ -6,7 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IOrder, useInitTaxStepThreePaymentMutation } from "@/redux/api/order/orderApi";
+import {
+  IOrder,
+  useInitTaxStepThreePaymentMutation,
+} from "@/redux/api/order/orderApi";
 import { Calendar, CreditCard, Hash, Phone } from "lucide-react";
 
 interface OrderCardProps {
@@ -61,8 +64,14 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </CardDescription>
           </div>
           <div className="flex gap-2">
-            <Badge variant={getStatusVariant(order.status)}>{order.status}</Badge>
-            <Badge className="cursor-pointer" onClick={handlePayment} variant={isPaid ? "default" : "destructive"}>
+            <Badge variant={getStatusVariant(order.status)}>
+              {order.status}
+            </Badge>
+            <Badge
+              className="cursor-pointer"
+              onClick={handlePayment}
+              variant={isPaid ? "default" : "destructive"}
+            >
               {isPaid ? "Paid" : "Unpaid"}
             </Badge>
           </div>
@@ -73,7 +82,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           <div className="flex items-center gap-2 text-sm">
             <Phone className="h-4 w-4 text-muted-foreground" />
             <span className="text-muted-foreground">Mobile:</span>
-            <span className="font-medium">{order.personal_iformation?.phone || "N/A"}</span>
+            <span className="font-medium">
+              {order.personal_information?.phone || "N/A"}
+            </span>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <Hash className="h-4 w-4 text-muted-foreground" />
@@ -102,7 +113,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 </Badge>
               ))
             ) : (
-              <span className="text-sm text-muted-foreground">No sources provided</span>
+              <span className="text-sm text-muted-foreground">
+                No sources provided
+              </span>
             )}
           </div>
         </div>
