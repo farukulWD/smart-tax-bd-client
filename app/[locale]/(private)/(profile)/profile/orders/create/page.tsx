@@ -137,7 +137,7 @@ const CreateOrderForm = () => {
   const onSubmit = async (values: FormValues) => {
     try {
       const orderResponse = await createTaxStepOne({
-        personal_iformation: {
+        personal_information: {
           name: values.name,
           email: values.email,
           phone: values.mobile,
@@ -284,7 +284,10 @@ const CreateOrderForm = () => {
                     <FormItem>
                       <FormLabel>{t("mobileNumber")}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t("mobilePlaceholder")} {...field} />
+                        <Input
+                          placeholder={t("mobilePlaceholder")}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
