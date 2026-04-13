@@ -1,9 +1,11 @@
 # Smart Tax BD Client - Project Overview
 
 ## 📌 Project Description
+
 The main user-facing web application for Smart Tax BD. This platform allows users to manage their tax filings, upload documents, and track their tax status.
 
 ## 🛠 Tech Stack
+
 - **Framework**: Next.js (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS (v4)
@@ -13,7 +15,96 @@ The main user-facing web application for Smart Tax BD. This platform allows user
 - **Data Tables**: @tanstack/react-table
 - **Real-time**: Socket.io Client
 
+## Folder structure
+
+├── app
+│ ├── (private)
+│ │ └── (profile)
+│ │ ├── layout.tsx
+│ │ └── profile
+│ ├── (public)
+│ │ ├── (auth)
+│ │ │ ├── forgot-password
+│ │ │ ├── layout.tsx
+│ │ │ ├── login
+│ │ │ ├── otp-verification
+│ │ │ ├── register
+│ │ │ └── reset-password
+│ │ ├── about
+│ │ │ └── page.tsx
+│ │ ├── layout.tsx
+│ │ └── page.tsx
+│ ├── favicon.ico
+│ ├── globals.css
+│ ├── icon.png
+│ └── layout.tsx
+├── components
+│ ├── auth
+│ │ ├── forgot-password-component.tsx
+│ │ ├── login-component.tsx
+│ │ ├── otp-verification-component.tsx
+│ │ ├── register-component.tsx
+│ │ ├── register-form.tsx
+│ │ └── reset-password-component.tsx
+│ ├── hero-section
+│ │ └── hero-banner.tsx
+│ ├── layouts
+│ │ ├── data-provider.tsx
+│ │ ├── main-layout.tsx
+│ │ └── redux-provider.tsx
+│ ├── profile
+│ │ ├── profile-sidebar.tsx
+│ │ └── profile-top-bar.tsx
+│ ├── shared
+│ │ ├── coming-soon.tsx
+│ │ ├── data-table.tsx
+│ │ ├── footer.tsx
+│ │ └── navbar.tsx
+│ └── ui
+│ ├── (UI Components...)
+├── helpers
+│ ├── axios
+│ │ ├── axiosBaseQuery.ts
+│ │ └── axiosInstance.ts
+│ └── globalErrorHandler.ts
+├── hooks
+│ └── use-mobile.ts
+├── lib
+│ └── utils.ts
+├── public
+│ ├── file.svg
+│ ├── globe.svg
+│ ├── next.svg
+│ ├── vercel.svg
+│ └── window.svg
+├── redux
+│ ├── api
+│ │ ├── auth
+│ │ │ └── authApi.ts
+│ │ ├── baseApi.ts
+│ │ ├── file
+│ │ │ └── fileApi.ts
+│ │ └── order
+│ │ └── orderApi.ts
+│ ├── feature
+│ │ └── auth.ts
+│ ├── hooks.ts
+│ └── store.ts
+├── types
+│ ├── common.ts
+│ └── index.ts
+├── components.json
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── proxy.ts
+├── README.md
+├── tsconfig.json
+└── next-env.d.ts
+
 ## 📂 Key Directory Structure
+
 - `app/`: Next.js App Router routes.
   - `(public)/`: Publicly accessible routes (Login, Register, etc.).
   - `(private)/`: Routes requiring authentication (Dashboard, Profile, etc.).
@@ -30,6 +121,7 @@ The main user-facing web application for Smart Tax BD. This platform allows user
 - `helpers/`: Formatting and helper functions.
 
 ## 🚀 Key Features
+
 - **User Authentication**: Secure login and registration.
 - **Tax Filing Workflow**: Multi-step forms for tax data submission.
 - **Document Management**: Uploading and viewing tax-related documents.
@@ -37,12 +129,14 @@ The main user-facing web application for Smart Tax BD. This platform allows user
 - **Real-time Updates**: Live notifications via WebSockets.
 
 ## 📜 Available Commands
+
 - `pnpm dev`: Starts the development server.
 - `pnpm build`: Builds the application for production.
 - `pnpm start`: Starts the production server.
 - `pnpm lint`: Runs ESLint for code quality checks.
 
 ## 📝 Important Notes for AI Agents
+
 - The project uses Next.js App Router. Be mindful of Server vs. Client components.
 - State management and API interactions are handled via Redux and RTK Query.
 - Styling is predominantly done via Tailwind CSS classes.
