@@ -8,6 +8,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
+  BellIcon,
   ChevronDownIcon,
   CreditCardIcon,
   FileIcon,
@@ -28,6 +29,7 @@ const ProfileSidebar = () => {
     { title: t("profile"), href: "/profile" as const, icon: <UserIcon /> },
     { title: t("payments"), href: "/profile/payments" as const, icon: <CreditCardIcon /> },
     { title: t("orders"), href: "/profile/orders" as const, icon: <TruckIcon /> },
+    { title: t("notifications"), href: "/profile/notifications" as const, icon: <BellIcon /> },
   ];
 
   const { data: filesData } = useGetMyFilesQuery(undefined, {

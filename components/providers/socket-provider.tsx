@@ -3,6 +3,9 @@
 import React, { createContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks";
+import { baseApi } from "@/redux/api/baseApi";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -17,9 +20,8 @@ export const SocketContext = createContext<SocketContextType>({
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const accesTokent = Cookies.get('accessToken')
-
-  
+  const accesTokent = Cookies.get('accessToken');
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     let socketInstance: Socket | null = null;
@@ -41,6 +43,13 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         setIsConnected(false);
       });
 
+      socketInstance.on("notification", (data: { key: string; payload: { title: string; message: string }; timestamp: string }) => {
+        toast.info(data.payload?.title ?? "New notification", {
+          description: data.payload?.message,
+        });
+        dispatch(baseApi.util.invalidateTags(["notifications"]));
+      });
+
       setTimeout(() => {
         setSocket(socketInstance);
       }, 0);
@@ -56,7 +65,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         socketInstance.disconnect();
       }
     };
-  }, [accesTokent]);
+  }, [accesTokent, dispatch]);
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>

@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 const localeLabels: Record<string, string> = {
   en: "English",
@@ -83,6 +84,7 @@ export function Navbar() {
           ))}
           {token ? (
             <>
+              <NotificationBell />
               <Link
                 href="/profile"
                 className={cn(

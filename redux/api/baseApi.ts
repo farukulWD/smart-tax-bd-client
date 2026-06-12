@@ -7,5 +7,5 @@ export const baseApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL as string,
   }),
   endpoints: () => ({}),
-  tagTypes: ["files", "orders", "payments", "news"],
+  tagTypes: ["files", "orders", "payments", "news", "notifications"],
 });

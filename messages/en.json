@@ -104,7 +104,21 @@
     "payments": "Payments",
     "orders": "Orders",
     "myFiles": "My Files",
-    "noFiles": "No files yet"
+    "noFiles": "No files yet",
+    "notifications": "Notifications"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Your account activity and updates.",
+    "unread": "Unread",
+    "read": "Read",
+    "all": "All",
+    "markAllRead": "Mark all as read",
+    "noNotifications": "No notifications yet.",
+    "deleteConfirm": "Delete this notification?",
+    "filterByStatus": "Filter by status",
+    "broadcast": "Broadcast",
+    "loading": "Loading notifications..."
   },
   "about": {
     "badge": "About Smart Tax",
