@@ -24,7 +24,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="bg-gradient-to-b from-green-50 via-white to-slate-50">
+    <main className="bg-linear-to-b from-green-50 via-white to-slate-50">
       <section className="container mx-auto px-4 lg:px-8 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
           <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">

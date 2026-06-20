@@ -47,9 +47,9 @@ const HeroBanner = () => {
         </svg>
       </div>
       <div className="relative z-10 container mx-auto px-4 lg:px-8 py-10 lg:py-14">
-        <div className="min-h-[360px] md:min-h-[420px] flex flex-col items-center justify-center space-y-8">
+        <div className="min-h-90 md:min-h-105 flex flex-col items-center justify-center space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-red-600">
+            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-slate-900">
               {t("title")}
             </h1>
             <p className="text-lg text-slate-700 font-medium text-center max-w-xl mx-auto">
