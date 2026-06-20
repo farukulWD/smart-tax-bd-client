@@ -139,7 +139,7 @@ const CreateOrderForm = () => {
       const orderResponse = await createTaxStepOne({
         personal_information: {
           name: values.name,
-          email: values.email ?? "",
+          ...(values.email ? { email: values.email } : {}),
           phone: values.mobile,
           are_you_student: false,
           are_you_house_wife: false,

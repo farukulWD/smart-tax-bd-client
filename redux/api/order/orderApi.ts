@@ -16,7 +16,7 @@ export enum IncomeSource {
 
 export interface IPersonalInformation {
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   are_you_student: boolean;
   are_you_house_wife: boolean;
@@ -36,6 +36,7 @@ export interface IOrder {
   source_of_income: IncomeSource[];
   tax_year: string;
   documents?: string[];
+  files_upload_pending?: boolean;
   tax_payable_amount: number;
   is_tax_payable_amount_paid: boolean;
   tax_paid_amount: number;
@@ -110,12 +111,12 @@ const orderApi = baseApi.injectEndpoints({
     }),
     uploadTaxStepTwoDocuments: builder.mutation<
       TResponse<IOrder>,
-      { taxId: string; documentIds: string[] }
+      { taxId: string; documentIds?: string[]; skip_upload?: boolean }
     >({
-      query: ({ taxId, documentIds }) => ({
+      query: ({ taxId, documentIds, skip_upload }) => ({
         url: `/tax-orders/${taxId}/step-2`,
         method: "PATCH",
-        data: { documents: documentIds },
+        data: skip_upload ? { skip_upload: true } : { documents: documentIds },
       }),
       invalidatesTags: ["orders"],
     }),
