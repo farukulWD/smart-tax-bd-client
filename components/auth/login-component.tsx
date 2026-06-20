@@ -77,7 +77,7 @@ const LoginComponent = () => {
                 <FormControl>
                   <Input
                     placeholder={t("mobilePlaceholder")}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-0 focus:bg-white transition-all"
                     {...field}
                   />
                 </FormControl>
@@ -96,7 +96,7 @@ const LoginComponent = () => {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder={t("passwordPlaceholder")}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -120,7 +120,7 @@ const LoginComponent = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
           >
             {isLoading ? t("signingIn") : t("signIn")}
           </Button>
@@ -131,7 +131,7 @@ const LoginComponent = () => {
         {t("termsPrefix")}{" "}
         <Link
           href="/terms"
-          className="text-green-600 hover:underline font-semibold"
+          className="text-red-600 hover:underline font-semibold"
         >
           {t("termsLink")}
         </Link>
@@ -141,7 +141,7 @@ const LoginComponent = () => {
         {t("newToSmartTax")}{" "}
         <Link
           href="/register"
-          className="text-green-600 hover:underline font-semibold"
+          className="text-red-600 hover:underline font-semibold"
         >
           {t("createAccount")}
         </Link>
@@ -150,7 +150,7 @@ const LoginComponent = () => {
       <p className="text-center mb-6">
         <Link
           href="/forgot-password"
-          className="text-green-600 hover:underline text-sm font-semibold"
+          className="text-red-600 hover:underline text-sm font-semibold"
         >
           {t("forgotPassword")}
         </Link>

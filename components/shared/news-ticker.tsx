@@ -35,7 +35,7 @@ export function NewsTicker() {
             key={item._id}
             type="button"
             onClick={() => router.push(`/news/${item._id}`)}
-            className="mx-6 cursor-pointer text-sm text-slate-700 hover:text-green-700 hover:underline underline-offset-2"
+            className="mx-6 cursor-pointer text-sm text-slate-700 hover:text-red-700 hover:underline underline-offset-2"
           >
             {item.title}
             {idx < newsList.length - 1 && (

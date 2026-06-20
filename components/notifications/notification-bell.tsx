@@ -67,7 +67,7 @@ export function NotificationBell() {
             <button
               type="button"
               onClick={handleMarkAll}
-              className="flex items-center gap-1 text-xs text-green-600 hover:text-green-700 transition-colors"
+              className="flex items-center gap-1 text-xs text-red-600 hover:text-red-700 transition-colors"
             >
               <CheckCheck className="h-3.5 w-3.5" />
               Mark all read
@@ -112,7 +112,7 @@ export function NotificationBell() {
                   <button
                     type="button"
                     onClick={(e) => handleMarkAsRead(n._id, e)}
-                    className="shrink-0 text-green-600 hover:text-green-700"
+                    className="shrink-0 text-red-600 hover:text-red-700"
                     title="Mark as read"
                   >
                     <CheckCheck className="h-4 w-4" />
@@ -126,7 +126,7 @@ export function NotificationBell() {
         <div className="border-t px-4 py-2">
           <Link
             href="/profile/notifications"
-            className="block text-center text-xs font-medium text-green-600 hover:text-green-700 transition-colors py-1"
+            className="block text-center text-xs font-medium text-red-600 hover:text-red-700 transition-colors py-1"
           >
             View all notifications
           </Link>

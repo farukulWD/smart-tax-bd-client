@@ -84,7 +84,7 @@ const ResetPasswordComponent = () => {
                     <Input
                       type={showNewPassword ? "text" : "password"}
                       placeholder={t("newPasswordPlaceholder")}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -115,7 +115,7 @@ const ResetPasswordComponent = () => {
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder={t("confirmPasswordPlaceholder")}
-                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-0 focus:bg-white transition-all pr-10"
                       {...field}
                     />
                     <button
@@ -140,7 +140,7 @@ const ResetPasswordComponent = () => {
 
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 mb-4 text-base"
             disabled={isLoading}
           >
             {isLoading ? t("resetting") : t("resetPassword")}
@@ -152,7 +152,7 @@ const ResetPasswordComponent = () => {
         {t("rememberPassword")}{" "}
         <Link
           href="/login"
-          className="text-green-600 hover:underline font-semibold"
+          className="text-red-600 hover:underline font-semibold"
         >
           {t("signIn")}
         </Link>

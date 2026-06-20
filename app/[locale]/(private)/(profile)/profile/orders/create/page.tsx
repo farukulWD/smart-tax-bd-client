@@ -423,7 +423,7 @@ const CreateOrderForm = () => {
                 <Button
                   type="submit"
                   disabled={isCreatingOrder}
-                  className="w-full h-14 bg-green-600 hover:bg-green-500 text-white font-bold rounded-2xl"
+                  className="w-full h-14 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl"
                 >
                   {isCreatingOrder ? (
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -448,7 +448,7 @@ const CreateOrderPage = () => {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-red-600" />
         </div>
       }
     >

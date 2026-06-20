@@ -58,7 +58,7 @@ export default function PrivacyPage() {
           </p>
           <Link
             href="/contact"
-            className="rounded-full bg-green-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700"
+            className="rounded-full bg-red-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
           >
             {t("contactUs")}
           </Link>

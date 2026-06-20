@@ -71,13 +71,13 @@ export default function ContactPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/profile/orders/create"
-              className="rounded-full bg-green-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700"
+              className="rounded-full bg-red-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
             >
               {t("createOrder")}
             </Link>
             <Link
               href="/login"
-              className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-100"
+              className="rounded-full border border-red-600 px-6 py-2.5 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
             >
               {t("logIn")}
             </Link>
