@@ -32,7 +32,7 @@ export default function SingleNewsPage({
         </p>
         <Link
           href="/news"
-          className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 hover:bg-green-50"
+          className="rounded-full border border-red-600 px-6 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50"
         >
           {t("backToNews")}
         </Link>
@@ -46,7 +46,7 @@ export default function SingleNewsPage({
         {/* Back link */}
         <Link
           href="/news"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-green-700 transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-red-700 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("backToNews")}

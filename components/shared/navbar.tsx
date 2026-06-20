@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Menu, X, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLogoutMutation } from "@/redux/api/auth/authApi";
@@ -54,16 +55,8 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="relative flex items-center justify-center h-10 w-10">
-            <div className="absolute inset-0 rotate-45 bg-green-800 rounded-sm shadow-sm transition-transform group-hover:rotate-90 duration-300" />
-            <span className="relative z-10 text-xs font-black tracking-tighter text-white uppercase ml-1">
-              Smart
-            </span>
-          </div>
-          <span className="text-2xl font-bold tracking-tight text-green-600">
-            Tax
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image src="/smart-tax-logo.png" alt="Smart Tax BD" width={60} height={60} className="object-contain" priority />
         </Link>
 
         {/* Desktop Navigation */}
@@ -73,9 +66,9 @@ export function Navbar() {
               key={link.nameKey}
               href={link.href}
               className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors hover:text-green-600",
+                "px-4 py-2 text-sm font-medium transition-colors hover:text-red-600",
                 link.active
-                  ? "bg-green-100 text-green-900 border-2 border-green-900 rounded-full"
+                  ? "bg-red-100 text-red-900 border-2 border-red-900 rounded-full"
                   : "text-slate-900",
               )}
             >
@@ -90,8 +83,8 @@ export function Navbar() {
                 className={cn(
                   "ml-2 rounded-full px-5 py-2 text-sm font-semibold text-white transition-colors",
                   pathname.startsWith("/profile")
-                    ? "bg-green-800"
-                    : "bg-green-600 hover:bg-green-700",
+                    ? "bg-red-800"
+                    : "bg-red-600 hover:bg-red-700",
                 )}
               >
                 {t("profile")}
@@ -99,7 +92,7 @@ export function Navbar() {
               <button
                 disabled={isLoading}
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium transition-colors text-slate-900 hover:text-green-600"
+                className="px-4 py-2 text-sm font-medium transition-colors text-slate-900 hover:text-red-600"
               >
                 {isLoading ? t("loggingOut") : t("logOut")}
               </button>
@@ -107,7 +100,7 @@ export function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="ml-2 rounded-full bg-green-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-700"
+              className="ml-2 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
             >
               {t("logIn")}
             </Link>
@@ -116,7 +109,7 @@ export function Navbar() {
           {/* Language switcher */}
           <button
             onClick={() => switchLocale(nextLocale)}
-            className="ml-2 flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:border-green-500 hover:text-green-700 transition-colors"
+            className="ml-2 flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:border-red-500 hover:text-red-700 transition-colors"
             title={localeLabels[nextLocale]}
           >
             <Globe className="h-4 w-4" />
@@ -142,9 +135,9 @@ export function Navbar() {
               key={link.nameKey}
               href={link.href}
               className={cn(
-                "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
                 link.active
-                  ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                  ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                   : "text-slate-900",
               )}
               onClick={() => setIsOpen(false)}
@@ -157,12 +150,12 @@ export function Navbar() {
               <Link
                 href="/profile"
                 className={cn(
-                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
                   pathname.includes("/profile") &&
                     !pathname.includes("/profile/payments") &&
                     !pathname.includes("/profile/orders") &&
                     !pathname.includes("/profile/my-files")
-                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                     : "text-slate-900",
                 )}
                 onClick={() => setIsOpen(false)}
@@ -172,9 +165,9 @@ export function Navbar() {
               <Link
                 href="/profile/payments"
                 className={cn(
-                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
                   pathname.includes("/profile/payments")
-                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                     : "text-slate-900",
                 )}
                 onClick={() => setIsOpen(false)}
@@ -184,9 +177,9 @@ export function Navbar() {
               <Link
                 href="/profile/orders"
                 className={cn(
-                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
                   pathname.includes("/profile/orders")
-                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                     : "text-slate-900",
                 )}
                 onClick={() => setIsOpen(false)}
@@ -196,9 +189,9 @@ export function Navbar() {
               <Link
                 href="/profile/my-files"
                 className={cn(
-                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-green-600 rounded-md",
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
                   pathname.includes("/profile/my-files")
-                    ? "bg-green-100 text-green-900 border-l-4 border-green-900"
+                    ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                     : "text-slate-900",
                 )}
                 onClick={() => setIsOpen(false)}
@@ -216,7 +209,7 @@ export function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="block rounded-md bg-green-600 px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700"
+              className="block rounded-md bg-red-600 px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-red-700"
               onClick={() => setIsOpen(false)}
             >
               {t("logIn")}

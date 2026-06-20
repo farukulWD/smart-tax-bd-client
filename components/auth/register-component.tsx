@@ -14,7 +14,7 @@ const RegisterComponent = () => {
         {t("alreadyHaveAccount")}{" "}
         <Link
           href="/login"
-          className="text-green-600 hover:underline font-semibold"
+          className="text-red-600 hover:underline font-semibold"
         >
           {t("signIn")}
         </Link>

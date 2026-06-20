@@ -60,7 +60,7 @@ export default function NewsPage() {
                 )}
 
                 <div className="flex flex-1 flex-col gap-3 p-5">
-                  <h2 className="text-base font-semibold leading-snug text-slate-900 line-clamp-2 group-hover:text-green-700 transition-colors">
+                  <h2 className="text-base font-semibold leading-snug text-slate-900 line-clamp-2 group-hover:text-red-700 transition-colors">
                     {item.title}
                   </h2>
                   <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
@@ -74,7 +74,7 @@ export default function NewsPage() {
                           })
                         : "—"}
                     </div>
-                    <ArrowRight className="h-4 w-4 text-green-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="h-4 w-4 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
               </Link>
@@ -85,7 +85,7 @@ export default function NewsPage() {
         <div className="mt-12 text-center">
           <Link
             href="/"
-            className="rounded-full border border-green-600 px-6 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
+            className="rounded-full border border-red-600 px-6 py-2.5 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
           >
             {t("backToHome")}
           </Link>

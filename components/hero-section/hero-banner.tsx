@@ -49,7 +49,7 @@ const HeroBanner = () => {
       <div className="relative z-10 container mx-auto px-4 lg:px-8 py-10 lg:py-14">
         <div className="min-h-[360px] md:min-h-[420px] flex flex-col items-center justify-center space-y-8">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-green-600">
+            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-red-600">
               {t("title")}
             </h1>
             <p className="text-lg text-slate-700 font-medium text-center max-w-xl mx-auto">
@@ -58,13 +58,13 @@ const HeroBanner = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3">
               <Link
                 href="/profile/orders/create"
-                className="inline-flex items-center justify-center rounded-full bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700"
+                className="inline-flex items-center justify-center rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700"
               >
                 {t("getStarted")}
               </Link>
               <Link
                 href="/#tax-categories"
-                className="inline-flex items-center justify-center rounded-full border border-green-600/50 bg-white/80 px-6 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-white"
+                className="inline-flex items-center justify-center rounded-full border border-red-600/50 bg-white/80 px-6 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-white"
               >
                 {t("viewTaxCategories")}
               </Link>

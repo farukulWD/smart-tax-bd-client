@@ -70,7 +70,7 @@ const OTPVerificationComponent = () => {
       <p className="text-slate-600 mb-1 font-medium text-center">
         {t("tagline")}
       </p>
-      <p className="text-green-600 font-semibold text-center mb-6">{mobile}</p>
+      <p className="text-red-600 font-semibold text-center mb-6">{mobile}</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mb-6">
@@ -99,7 +99,7 @@ const OTPVerificationComponent = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 text-base"
+            className="w-full bg-red-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 text-base"
           >
             {isLoading ? t("verifying") : t("verifyOtp")}
           </Button>
@@ -112,7 +112,7 @@ const OTPVerificationComponent = () => {
           type="button"
           onClick={handleResend}
           disabled={isResending}
-          className="text-green-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
+          className="text-red-600 hover:underline font-semibold bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
         >
           {isResending ? t("resending") : t("resend")}
         </button>

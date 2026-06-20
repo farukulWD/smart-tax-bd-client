@@ -74,8 +74,8 @@ const NotificationsPage = () => {
               className={cn(
                 "rounded-full px-4 py-1.5 text-sm font-medium border transition-colors",
                 isReadFilter === opt.value
-                  ? "bg-green-600 text-white border-green-600"
-                  : "border-slate-200 text-slate-700 hover:border-green-500 hover:text-green-700",
+                  ? "bg-red-600 text-white border-red-600"
+                  : "border-slate-200 text-slate-700 hover:border-red-500 hover:text-red-700",
               )}
             >
               {opt.label}
@@ -86,7 +86,7 @@ const NotificationsPage = () => {
         <button
           type="button"
           onClick={handleMarkAll}
-          className="flex items-center gap-1.5 text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+          className="flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
         >
           <CheckCheck className="h-4 w-4" />
           {t("markAllRead")}
@@ -135,7 +135,7 @@ const NotificationsPage = () => {
                     type="button"
                     onClick={() => handleMarkAsRead(n._id)}
                     title={t("read")}
-                    className="text-green-600 hover:text-green-700 transition-colors"
+                    className="text-red-600 hover:text-red-700 transition-colors"
                   >
                     <CheckCheck className="h-4 w-4" />
                   </button>

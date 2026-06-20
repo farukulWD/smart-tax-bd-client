@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -31,18 +32,20 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="relative flex items-center justify-center h-10 w-10">
-                <div className="absolute inset-0 rotate-45 bg-green-800 rounded-sm shadow-sm" />
-                <span className="relative z-10 text-xs font-black tracking-tighter text-white uppercase ml-1">
-                  Smart
-                </span>
+            <Link href="/" className="flex items-center">
+              <div className="rounded-xl p-1">
+                <Image
+                  src="/smart-tax-logo.png"
+                  alt="Smart Tax BD"
+                  width={56}
+                  height={56}
+                  className="object-contain"
+                />
               </div>
-              <span className="text-2xl font-bold tracking-tight text-green-600">
-                Tax
-              </span>
             </Link>
-            <p className="text-sm leading-relaxed text-slate-400">{t("tagline")}</p>
+            <p className="text-sm leading-relaxed text-slate-400">
+              {t("tagline")}
+            </p>
           </div>
 
           {/* Product Links */}
@@ -53,7 +56,7 @@ const Footer = () => {
                 <li key={link.nameKey}>
                   <Link
                     href={link.href as "/"}
-                    className="text-sm hover:text-green-600 transition-colors"
+                    className="text-sm hover:text-red-600 transition-colors"
                   >
                     {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
@@ -70,7 +73,7 @@ const Footer = () => {
                 <li key={link.nameKey}>
                   <Link
                     href={link.href as "/"}
-                    className="text-sm hover:text-green-600 transition-colors"
+                    className="text-sm hover:text-red-600 transition-colors"
                   >
                     {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
@@ -87,7 +90,7 @@ const Footer = () => {
                 <li key={link.nameKey}>
                   <Link
                     href={link.href as "/"}
-                    className="text-sm hover:text-green-600 transition-colors"
+                    className="text-sm hover:text-red-600 transition-colors"
                   >
                     {t(`links.${link.nameKey}` as Parameters<typeof t>[0])}
                   </Link>
