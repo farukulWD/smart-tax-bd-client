@@ -28,7 +28,10 @@ const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const destinationUrl = searchParams.get("redirect") || "/profile";
+  const destinationRaw = searchParams.get("redirect") || "/profile";
+  // Middleware stores the full locale-prefixed path (/en/...). next-intl router.push
+  // adds locale automatically, so strip existing locale prefix to avoid /en/en/...
+  const destinationUrl = destinationRaw.replace(/^\/(en|bn)/, "") || "/profile";
   const t = useTranslations("auth.login");
   const tV = useTranslations("auth.validation");
 
