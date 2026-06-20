@@ -43,7 +43,7 @@ import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.email("Email is required"),
+  email: z.string().optional(),
   mobile: z
     .string()
     .min(1, "Mobile number is required")
@@ -139,7 +139,7 @@ const CreateOrderForm = () => {
       const orderResponse = await createTaxStepOne({
         personal_information: {
           name: values.name,
-          email: values.email,
+          email: values.email ?? "",
           phone: values.mobile,
           are_you_student: false,
           are_you_house_wife: false,
