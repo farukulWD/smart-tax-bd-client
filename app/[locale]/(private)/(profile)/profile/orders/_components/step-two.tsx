@@ -43,12 +43,16 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
+  const [isSkippingUpload, setIsSkippingUpload] = useState(false);
   const [uploadFile, { isLoading: isUploadingFile }] = useUploadFileMutation();
   const [uploadTaxStepTwoDocuments, { isLoading: isSubmittingStepTwo }] =
     useUploadTaxStepTwoDocumentsMutation();
   const { data, refetch: refetchOrder } = useGetTaxOrderByIdQuery(
     taxId ?? skipToken,
   );
+
+  const order = data?.data?.tax_order;
+  const isPostPaymentUpload = order?.files_upload_pending === true;
 
   const {
     data: myFilesResponse,
@@ -194,8 +198,16 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
         taxId,
         documentIds,
       }).unwrap();
-      toast.success("Step 2 completed successfully");
-      router.push(`/profile/orders/create/${taxId}/payment`);
+      toast.success(
+        isPostPaymentUpload
+          ? "Documents submitted successfully"
+          : "Step 2 completed successfully",
+      );
+      if (isPostPaymentUpload) {
+        router.push("/profile/orders");
+      } else {
+        router.push(`/profile/orders/create/${taxId}/payment`);
+      }
       await refetchOrder();
     } catch (error: any) {
       const message =
@@ -205,6 +217,30 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
         "Step 2 submission failed";
       toast.error(message);
       globalErrorHandler(error);
+    }
+  };
+
+  const handleSkipUpload = async () => {
+    if (!taxId) return;
+    setIsSkippingUpload(true);
+    try {
+      await uploadTaxStepTwoDocuments({
+        taxId,
+        skip_upload: true,
+      }).unwrap();
+      toast.success("You can upload your documents later from My Orders");
+      router.push(`/profile/orders/create/${taxId}/payment`);
+      await refetchOrder();
+    } catch (error: any) {
+      const message =
+        error?.data?.message ||
+        error?.data?.error ||
+        error?.message ||
+        "Failed to skip upload";
+      toast.error(message);
+      globalErrorHandler(error);
+    } finally {
+      setIsSkippingUpload(false);
     }
   };
 
@@ -436,14 +472,28 @@ const StepTwo = ({ taxId }: { taxId: string }) => {
           <Button
             type="button"
             className="w-full"
-            disabled={isSubmittingStepTwo || isFilesLoading}
+            disabled={isSubmittingStepTwo || isFilesLoading || isSkippingUpload}
             onClick={handleSubmitStepTwo}
           >
             {isSubmittingStepTwo && (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             )}
-            {t("goToPayment")}
+            {isPostPaymentUpload ? "Submit Documents" : t("goToPayment")}
           </Button>
+          {!isPostPaymentUpload && (
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              disabled={isSkippingUpload || isSubmittingStepTwo}
+              onClick={handleSkipUpload}
+            >
+              {isSkippingUpload && (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              )}
+              Upload Files Later
+            </Button>
+          )}
         </CardContent>
       </Card>
     </div>

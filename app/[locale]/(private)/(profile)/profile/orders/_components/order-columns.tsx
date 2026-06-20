@@ -6,6 +6,7 @@ import { IOrder } from "@/redux/api/order/orderApi";
 import { format } from "date-fns";
 import { OrderActions } from "./order-actions";
 import { PayableAmountCell } from "./payable-amount-cell";
+import Link from "next/link";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
@@ -42,6 +43,24 @@ export const columns: ColumnDef<IOrder>[] = [
         <Badge className="capitalize" variant={statusVariant(status)}>
           {status.replace(/_/g, " ")}
         </Badge>
+      );
+    },
+  },
+  {
+    id: "files",
+    header: "Files",
+    cell: ({ row }) => {
+      const order = row.original;
+      if (!order.files_upload_pending) return null;
+      return (
+        <Link href={`/profile/orders/create/${order._id}`}>
+          <Badge
+            variant="outline"
+            className="border-amber-400 bg-amber-50 text-amber-700 cursor-pointer hover:bg-amber-100"
+          >
+            Upload Pending
+          </Badge>
+        </Link>
       );
     },
   },
