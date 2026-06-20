@@ -282,6 +282,68 @@
     "incomeOtherSource": "Income from Other Source",
     "incomeForeignRemittance": "Income from Foreign Remittance"
   },
+  "privacy": {
+    "badge": "Privacy Policy",
+    "title": "Your Privacy Matters to Us",
+    "description": "We are committed to protecting your personal information and being transparent about how we use it.",
+    "lastUpdated": "Last updated: June 2025",
+    "sections": {
+      "infoWeCollect": {
+        "title": "Information We Collect",
+        "body": "We collect information you provide directly — such as your name, mobile number, email address, and tax-related documents — when you register or use our services."
+      },
+      "howWeUse": {
+        "title": "How We Use Your Information",
+        "body": "Your information is used to process tax orders, communicate updates, verify identity, and improve our services. We do not sell your data to third parties."
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "body": "We implement industry-standard encryption and access controls to protect your personal and financial data at rest and in transit."
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "body": "You may request access to, correction of, or deletion of your personal data at any time by contacting our support team."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "body": "For privacy-related questions, email us at support@smarttaxbd.com or visit our Contact page."
+      }
+    },
+    "contactUs": "Contact Us"
+  },
+  "terms": {
+    "badge": "Terms of Service",
+    "title": "Terms & Conditions",
+    "description": "Please read these terms carefully before using Smart Tax BD services.",
+    "lastUpdated": "Last updated: June 2025",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "body": "By accessing or using Smart Tax BD, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services."
+      },
+      "services": {
+        "title": "Use of Services",
+        "body": "Our services are intended for lawful tax filing and advisory purposes in Bangladesh. You agree not to misuse the platform or submit false information."
+      },
+      "account": {
+        "title": "Account Responsibilities",
+        "body": "You are responsible for maintaining the confidentiality of your account credentials. Notify us immediately of any unauthorized access."
+      },
+      "payment": {
+        "title": "Payment & Fees",
+        "body": "Service fees are displayed before payment confirmation. All payments are final unless stated otherwise. Refunds are subject to our refund policy."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "body": "Smart Tax BD provides information and filing assistance but is not liable for penalties arising from inaccurate information submitted by users."
+      },
+      "changes": {
+        "title": "Changes to Terms",
+        "body": "We may update these terms periodically. Continued use of our services after changes constitutes acceptance of the revised terms."
+      }
+    },
+    "contactUs": "Contact Us"
+  },
   "taxTypes": {
     "badge": "Expert Compliance",
     "title": "Tax Services",
