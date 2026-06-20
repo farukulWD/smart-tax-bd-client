@@ -20,14 +20,14 @@ export const SocketContext = createContext<SocketContextType>({
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const accesTokent = Cookies.get('accessToken');
+  const accesTokent = Cookies.get("accessToken");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     let socketInstance: Socket | null = null;
 
     if (accesTokent) {
-      socketInstance = io("http://localhost:5000", {
+      socketInstance = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`, {
         extraHeaders: {
           Authorization: accesTokent,
         },
@@ -43,12 +43,19 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         setIsConnected(false);
       });
 
-      socketInstance.on("notification", (data: { key: string; payload: { title: string; message: string }; timestamp: string }) => {
-        toast.info(data.payload?.title ?? "New notification", {
-          description: data.payload?.message,
-        });
-        dispatch(baseApi.util.invalidateTags(["notifications"]));
-      });
+      socketInstance.on(
+        "notification",
+        (data: {
+          key: string;
+          payload: { title: string; message: string };
+          timestamp: string;
+        }) => {
+          toast.info(data.payload?.title ?? "New notification", {
+            description: data.payload?.message,
+          });
+          dispatch(baseApi.util.invalidateTags(["notifications"]));
+        },
+      );
 
       setTimeout(() => {
         setSocket(socketInstance);

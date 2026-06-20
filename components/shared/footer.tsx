@@ -18,8 +18,8 @@ const Footer = () => {
       { nameKey: "contact", href: "/contact" },
     ],
     legal: [
-      { nameKey: "privacy", href: "#" },
-      { nameKey: "terms", href: "#" },
+      { nameKey: "privacy", href: "/privacy" },
+      { nameKey: "terms", href: "/terms" },
       { nameKey: "cookies", href: "#" },
       { nameKey: "license", href: "#" },
     ],
