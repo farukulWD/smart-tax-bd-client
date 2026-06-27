@@ -114,16 +114,16 @@ const TaxesTypes: FC = () => {
                   key={taxType.value}
                   className="group block h-full"
                 >
-                  <Card className="h-full border-slate-200/60 bg-white hover:bg-white transition-all duration-500 group-hover:border-red-500/20 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] group-hover:-translate-y-2 overflow-hidden relative rounded-2xl p-2">
+                  <Card className="h-full border-slate-200/60 bg-white hover:bg-white transition-all duration-500 overflow-hidden relative rounded-2xl p-2">
                     <div className="absolute -right-4 -top-4 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-700 pointer-events-none">
                       <Icon className="w-40 h-40 text-slate-900" />
                     </div>
 
                     <CardHeader className="pb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-green-50 to-emerald-50 border border-green-100/50 flex items-center justify-center mb-4 group-hover:from-red-600 group-hover:to-red-700 group-hover:text-white transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-red-600/20">
+                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-green-50 to-emerald-50 border border-green-100/50 flex items-center justify-center mb-4 transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-red-600/20">
                         <Icon className="w-7 h-7" />
                       </div>
-                      <CardTitle className="text-2xl font-bold text-slate-800 group-hover:text-red-700 transition-colors duration-300">
+                      <CardTitle className="text-2xl font-bold text-slate-800 duration-300">
                         {taxType.title}
                       </CardTitle>
                     </CardHeader>
@@ -133,7 +133,7 @@ const TaxesTypes: FC = () => {
                         {taxType.description}
                       </CardDescription>
 
-                      <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100 group-hover:border-red-100 transition-colors">
+                      <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100">
                         <span className="uppercase tracking-wider">
                           {t("exploreDetails")}
                         </span>
