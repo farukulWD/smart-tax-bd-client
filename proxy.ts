@@ -21,7 +21,17 @@ export default function middleware(request: NextRequest) {
 
   if (AUTH_PATTERN.test(pathname) && token) {
     const locale = pathname.startsWith("/bn") ? "bn" : "en";
-    return NextResponse.redirect(new URL(`/${locale}/profile`, request.url));
+    // Honor the destination the private-route guard attached, so an authed user
+    // who passes through an auth route lands on their intended page (e.g. the
+    // create-order page) instead of always being dumped on /profile.
+    const redirectParam = request.nextUrl.searchParams.get("redirect");
+    const isSafeRedirect =
+      !!redirectParam &&
+      redirectParam.startsWith("/") &&
+      !redirectParam.startsWith("//") &&
+      !AUTH_PATTERN.test(redirectParam);
+    const destination = isSafeRedirect ? redirectParam : `/${locale}/profile`;
+    return NextResponse.redirect(new URL(destination, request.url));
   }
 
   return intlMiddleware(request);
