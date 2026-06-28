@@ -37,6 +37,7 @@ export async function generateMetadata({
   const isBn = locale === "bn";
 
   return {
+    metadataBase: new URL(siteUrl),
     title: isBn ? "স্মার্ট ট্যাক্স" : "Smart Tax",
     description: isBn
       ? "বাংলাদেশে পেশাদার কর সেবা"
@@ -49,6 +50,32 @@ export async function generateMetadata({
           `${siteUrl}${getPathname({ locale: l, href: "/" })}`,
         ]),
       ),
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Smart Tax",
+      url: `${siteUrl}/${locale}`,
+      locale: isBn ? "bn_BD" : "en_US",
+      title: isBn ? "স্মার্ট ট্যাক্স" : "Smart Tax",
+      description: isBn
+        ? "বাংলাদেশে পেশাদার কর সেবা"
+        : "Professional tax services in Bangladesh",
+      images: [
+        {
+          url: "/smart-tax-logo.png",
+          width: 500,
+          height: 500,
+          alt: "Smart Tax",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: isBn ? "স্মার্ট ট্যাক্স" : "Smart Tax",
+      description: isBn
+        ? "বাংলাদেশে পেশাদার কর সেবা"
+        : "Professional tax services in Bangladesh",
+      images: ["/smart-tax-logo.png"],
     },
   };
 }
