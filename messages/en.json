@@ -38,7 +38,11 @@
     "title": "Professional Tax Services in Bangladesh",
     "subtitle": "Simplifying tax compliance for individuals and businesses with expert guidance and modern digital tools.",
     "getStarted": "Get Started",
-    "viewTaxCategories": "View Tax Categories"
+    "viewTaxCategories": "View Tax Categories",
+    "downloadApp": "Get the App",
+    "downloadAppSubtitle": "Scan to download Smart Tax BD",
+    "scanWithCamera": "Point your phone camera at the code",
+    "availableOn": "Available on Android"
   },
   "auth": {
     "login": {
