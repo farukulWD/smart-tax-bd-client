@@ -16,22 +16,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useLoginMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const locale = useLocale();
   const destinationRaw = searchParams.get("redirect") || "/profile";
-  // Middleware stores the full locale-prefixed path (/en/...). next-intl router.push
-  // adds locale automatically, so strip existing locale prefix to avoid /en/en/...
-  const destinationUrl = destinationRaw.replace(/^\/(en|bn)/, "") || "/profile";
+  // Middleware stores the full locale-prefixed path (/en/...). For a hard
+  // navigation we need the full locale-prefixed URL, so add the prefix when
+  // the redirect param doesn't already carry one.
+  const destinationUrl = /^\/(en|bn)(\/|$)/.test(destinationRaw)
+    ? destinationRaw
+    : `/${locale}${destinationRaw}`;
   const t = useTranslations("auth.login");
   const tV = useTranslations("auth.validation");
 
@@ -59,7 +61,10 @@ const LoginComponent = () => {
         toast.success(res?.message || "Login successful");
         Cookies.set("accessToken", res?.data?.accessToken);
         form.reset();
-        router.push(destinationUrl);
+        // Hard navigation so middleware re-evaluates with the new token.
+        // Soft router.push reuses the stale (pre-login) Router Cache entry,
+        // which the auth guard had populated as a redirect back to /login.
+        window.location.assign(destinationUrl);
       }
     } catch (error) {
       globalErrorHandler(error);
