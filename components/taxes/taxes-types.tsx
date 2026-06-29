@@ -28,7 +28,8 @@ import {
   Wallet,
 } from "lucide-react";
 import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { readLocalized } from "@/lib/localize";
 
 const iconMap: Record<string, any> = {
   income_tax: CircleDollarSign,
@@ -52,6 +53,7 @@ const iconMap: Record<string, any> = {
 
 const TaxesTypes: FC = () => {
   const t = useTranslations("taxTypes");
+  const locale = useLocale();
   const { data: taxTypes, isLoading } = useGetTaxTypesQuery(undefined, {
     selectFromResult: (result) => ({
       data: result.data?.data,
@@ -124,13 +126,13 @@ const TaxesTypes: FC = () => {
                         <Icon className="w-7 h-7" />
                       </div>
                       <CardTitle className="text-2xl font-bold text-slate-800 duration-300">
-                        {taxType.title}
+                        {readLocalized(taxType.title, locale)}
                       </CardTitle>
                     </CardHeader>
 
                     <CardContent className="flex flex-col flex-1">
                       <CardDescription className="text-slate-600 grow text-[15px] leading-relaxed line-clamp-3 mb-8">
-                        {taxType.description}
+                        {readLocalized(taxType.description, locale)}
                       </CardDescription>
 
                       <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100">
