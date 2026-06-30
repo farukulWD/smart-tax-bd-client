@@ -38,7 +38,10 @@ const LoginComponent = () => {
   const tV = useTranslations("auth.validation");
 
   const loginSchema = z.object({
-    mobile: z.string().min(1, { message: tV("mobileRequired") }),
+    mobile: z
+      .string()
+      .min(1, { message: tV("mobileRequired") })
+      .regex(/^01[3-9]\d{8}$/, { message: tV("mobileInvalid") }),
     password: z.string().min(1, { message: tV("passwordRequired") }),
   });
 

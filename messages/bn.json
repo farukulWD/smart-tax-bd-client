@@ -59,6 +59,7 @@
     },
     "validation": {
       "mobileRequired": "মোবাইল নম্বর আবশ্যক",
+      "mobileInvalid": "সঠিক বাংলাদেশি মোবাইল নম্বর দিন (যেমন: 01712345678)",
       "passwordRequired": "পাসওয়ার্ড আবশ্যক"
     },
     "register": {

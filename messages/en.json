@@ -59,6 +59,7 @@
     },
     "validation": {
       "mobileRequired": "Mobile number is required",
+      "mobileInvalid": "Enter a valid BD mobile number (e.g. 01712345678)",
       "passwordRequired": "Password is required"
     },
     "register": {
