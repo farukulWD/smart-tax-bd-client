@@ -130,6 +130,17 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["orders"],
     }),
+    // TEMPORARY: places the order without the gateway (manual bKash payment).
+    placeTaxOrderManually: builder.mutation<
+      TResponse<{ tax_order: IOrder }>,
+      string
+    >({
+      query: (taxId) => ({
+        url: `/tax-orders/${taxId}/place-manual`,
+        method: "POST",
+      }),
+      invalidatesTags: ["orders"],
+    }),
     getMyOrders: builder.query<TResponse<IOrder[]>, undefined>({
       query: () => ({
         url: "/tax-orders/my-orders",
@@ -147,5 +158,6 @@ export const {
   useUpdateTaxStepOneMutation,
   useUploadTaxStepTwoDocumentsMutation,
   useInitTaxStepThreePaymentMutation,
+  usePlaceTaxOrderManuallyMutation,
   useGetMyOrdersQuery,
 } = orderApi;

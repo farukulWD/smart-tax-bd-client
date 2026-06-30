@@ -399,6 +399,10 @@
     "noOrderSelected": "No order selected.",
     "createOrder": "Create Order",
     "failedToLoad": "Failed to load order payment status.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "contactModalTitle": "Payment via bKash",
+    "contactModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to complete your bKash payment. Click Okay to place your order and we will reach out to arrange payment.",
+    "cancel": "Cancel",
+    "okay": "Okay"
   }
 }
