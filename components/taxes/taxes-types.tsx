@@ -33,6 +33,8 @@ import { readLocalized } from "@/lib/localize";
 
 const iconMap: Record<string, any> = {
   income_tax: CircleDollarSign,
+  income_tax_government: Landmark,
+  income_tax_non_government: Briefcase,
   sales_tax: ShoppingCart,
   vat: ReceiptText,
   value_added_tax: ReceiptText,

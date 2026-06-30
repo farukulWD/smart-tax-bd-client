@@ -67,6 +67,8 @@ const TAX_YEARS = Array.from({ length: 10 }, (_, i) => {
 
 const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
   income_tax: IncomeSource.PrivateJob,
+  income_tax_government: IncomeSource.GovtJob,
+  income_tax_non_government: IncomeSource.PrivateJob,
   sales_tax: IncomeSource.Business,
   vat: IncomeSource.Business,
   value_added_tax: IncomeSource.Business,
