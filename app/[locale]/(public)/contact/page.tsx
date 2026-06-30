@@ -27,7 +27,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <main className="bg-gradient-to-b from-white via-green-50/50 to-slate-50">
+    <main className="bg-linear-to-b from-white via-green-50/50 to-slate-50">
       <section className="container mx-auto px-4 lg:px-8 py-14 lg:py-20">
         <div className="mx-auto max-w-3xl text-center space-y-4">
           <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
@@ -65,9 +65,7 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold tracking-tight text-slate-900">
             {t("nextSteps")}
           </h2>
-          <p className="mt-2 max-w-2xl text-slate-600">
-            {t("nextStepsDesc")}
-          </p>
+          <p className="mt-2 max-w-2xl text-slate-600">{t("nextStepsDesc")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/profile/orders/create"
