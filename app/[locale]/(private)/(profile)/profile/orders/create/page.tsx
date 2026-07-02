@@ -28,8 +28,8 @@ import {
 } from "@/components/ui/card";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import {
-  IncomeSource,
   useCreateTaxStepOneMutation,
+  useGetTaxTypesQuery,
 } from "@/redux/api/order/orderApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2, CheckCircle2, ShieldCheck } from "lucide-react";
@@ -39,7 +39,9 @@ import { toast } from "sonner";
 import z from "zod";
 import Link from "next/link";
 import { useGetMeQuery } from "@/redux/api/auth/authApi";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { readLocalized } from "@/lib/localize";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -48,9 +50,9 @@ const formSchema = z.object({
     .string()
     .min(1, "Mobile number is required")
     .regex(/^(\+8801|01)[3-9]\d{8}$/, "Invalid mobile number format"),
-  source_of_income: z
-    .array(z.nativeEnum(IncomeSource))
-    .min(1, "Please select at least one source of income"),
+  tax_types: z
+    .array(z.string())
+    .min(1, "Please select at least one tax type"),
   tax_year: z.string().min(1, "Tax year is required"),
   income_from_ldt_company: z.boolean(),
   income_from_partnership_firm: z.boolean(),
@@ -65,35 +67,23 @@ const TAX_YEARS = Array.from({ length: 10 }, (_, i) => {
   return `${year}-${year + 1}`;
 });
 
-const QUERY_TAX_TYPE_TO_INCOME_SOURCE: Record<string, IncomeSource> = {
-  income_tax: IncomeSource.PrivateJob,
-  income_tax_government: IncomeSource.GovtJob,
-  income_tax_non_government: IncomeSource.PrivateJob,
-  sales_tax: IncomeSource.Business,
-  vat: IncomeSource.Business,
-  value_added_tax: IncomeSource.Business,
-  service_tax: IncomeSource.Business,
-  import_duty: IncomeSource.Business,
-  business_tax: IncomeSource.Business,
-  excise_duty: IncomeSource.Business,
-  customs_duty: IncomeSource.Business,
-  entertainment_tax: IncomeSource.Business,
-  environmental_tax: IncomeSource.Business,
-  house_rental_tax: IncomeSource.Rent,
-  property_tax: IncomeSource.Rent,
-  capital_gains_tax: IncomeSource.CapitalGain,
-  gift_tax: IncomeSource.OthersSource,
-  inheritance_tax: IncomeSource.OthersSource,
-  wealth_tax: IncomeSource.FinancialAsset,
-};
-
 const CreateOrderForm = () => {
   const t = useTranslations("createOrder");
+  const locale = useLocale();
   const router = useRouter();
   const params = useSearchParams();
   const taxType = params.get("taxType") || "";
   const [createTaxStepOne, { isLoading: isCreatingOrder }] =
     useCreateTaxStepOneMutation();
+
+  const { data: taxTypesData, isLoading: isLoadingTaxTypes } =
+    useGetTaxTypesQuery(undefined, {
+      selectFromResult: (result) => ({
+        data: result.data?.data,
+        isLoading: result.isLoading,
+      }),
+    });
+  const activeTaxTypes = (taxTypesData ?? []).filter((type) => type.isActive);
 
   const { data: profileData } = useGetMeQuery(undefined, {
     selectFromResult: ({ data }) => ({
@@ -107,7 +97,7 @@ const CreateOrderForm = () => {
       name: "",
       email: "",
       mobile: "",
-      source_of_income: [],
+      tax_types: [],
       tax_year: `${CURRENT_YEAR}-${CURRENT_YEAR + 1}`,
       income_from_ldt_company: false,
       income_from_partnership_firm: false,
@@ -130,11 +120,11 @@ const CreateOrderForm = () => {
   }, [profileData, form]);
 
   useEffect(() => {
-    const mapped = QUERY_TAX_TYPE_TO_INCOME_SOURCE[taxType];
-    if (mapped && form.getValues("source_of_income").length === 0) {
-      form.setValue("source_of_income", [mapped]);
+    const matched = activeTaxTypes.some((type) => type.value === taxType);
+    if (matched && form.getValues("tax_types").length === 0) {
+      form.setValue("tax_types", [taxType]);
     }
-  }, [taxType, form]);
+  }, [taxType, activeTaxTypes, form]);
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -147,7 +137,7 @@ const CreateOrderForm = () => {
           are_you_house_wife: false,
         },
         tax_year: values.tax_year,
-        source_of_income: values.source_of_income,
+        tax_types: values.tax_types,
         income_from_ldt_company: values.income_from_ldt_company,
         income_from_partnership_firm: values.income_from_partnership_firm,
         are_you_get_notice_from_tax_office:
@@ -168,21 +158,6 @@ const CreateOrderForm = () => {
     }
   };
 
-  const incomeSources: { value: IncomeSource; label: string }[] = [
-    { value: IncomeSource.GovtJob, label: t("incomeGovtJob") },
-    { value: IncomeSource.PrivateJob, label: t("incomePrivateJob") },
-    { value: IncomeSource.Business, label: t("incomeBusiness") },
-    { value: IncomeSource.Rent, label: t("incomeRent") },
-    { value: IncomeSource.Agriculture, label: t("incomeAgriculture") },
-    { value: IncomeSource.FinancialAsset, label: t("incomeFinancialAsset") },
-    { value: IncomeSource.CapitalGain, label: t("incomeCapitalGain") },
-    { value: IncomeSource.OthersSource, label: t("incomeOtherSource") },
-    {
-      value: IncomeSource.ForignRemitance,
-      label: t("incomeForeignRemittance"),
-    },
-  ];
-
   const additionalOptions = [
     {
       name: "income_from_ldt_company" as const,
@@ -198,9 +173,9 @@ const CreateOrderForm = () => {
     },
   ];
 
-  const selectedIncomeSources = useWatch({
+  const selectedTaxTypes = useWatch({
     control: form.control,
-    name: "source_of_income",
+    name: "tax_types",
   });
   const selectedTaxYear = useWatch({
     control: form.control,
@@ -330,44 +305,52 @@ const CreateOrderForm = () => {
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
               <h2 className="text-xl font-bold text-slate-800">
-                {t("sourceOfIncome")}
+                {t("taxTypeSection")}
               </h2>
               <FormField
                 control={form.control}
-                name="source_of_income"
+                name="tax_types"
                 render={({ field }) => (
                   <FormItem>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {incomeSources.map((source) => {
-                        const checked = field.value.includes(source.value);
-                        return (
-                          <label
-                            key={source.value}
-                            className="flex items-center gap-3 border rounded-xl px-4 py-3 cursor-pointer"
-                          >
-                            <Checkbox
-                              checked={checked}
-                              onCheckedChange={(nextChecked) => {
-                                if (nextChecked) {
-                                  field.onChange([
-                                    ...field.value,
-                                    source.value,
-                                  ]);
-                                  return;
-                                }
-                                field.onChange(
-                                  field.value.filter(
-                                    (value) => value !== source.value,
-                                  ),
-                                );
-                              }}
-                            />
-                            <span className="text-sm text-slate-700">
-                              {source.label}
-                            </span>
-                          </label>
-                        );
-                      })}
+                      {isLoadingTaxTypes &&
+                        Array.from({ length: 6 }).map((_, index) => (
+                          <Skeleton
+                            key={`tax-type-skeleton-${index}`}
+                            className="h-12 rounded-xl"
+                          />
+                        ))}
+                      {!isLoadingTaxTypes &&
+                        activeTaxTypes.map((type) => {
+                          const checked = field.value.includes(type.value);
+                          return (
+                            <label
+                              key={type.value}
+                              className="flex items-center gap-3 border rounded-xl px-4 py-3 cursor-pointer"
+                            >
+                              <Checkbox
+                                checked={checked}
+                                onCheckedChange={(nextChecked) => {
+                                  if (nextChecked) {
+                                    field.onChange([
+                                      ...field.value,
+                                      type.value,
+                                    ]);
+                                    return;
+                                  }
+                                  field.onChange(
+                                    field.value.filter(
+                                      (value) => value !== type.value,
+                                    ),
+                                  );
+                                }}
+                              />
+                              <span className="text-sm text-slate-700">
+                                {readLocalized(type.title, locale)}
+                              </span>
+                            </label>
+                          );
+                        })}
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -411,9 +394,9 @@ const CreateOrderForm = () => {
               <CardContent className="pt-6 space-y-6">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">{t("incomeSources")}</span>
+                    <span className="text-slate-400">{t("taxTypesLabel")}</span>
                     <span className="font-bold">
-                      {selectedIncomeSources.length} {t("selected")}
+                      {selectedTaxTypes.length} {t("selected")}
                     </span>
                   </div>
                   <div className="flex justify-between">

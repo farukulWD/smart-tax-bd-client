@@ -51,6 +51,9 @@ const iconMap: Record<string, any> = {
   entertainment_tax: CircleDollarSign,
   environmental_tax: Leaf,
   wealth_tax: Wallet,
+  housewife_tax_return: Home,
+  agriculture_tax_return: Leaf,
+  non_resident_bangladeshis: Globe2,
 };
 
 const TaxesTypes: FC = () => {
