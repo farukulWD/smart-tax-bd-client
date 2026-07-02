@@ -15,7 +15,9 @@ export default function middleware(request: NextRequest) {
   if (PRIVATE_PATTERN.test(pathname) && !token) {
     const locale = pathname.startsWith("/bn") ? "bn" : "en";
     const loginUrl = new URL(`/${locale}/login`, request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    // Keep the query string (e.g. ?taxType=...) so the post-login redirect
+    // restores the full destination, not just the path.
+    loginUrl.searchParams.set("redirect", pathname + request.nextUrl.search);
     return NextResponse.redirect(loginUrl);
   }
 
