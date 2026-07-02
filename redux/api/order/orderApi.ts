@@ -34,6 +34,7 @@ export interface IOrder {
   income_from_partnership_firm: boolean;
   income_from_ldt_company: boolean;
   source_of_income: IncomeSource[];
+  tax_types?: string[];
   tax_year: string;
   documents?: string[];
   files_upload_pending?: boolean;
@@ -51,7 +52,8 @@ export interface IOrder {
 export interface ICreateTaxStepOnePayload {
   personal_information: IPersonalInformation;
   tax_year: string;
-  source_of_income: IncomeSource[];
+  source_of_income?: IncomeSource[];
+  tax_types?: string[];
   income_from_ldt_company?: boolean;
   income_from_partnership_firm?: boolean;
   are_you_get_notice_from_tax_office?: boolean;
