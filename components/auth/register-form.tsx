@@ -30,7 +30,9 @@ const registerSchema = z
     email: z.string().email({ message: "Invalid email address" }).optional(),
     mobile: z
       .string()
-      .min(11, { message: "Phone number must be at least 11 characters" }),
+      .regex(/^01[3-9]\d{8}$/, {
+        message: "Enter a valid Bangladeshi mobile number (e.g. 01712345678)",
+      }),
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters" }),
@@ -72,9 +74,9 @@ export const RegisterForm = () => {
       const { confirmPassword, ...payload } = data;
       const res = await register(payload).unwrap();
       if (res) {
-        toast.success("Your account has been created successfully");
+        toast.success(t("otpSent"));
         form.reset();
-        router.push("/login");
+        router.push(`/register-verify?mobile=${encodeURIComponent(data.mobile)}`);
       }
     } catch (error) {
       globalErrorHandler(error);

@@ -6,7 +6,7 @@ const intlMiddleware = createMiddleware(routing);
 
 const PRIVATE_PATTERN = /^\/(en|bn)\/profile(\/|$)/;
 const AUTH_PATTERN =
-  /^\/(en|bn)\/(login|register|forgot-password|reset-password|otp-verification)(\/|$)/;
+  /^\/(en|bn)\/(login|register|register-verify|forgot-password|reset-password|otp-verification)(\/|$)/;
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

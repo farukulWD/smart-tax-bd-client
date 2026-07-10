@@ -21,11 +21,12 @@ import { useLoginMutation } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const locale = useLocale();
   const destinationRaw = searchParams.get("redirect") || "/profile";
   // Middleware stores the full locale-prefixed path (/en/...). For a hard
@@ -71,6 +72,10 @@ const LoginComponent = () => {
       }
     } catch (error) {
       globalErrorHandler(error);
+      // Unverified phone: send the user to the OTP screen to finish signup.
+      if ((error as { data?: { needsVerification?: boolean } })?.data?.needsVerification) {
+        router.push(`/register-verify?mobile=${encodeURIComponent(data.mobile)}`);
+      }
     }
   };
 
