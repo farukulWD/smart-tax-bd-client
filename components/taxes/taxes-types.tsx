@@ -140,12 +140,12 @@ const TaxesTypes: FC = () => {
                         {readLocalized(taxType.description, locale)}
                       </CardDescription>
 
-                      <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100">
+                      {/* <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100">
                         <span className="uppercase tracking-wider">
                           {t("exploreDetails")}
                         </span>
                         <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                      </div>
+                      </div> */}
                     </CardContent>
                   </Card>
                 </Link>
