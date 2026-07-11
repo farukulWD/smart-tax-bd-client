@@ -66,8 +66,13 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   }
 
   const order = data.data.tax_order;
+  // Paid once the service fee is settled — either the flag is set (cash/gateway),
+  // the order has advanced past payment, or there is no fee to collect.
   const isPaid =
-    Number(order.fee_amount || 0) <= 0 || order.status === "order_placed";
+    Number(order.fee_amount || 0) <= 0 ||
+    order.is_fee_amount_paid ||
+    order.status === "order_placed" ||
+    order.status === "completed";
 
   // TEMPORARY: bKash is handled manually for now. The SSLCommerz gateway flow
   // below is kept (commented) so it can be restored later — just swap the
