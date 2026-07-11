@@ -50,7 +50,7 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[300px]">
+      <div className="flex items-center justify-center min-h-75">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
@@ -73,24 +73,24 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   // below is kept (commented) so it can be restored later — just swap the
   // payment button onClick back to `handleStartPayment`.
   // const handleStartPayment = async () => {
-    // if (!taxId) return;
-    // try {
-    //   const res = await initTaxStepThreePayment(taxId).unwrap();
-    //   const gatewayUrl = res?.data?.gatewayPageURL;
-    //   if (!gatewayUrl) {
-    //     toast.error("Payment link was not found");
-    //     return;
-    //   }
-    //   window.location.href = gatewayUrl;
-    // } catch (error: any) {
-    //   const message =
-    //     error?.data?.message ||
-    //     error?.data?.error ||
-    //     error?.message ||
-    //     "Payment initialization failed";
-    //   toast.error(message);
-    //   globalErrorHandler(error);
-    // }
+  // if (!taxId) return;
+  // try {
+  //   const res = await initTaxStepThreePayment(taxId).unwrap();
+  //   const gatewayUrl = res?.data?.gatewayPageURL;
+  //   if (!gatewayUrl) {
+  //     toast.error("Payment link was not found");
+  //     return;
+  //   }
+  //   window.location.href = gatewayUrl;
+  // } catch (error: any) {
+  //   const message =
+  //     error?.data?.message ||
+  //     error?.data?.error ||
+  //     error?.message ||
+  //     "Payment initialization failed";
+  //   toast.error(message);
+  //   globalErrorHandler(error);
+  // }
   // };
 
   // TEMPORARY: places the order directly; the author contacts the user for payment.
@@ -145,7 +145,9 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
           {isPaid ? (
             <div className="rounded-lg border border-green-200 bg-green-50 p-4 flex items-center gap-2 text-green-700">
               <CheckCircle2 className="h-5 w-5" />
-              <span className="text-sm font-medium">{t("paymentSuccessful")}</span>
+              <span className="text-sm font-medium">
+                {t("paymentSuccessful")}
+              </span>
             </div>
           ) : (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-center gap-2 text-amber-700">
@@ -179,7 +181,9 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("contactModalTitle")}</DialogTitle>
-            <DialogDescription>{t("contactModalDescription")}</DialogDescription>
+            <DialogDescription>
+              {t("contactModalDescription")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
