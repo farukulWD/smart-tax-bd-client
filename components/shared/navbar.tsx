@@ -43,6 +43,11 @@ export function Navbar() {
       active: pathname === "/news",
     },
     {
+      nameKey: "blog" as const,
+      href: "/blog" as const,
+      active: pathname === "/blog" || pathname.startsWith("/blog/"),
+    },
+    {
       nameKey: "contactUs" as const,
       href: "/contact" as const,
       active: pathname === "/contact",
