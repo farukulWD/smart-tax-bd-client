@@ -466,5 +466,10 @@
     "description": "Hear from taxpayers who trust Smart Tax BD with their filings every year.",
     "seeMore": "See more",
     "seeLess": "See less"
+  },
+  "faq": {
+    "badge": "Got Questions?",
+    "title": "Frequently Asked Questions",
+    "description": "Answers to the questions we hear most often from taxpayers."
   }
 }
