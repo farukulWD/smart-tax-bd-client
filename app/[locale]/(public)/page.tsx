@@ -1,6 +1,7 @@
 import HeroBanner from "@/components/hero-section/hero-banner";
 import TaxesTypes from "@/components/taxes/taxes-types";
 import { HomeBlogSection } from "@/components/blog/home-blog-section";
+import { TestimonialsSection } from "@/components/reviews/testimonials-section";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroBanner />
       <TaxesTypes />
       <HomeBlogSection />
+      <TestimonialsSection />
     </main>
   );
 }
