@@ -16,5 +16,7 @@ export const baseApi = createApi({
     "blog",
     "reviews",
     "faqs",
+    "howItWorks",
+    "howItWorksSection",
   ],
 });
