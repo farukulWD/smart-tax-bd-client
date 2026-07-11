@@ -28,7 +28,7 @@ const OrdersPage = () => {
       </div>
 
       {!isLoading && (!data?.data || data.data.length === 0) ? (
-        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4 border-2 border-dashed rounded-lg">
+        <div className="flex flex-col items-center justify-center min-h-100 space-y-4 border-2 border-dashed rounded-lg">
           <Package className="h-16 w-16 text-muted-foreground" />
           <div className="text-center">
             <h3 className="text-lg font-semibold">{t("noOrderTitle")}</h3>

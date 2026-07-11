@@ -50,9 +50,7 @@ const formSchema = z.object({
     .string()
     .min(1, "Mobile number is required")
     .regex(/^(\+8801|01)[3-9]\d{8}$/, "Invalid mobile number format"),
-  tax_types: z
-    .array(z.string())
-    .min(1, "Please select at least one tax type"),
+  tax_types: z.array(z.string()).min(1, "Please select at least one tax type"),
   tax_year: z.string().min(1, "Tax year is required"),
   income_from_ldt_company: z.boolean(),
   income_from_partnership_firm: z.boolean(),
@@ -358,7 +356,7 @@ const CreateOrderForm = () => {
               />
             </div>
 
-            <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+            {/* <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
               <h2 className="text-xl font-bold text-slate-800">
                 {t("additionalInfo")}
               </h2>
@@ -382,7 +380,7 @@ const CreateOrderForm = () => {
                   )}
                 />
               ))}
-            </div>
+            </div> */}
 
             <Card className="bg-slate-900 text-white rounded-3xl border-none shadow-xl overflow-hidden">
               <CardHeader className="pb-0">
