@@ -4,6 +4,7 @@
     "return": "Return",
     "aboutUs": "About Us",
     "news": "News",
+    "blog": "Blog",
     "contactUs": "Contact Us",
     "logIn": "Log In",
     "logOut": "Log Out",
@@ -193,6 +194,33 @@
     "loading": "Loading...",
     "notFound": "News article not found.",
     "backToNews": "Back to News"
+  },
+  "blog": {
+    "homeBadge": "From the Blog",
+    "homeTitle": "Latest Insights & Guides",
+    "homeDescription": "Fresh articles on taxes in Bangladesh — guides, tips, and updates from our team.",
+    "viewAll": "View all articles",
+    "badge": "Insights & Guides",
+    "title": "Smart Tax Blog",
+    "description": "Practical guides, tips, and insights on taxes in Bangladesh from the Smart Tax BD team.",
+    "searchPlaceholder": "Search articles...",
+    "allCategories": "All",
+    "readMore": "Read more",
+    "views": "views",
+    "loading": "Loading articles...",
+    "noArticles": "No articles found.",
+    "checkBack": "Try a different search or check back later.",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {totalPage}",
+    "backToHome": "Back to Home"
+  },
+  "blogArticle": {
+    "backToBlog": "Back to Blog",
+    "relatedPosts": "Related Articles",
+    "by": "By",
+    "views": "views",
+    "notFound": "Blog post not found."
   },
   "paymentStatus": {
     "success": {
