@@ -15,5 +15,6 @@ export const baseApi = createApi({
     "notifications",
     "blog",
     "reviews",
+    "faqs",
   ],
 });
