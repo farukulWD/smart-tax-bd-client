@@ -12,6 +12,7 @@ import {
   ChevronDownIcon,
   CreditCardIcon,
   FileIcon,
+  StarIcon,
   TruckIcon,
   UserIcon,
 } from "lucide-react";
@@ -30,6 +31,7 @@ const ProfileSidebar = () => {
     { title: t("payments"), href: "/profile/payments" as const, icon: <CreditCardIcon /> },
     { title: t("orders"), href: "/profile/orders" as const, icon: <TruckIcon /> },
     { title: t("notifications"), href: "/profile/notifications" as const, icon: <BellIcon /> },
+    { title: t("reviews"), href: "/profile/reviews" as const, icon: <StarIcon /> },
   ];
 
   const { data: filesData } = useGetMyFilesQuery(undefined, {

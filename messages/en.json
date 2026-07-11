@@ -117,7 +117,8 @@
     "orders": "Orders",
     "myFiles": "My Files",
     "noFiles": "No files yet",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "reviews": "Reviews"
   },
   "notifications": {
     "title": "Notifications",
@@ -442,5 +443,28 @@
     "payableModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to collect this amount. We will reach out to arrange payment.",
     "cancel": "Cancel",
     "okay": "Okay"
+  },
+  "reviewsPage": {
+    "title": "My Review",
+    "description": "Share your experience with Smart Tax BD. Approved reviews appear on our homepage.",
+    "ratingLabel": "Your Rating",
+    "commentLabel": "Your Review",
+    "commentPlaceholder": "Tell us about your experience...",
+    "submit": "Submit Review",
+    "resubmit": "Update Review",
+    "submitting": "Submitting...",
+    "statusLabel": "Status",
+    "statusPending": "Pending approval",
+    "statusApproved": "Approved — visible on our homepage",
+    "statusRejected": "Not approved",
+    "submitSuccess": "Review submitted successfully",
+    "ratingRequired": "Please select a rating"
+  },
+  "testimonials": {
+    "badge": "Client Voices",
+    "title": "Real Stories, Real Savings",
+    "description": "Hear from taxpayers who trust Smart Tax BD with their filings every year.",
+    "seeMore": "See more",
+    "seeLess": "See less"
   }
 }
