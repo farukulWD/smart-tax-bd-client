@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "return": "Return",
     "aboutUs": "About Us",
     "news": "News",
     "contactUs": "Contact Us",
@@ -75,6 +76,7 @@
       "privacyLink": "Privacy Policy",
       "createAccount": "Create Account",
       "creating": "Creating...",
+      "otpSent": "Account created. We sent a verification code to your mobile number.",
       "alreadyHaveAccount": "Already have an account?",
       "signIn": "Sign In"
     },
@@ -88,11 +90,15 @@
     },
     "otpVerification": {
       "tagline": "Enter the 6-digit code sent to",
+      "registerTagline": "Enter the 6-digit verification code sent to",
       "verifyOtp": "Verify OTP",
       "verifying": "Verifying...",
+      "verifiedSuccess": "Mobile number verified successfully. You can now sign in.",
+      "otpResent": "A new code has been sent to your mobile number.",
       "didntReceive": "Didn't receive code?",
       "resend": "Resend",
-      "resending": "Resending..."
+      "resending": "Resending...",
+      "resendIn": "Resend in {time}"
     },
     "resetPassword": {
       "tagline": "Enter your new password below",
@@ -405,6 +411,7 @@
     "retry": "Retry",
     "contactModalTitle": "Payment via bKash",
     "contactModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to complete your bKash payment. Click Okay to place your order and we will reach out to arrange payment.",
+    "payableModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to collect this amount. We will reach out to arrange payment.",
     "cancel": "Cancel",
     "okay": "Okay"
   }

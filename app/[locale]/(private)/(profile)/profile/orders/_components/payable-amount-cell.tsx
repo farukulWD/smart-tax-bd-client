@@ -1,10 +1,19 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type PaymentFor =
+  | "fee_amount"
   | "fee_due_amount"
   | "tax_payable_amount"
   | "remaining_all_amount";
@@ -23,28 +32,12 @@ const formatBDT = (amount: number) =>
 
 export function PayableAmountCell({
   amount,
-  orderId,
-  paymentFor,
   isPaid,
 }: PayableAmountCellProps) {
-  const [createPayment, { isLoading }] = useCreatePaymentMutation();
+  const t = useTranslations("orderPayment");
+  const [isOpen, setIsOpen] = useState(false);
 
   const canPay = !isPaid && amount > 0;
-
-  const handlePay = async () => {
-    if (!canPay || !orderId) return;
-    try {
-      const res = await createPayment({ orderId, paymentFor }).unwrap();
-      const gatewayUrl = res?.data?.gatewayPageURL;
-      if (res?.success && gatewayUrl) {
-        window.location.href = gatewayUrl;
-        return;
-      }
-      toast.error("Payment link was not found");
-    } catch {
-      toast.error("Failed to initialize payment.");
-    }
-  };
 
   if (!canPay) {
     return (
@@ -55,13 +48,29 @@ export function PayableAmountCell({
   }
 
   return (
-    <button
-      onClick={handlePay}
-      disabled={isLoading}
-      className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-    >
-      {isLoading && <Loader2 className="h-3 w-3 animate-spin" />}
-      {formatBDT(amount)}
-    </button>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 flex items-center gap-1"
+      >
+        {formatBDT(amount)}
+      </button>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("contactModalTitle")}</DialogTitle>
+            <DialogDescription>
+              {t("payableModalDescription")}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" onClick={() => setIsOpen(false)}>
+              {t("okay")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

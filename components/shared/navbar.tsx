@@ -27,9 +27,26 @@ export function Navbar() {
 
   const navLinks = [
     { nameKey: "home" as const, href: "/" as const, active: pathname === "/" },
-    { nameKey: "aboutUs" as const, href: "/about" as const, active: pathname === "/about" },
-    { nameKey: "news" as const, href: "/news" as const, active: pathname === "/news" },
-    { nameKey: "contactUs" as const, href: "/contact" as const, active: pathname === "/contact" },
+    {
+      nameKey: "return" as const,
+      href: "/return" as const,
+      active: pathname === "/return",
+    },
+    {
+      nameKey: "aboutUs" as const,
+      href: "/about" as const,
+      active: pathname === "/about",
+    },
+    {
+      nameKey: "news" as const,
+      href: "/news" as const,
+      active: pathname === "/news",
+    },
+    {
+      nameKey: "contactUs" as const,
+      href: "/contact" as const,
+      active: pathname === "/contact",
+    },
   ];
 
   const handleLogout = async () => {
@@ -49,14 +66,22 @@ export function Navbar() {
     router.replace(pathname, { locale: next });
   };
 
-  const nextLocale = routing.locales.find((l) => l !== locale) ?? routing.defaultLocale;
+  const nextLocale =
+    routing.locales.find((l) => l !== locale) ?? routing.defaultLocale;
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/smart-tax-logo.png" alt="Smart Tax BD" width={60} height={60} className="object-contain" priority />
+          <Image
+            src="/smart-tax-logo.png"
+            alt="Smart Tax BD"
+            width={60}
+            height={60}
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
