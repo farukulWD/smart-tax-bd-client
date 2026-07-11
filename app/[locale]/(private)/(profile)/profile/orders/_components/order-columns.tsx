@@ -75,6 +75,21 @@ export const columns: ColumnDef<IOrder>[] = [
     },
   },
   {
+    id: "serviceFee",
+    header: "Service Fee",
+    cell: ({ row }) => {
+      const order = row.original;
+      return (
+        <PayableAmountCell
+          amount={Number(order.fee_amount || 0)}
+          orderId={order._id!}
+          paymentFor="fee_amount"
+          isPaid={order.is_fee_amount_paid}
+        />
+      );
+    },
+  },
+  {
     accessorKey: "fee_due_amount",
     header: "Fee Due",
     cell: ({ row }) => {
@@ -109,21 +124,23 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Total Payable Amount",
     cell: ({ row }) => {
       const order = row.original;
+      const unpaidServiceFee = order.is_fee_amount_paid
+        ? 0
+        : Number(order.fee_amount || 0);
       const unpaidTax = order.is_tax_payable_amount_paid
         ? 0
         : Number(order.tax_payable_amount || 0);
       const unpaidFee = order.is_fee_due_amount_paid
         ? 0
         : Number(order.fee_due_amount || 0);
-      const totalAmount = unpaidTax + unpaidFee;
-      const isPaid = totalAmount === 0;
+      const totalAmount = unpaidServiceFee + unpaidTax + unpaidFee;
       return (
-        <PayableAmountCell
-          amount={totalAmount}
-          orderId={order._id!}
-          paymentFor="remaining_all_amount"
-          isPaid={isPaid}
-        />
+        <span className="font-medium text-muted-foreground">
+          {new Intl.NumberFormat("en-BD", {
+            style: "currency",
+            currency: "BDT",
+          }).format(totalAmount)}
+        </span>
       );
     },
   },
