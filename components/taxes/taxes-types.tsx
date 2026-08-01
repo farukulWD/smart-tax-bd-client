@@ -10,6 +10,7 @@ import {
 } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CircleDollarSign,
   ShoppingCart,
@@ -30,6 +31,7 @@ import {
 import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
 import { useTranslations, useLocale } from "next-intl";
 import { readLocalized } from "@/lib/localize";
+import { isIconUrl } from "./helper/ui-data";
 
 const iconMap: Record<string, any> = {
   income_tax: CircleDollarSign,
@@ -127,8 +129,18 @@ const TaxesTypes: FC = () => {
                     </div>
 
                     <CardHeader className="pb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-green-50 to-emerald-50 border border-green-100/50 flex items-center justify-center mb-4 transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-red-600/20">
-                        <Icon className="w-7 h-7" />
+                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-green-50 to-emerald-50 border border-green-100/50 flex items-center justify-center mb-4 transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-red-600/20 relative overflow-hidden">
+                        {isIconUrl(taxType.icon) ? (
+                          <Image
+                            src={taxType.icon!}
+                            alt=""
+                            fill
+                            sizes="56px"
+                            className="object-contain p-2.5"
+                          />
+                        ) : (
+                          <Icon className="w-7 h-7" />
+                        )}
                       </div>
                       <CardTitle className="text-2xl font-bold text-slate-800 duration-300">
                         {readLocalized(taxType.title, locale)}
