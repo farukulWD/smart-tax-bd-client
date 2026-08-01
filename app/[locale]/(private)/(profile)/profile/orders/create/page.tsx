@@ -38,6 +38,8 @@ import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import Link from "next/link";
+import Image from "next/image";
+import { isIconUrl } from "@/components/taxes/helper/ui-data";
 import { useGetMeQuery } from "@/redux/api/auth/authApi";
 import { useTranslations, useLocale } from "next-intl";
 import { readLocalized } from "@/lib/localize";
@@ -343,6 +345,17 @@ const CreateOrderForm = () => {
                                   );
                                 }}
                               />
+                              {isIconUrl(type.icon) && (
+                                <span className="relative h-6 w-6 shrink-0">
+                                  <Image
+                                    src={type.icon!}
+                                    alt=""
+                                    fill
+                                    sizes="24px"
+                                    className="object-contain"
+                                  />
+                                </span>
+                              )}
                               <span className="text-sm text-slate-700">
                                 {readLocalized(type.title, locale)}
                               </span>
