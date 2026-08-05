@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight, CalendarDays, Eye, ImageIcon } from "lucide-react";
 import { useGetAllBlogsQuery } from "@/redux/api/blog/blogApi";
 import { Skeleton } from "@/components/ui/skeleton";
+import SectionEyebrow from "@/components/shared/section-eyebrow";
 
 export function HomeBlogSection() {
   const t = useTranslations("blog");
@@ -24,19 +25,17 @@ export function HomeBlogSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl space-y-3">
-            <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-              {t("homeBadge")}
-            </p>
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+            <SectionEyebrow>{t("homeBadge")}</SectionEyebrow>
+            <h2 className="text-2xl font-extrabold tracking-tight text-foreground md:text-4xl">
               {t("homeTitle")}
             </h2>
-            <p className="text-base leading-relaxed text-slate-600">
+            <p className="text-base leading-relaxed text-muted-foreground">
               {t("homeDescription")}
             </p>
           </div>
           <Link
             href="/blog"
-            className="inline-flex w-fit items-center gap-2 rounded-full border border-red-600 px-6 py-2.5 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
+            className="inline-flex w-fit items-center gap-2 rounded-full border border-primary px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
           >
             {t("viewAll")}
             <ArrowRight className="h-4 w-4" />
@@ -48,7 +47,7 @@ export function HomeBlogSection() {
             {Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+                className="overflow-hidden rounded-2xl border border-border bg-card"
               >
                 <Skeleton className="h-44 w-full rounded-none" />
                 <div className="space-y-3 p-5">
@@ -65,10 +64,10 @@ export function HomeBlogSection() {
               <Link
                 key={item._id}
                 href={`/blog/${item.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
               >
                 {item.coverImage ? (
-                  <div className="relative h-44 w-full overflow-hidden bg-slate-100">
+                  <div className="relative h-44 w-full overflow-hidden bg-muted">
                     <Image
                       src={item.coverImage}
                       alt={item.title}
@@ -87,16 +86,16 @@ export function HomeBlogSection() {
                   <span className="inline-flex w-fit rounded-full bg-green-100 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-green-700">
                     {item.category}
                   </span>
-                  <h3 className="text-base font-semibold leading-snug text-slate-900 line-clamp-2 transition-colors group-hover:text-red-700">
+                  <h3 className="text-base font-semibold leading-snug text-foreground line-clamp-2 transition-colors group-hover:text-primary">
                     {item.title}
                   </h3>
                   {item.excerpt && (
-                    <p className="text-sm leading-relaxed text-slate-500 line-clamp-2">
+                    <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
                       {item.excerpt}
                     </p>
                   )}
-                  <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-3">
-                    <div className="flex items-center gap-3 text-xs text-slate-400">
+                  <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-3">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground/80">
                       <span className="flex items-center gap-1.5">
                         <CalendarDays className="h-3.5 w-3.5" />
                         {item.publishedAt
@@ -115,7 +114,7 @@ export function HomeBlogSection() {
                         {item.views}
                       </span>
                     </div>
-                    <ArrowRight className="h-4 w-4 text-red-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <ArrowRight className="h-4 w-4 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
                   </div>
                 </div>
               </Link>

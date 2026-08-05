@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetFaqsQuery } from "@/redux/api/faq/faqApi";
+import SectionEyebrow from "@/components/shared/section-eyebrow";
 
 export function FaqSection() {
   const t = useTranslations("faq");
@@ -22,13 +23,11 @@ export function FaqSection() {
     <section className="py-14 md:py-20 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="mb-10 text-center">
-          <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-            {t("badge")}
-          </p>
-          <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+          <SectionEyebrow>{t("badge")}</SectionEyebrow>
+          <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-4xl">
             {t("title")}
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
             {t("description")}
           </p>
         </div>
@@ -43,10 +42,10 @@ export function FaqSection() {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((item) => (
               <AccordionItem key={item._id} value={item._id}>
-                <AccordionTrigger className="text-base font-semibold text-slate-900">
+                <AccordionTrigger className="text-base font-semibold text-foreground">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm leading-relaxed text-slate-600">
+                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
