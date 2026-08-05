@@ -69,7 +69,7 @@ export function HowItWorksSection() {
             ? Array.from({ length: 5 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex w-full max-w-55 flex-1 basis-55 flex-col items-center"
+                  className="flex w-full max-w-[45%] flex-1 basis-[45%] flex-col items-center sm:max-w-55 sm:basis-55"
                 >
                   <Skeleton className="z-10 -mb-8 h-16 w-16 rounded-full" />
                   <Skeleton className="h-32 w-full rounded-2xl" />
@@ -80,7 +80,7 @@ export function HowItWorksSection() {
                 return (
                   <div
                     key={step._id}
-                    className="flex w-full max-w-55 flex-1 basis-55 flex-col items-center"
+                    className="flex w-full max-w-[45%] flex-1 basis-[45%] flex-col items-center sm:max-w-55 sm:basis-55"
                   >
                     <div className="z-10 -mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-green-600 text-white shadow-lg">
                       <Icon className="h-7 w-7" />
