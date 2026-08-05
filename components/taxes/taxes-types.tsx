@@ -1,62 +1,13 @@
 "use client";
 
 import { FC } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  CircleDollarSign,
-  ShoppingCart,
-  ReceiptText,
-  Briefcase,
-  Globe2,
-  ArrowRight,
-  ShieldCheck,
-  Home,
-  Building2,
-  TrendingUp,
-  Gift,
-  Landmark,
-  Coins,
-  Leaf,
-  Wallet,
-} from "lucide-react";
-import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
 import { useTranslations, useLocale } from "next-intl";
+import { Skeleton } from "../ui/skeleton";
+import { useGetTaxTypesQuery } from "@/redux/api/order/orderApi";
 import { readLocalized } from "@/lib/localize";
-import { isIconUrl } from "./helper/ui-data";
-
-const iconMap: Record<string, any> = {
-  income_tax: CircleDollarSign,
-  income_tax_government: Landmark,
-  income_tax_non_government: Briefcase,
-  sales_tax: ShoppingCart,
-  vat: ReceiptText,
-  value_added_tax: ReceiptText,
-  service_tax: Briefcase,
-  import_duty: Globe2,
-  business_tax: Building2,
-  house_rental_tax: Home,
-  property_tax: Landmark,
-  capital_gains_tax: TrendingUp,
-  excise_duty: Coins,
-  customs_duty: Globe2,
-  gift_tax: Gift,
-  inheritance_tax: Wallet,
-  entertainment_tax: CircleDollarSign,
-  environmental_tax: Leaf,
-  wealth_tax: Wallet,
-  housewife_tax_return: Home,
-  agriculture_tax_return: Leaf,
-  non_resident_bangladeshis: Globe2,
-};
+import { getInitials, isIconUrl } from "./helper/ui-data";
 
 const TaxesTypes: FC = () => {
   const t = useTranslations("taxTypes");
@@ -69,108 +20,67 @@ const TaxesTypes: FC = () => {
   });
 
   return (
-    <section
-      id="tax-categories"
-      className="py-14 md:py-20 px-4 bg-slate-50/30 relative overflow-hidden scroll-mt-24"
-    >
-      {/* Decorative background elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-100/20 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-green-100/10 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4">
-              <ShieldCheck className="w-4 h-4" />
-              <span>{t("badge")}</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
-              {t("title")} <span className="text-red-600">&</span>{" "}
-              {t("titleSuffix")}
-            </h2>
-            <p className="text-slate-600 text-lg leading-relaxed">
-              {t("description")}
-            </p>
-          </div>
+    <section id="tax-categories" className="scroll-mt-24 px-4 pt-8 pb-14 md:pt-10 md:pb-16">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-3">
+          <h2 className="text-2xl font-bold text-foreground">
+            {t("title")} {t("titleSuffix")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {isLoading &&
-            Array.from({ length: 6 }).map((_, index) => (
-              <Card
+            Array.from({ length: 12 }).map((_, index) => (
+              <Skeleton
                 key={`tax-skeleton-${index}`}
-                className="h-full border-slate-200/60 bg-white rounded-2xl p-6"
-              >
-                <CardHeader className="pb-4 px-0">
-                  <Skeleton className="w-14 h-14 rounded-2xl mb-4" />
-                  <Skeleton className="h-8 w-3/4" />
-                </CardHeader>
-                <CardContent className="px-0 space-y-3">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-5/6" />
-                  <Skeleton className="h-4 w-2/3" />
-                </CardContent>
-              </Card>
+                className="aspect-square rounded-2xl"
+              />
             ))}
 
           {!isLoading &&
-            taxTypes?.map((taxType) => {
-              const Icon = iconMap[taxType.value] || CircleDollarSign;
+            taxTypes?.map((taxType) => (
+              <Link
+                key={taxType.value}
+                href={`/profile/orders/create?taxType=${taxType.value}`}
+                className="flex aspect-square flex-col items-center overflow-hidden rounded-2xl border border-border bg-card p-2 shadow-sm transition-colors hover:bg-accent/40"
+              >
+                {/* The icon sits in its own flexible region and the title in a
+                    fixed-height one, so the chip lands at the same spot on
+                    every tile regardless of how many lines the title takes. */}
+                <div className="flex flex-1 items-center">
+                  <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-secondary">
+                    {isIconUrl(taxType.icon) ? (
+                      <Image
+                        src={taxType.icon!}
+                        alt=""
+                        fill
+                        sizes="40px"
+                        className="object-contain p-2"
+                      />
+                    ) : (
+                      <span className="text-xs font-bold text-secondary-foreground">
+                        {getInitials(readLocalized(taxType.title, "en"))}
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-              return (
-                <Link
-                  href={`/profile/orders/create?taxType=${taxType.value}`}
-                  key={taxType.value}
-                  className="group block h-full"
-                >
-                  <Card className="h-full border-slate-200/60 bg-white hover:bg-white transition-all duration-500 overflow-hidden relative rounded-2xl p-2">
-                    <div className="absolute -right-4 -top-4 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-700 pointer-events-none">
-                      <Icon className="w-40 h-40 text-slate-900" />
-                    </div>
-
-                    <CardHeader className="pb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-green-50 to-emerald-50 border border-green-100/50 flex items-center justify-center mb-4 transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-red-600/20 relative overflow-hidden">
-                        {isIconUrl(taxType.icon) ? (
-                          <Image
-                            src={taxType.icon!}
-                            alt=""
-                            fill
-                            sizes="56px"
-                            className="object-contain p-2.5"
-                          />
-                        ) : (
-                          <Icon className="w-7 h-7" />
-                        )}
-                      </div>
-                      <CardTitle className="text-2xl font-bold text-slate-800 duration-300">
-                        {readLocalized(taxType.title, locale)}
-                      </CardTitle>
-                    </CardHeader>
-
-                    <CardContent className="flex flex-col flex-1">
-                      <CardDescription className="text-slate-600 grow text-[15px] leading-relaxed line-clamp-3 mb-8">
-                        {readLocalized(taxType.description, locale)}
-                      </CardDescription>
-
-                      {/* <div className="flex items-center text-sm font-bold text-red-600 pt-4 border-t border-slate-100">
-                        <span className="uppercase tracking-wider">
-                          {t("exploreDetails")}
-                        </span>
-                        <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                      </div> */}
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
+                <span className="line-clamp-3 h-12 w-full text-center text-xs font-semibold leading-4 text-foreground">
+                  {readLocalized(taxType.title, locale)}
+                </span>
+              </Link>
+            ))}
         </div>
 
         {!isLoading && (!taxTypes || taxTypes.length === 0) && (
-          <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white/70 p-8 text-center">
-            <h3 className="text-xl font-bold text-slate-800">
+          <div className="py-10 text-center">
+            <p className="text-sm font-semibold text-foreground">
               {t("noCategories")}
-            </h3>
-            <p className="mt-2 text-slate-600">{t("noCategoriesDesc")}</p>
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("noCategoriesDesc")}
+            </p>
           </div>
         )}
       </div>

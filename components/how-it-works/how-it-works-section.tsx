@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import SectionEyebrow from "@/components/shared/section-eyebrow";
 import {
   useGetHowItWorkSectionQuery,
   useGetHowItWorksQuery,
@@ -50,15 +51,13 @@ export function HowItWorksSection() {
           ) : (
             <>
               {section?.badge && (
-                <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-                  {section.badge}
-                </p>
+                <SectionEyebrow>{section.badge}</SectionEyebrow>
               )}
-              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-4xl">
                 {section?.titlePrefix}{" "}
-                <span className="text-red-600">{section?.titleHighlight}</span>
+                <span className="text-primary">{section?.titleHighlight}</span>
               </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
+              <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
                 {section?.description}
               </p>
             </>
@@ -70,7 +69,7 @@ export function HowItWorksSection() {
             ? Array.from({ length: 5 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex w-full max-w-55 flex-1 basis-55 flex-col items-center"
+                  className="flex w-full max-w-[45%] flex-1 basis-[45%] flex-col items-center sm:max-w-55 sm:basis-55"
                 >
                   <Skeleton className="z-10 -mb-8 h-16 w-16 rounded-full" />
                   <Skeleton className="h-32 w-full rounded-2xl" />
@@ -81,21 +80,21 @@ export function HowItWorksSection() {
                 return (
                   <div
                     key={step._id}
-                    className="flex w-full max-w-55 flex-1 basis-55 flex-col items-center"
+                    className="flex w-full max-w-[45%] flex-1 basis-[45%] flex-col items-center sm:max-w-55 sm:basis-55"
                   >
                     <div className="z-10 -mb-8 flex h-16 w-16 items-center justify-center rounded-full bg-green-600 text-white shadow-lg">
                       <Icon className="h-7 w-7" />
                     </div>
-                    <Card className="flex h-full w-full flex-col rounded-2xl border-slate-200/60 pt-10 text-center shadow-sm">
+                    <Card className="flex h-full w-full flex-col rounded-2xl border-border/60 pt-10 text-center shadow-sm">
                       <CardContent className="flex flex-1 flex-col justify-center">
-                        <p className="text-lg font-bold text-slate-900">
+                        <p className="text-lg font-bold text-foreground">
                           Step {index + 1}
                         </p>
-                        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                           {step.title}
                         </p>
                         {step.description && (
-                          <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                             {step.description}
                           </p>
                         )}

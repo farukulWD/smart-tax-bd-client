@@ -12,6 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetPublicReviewsQuery } from "@/redux/api/review/reviewApi";
 import { TestimonialCard } from "./testimonial-card";
+import SectionEyebrow from "@/components/shared/section-eyebrow";
 
 export function TestimonialsSection() {
   const t = useTranslations("testimonials");
@@ -22,16 +23,14 @@ export function TestimonialsSection() {
   if (!isLoading && reviews.length === 0) return null;
 
   return (
-    <section className="py-14 md:py-20 px-4 bg-green-50/50">
+    <section className="py-14 md:py-20 px-4 bg-secondary/50">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 text-center">
-          <p className="inline-flex rounded-full border border-green-200 bg-green-100 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green-700">
-            {t("badge")}
-          </p>
-          <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+          <SectionEyebrow>{t("badge")}</SectionEyebrow>
+          <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-4xl">
             {t("title")}
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
             {t("description")}
           </p>
         </div>
@@ -41,7 +40,7 @@ export function TestimonialsSection() {
             {Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
-                className="space-y-3 rounded-2xl border border-slate-200 bg-white p-6"
+                className="space-y-3 rounded-2xl border border-border bg-card p-6"
               >
                 <div className="flex items-center gap-3">
                   <Skeleton className="h-11 w-11 rounded-full" />
