@@ -20,7 +20,7 @@ const TaxesTypes: FC = () => {
   });
 
   return (
-    <section id="tax-categories" className="scroll-mt-24 px-4 py-14 md:py-20">
+    <section id="tax-categories" className="scroll-mt-24 px-4 pt-8 pb-14 md:pt-10 md:pb-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-3">
           <h2 className="text-2xl font-bold text-foreground">
