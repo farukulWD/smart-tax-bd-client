@@ -29,12 +29,12 @@ const TaxesTypes: FC = () => {
           <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {isLoading &&
             Array.from({ length: 12 }).map((_, index) => (
               <Skeleton
                 key={`tax-skeleton-${index}`}
-                className="min-h-26 rounded-2xl"
+                className="aspect-square rounded-2xl"
               />
             ))}
 
@@ -43,7 +43,7 @@ const TaxesTypes: FC = () => {
               <Link
                 key={taxType.value}
                 href={`/profile/orders/create?taxType=${taxType.value}`}
-                className="flex min-h-26 flex-col items-center justify-center rounded-2xl border border-border bg-card p-2 shadow-sm transition-colors hover:bg-accent/40"
+                className="flex aspect-square flex-col items-center justify-center rounded-2xl border border-border bg-card p-2 shadow-sm transition-colors hover:bg-accent/40"
               >
                 <div className="relative mb-2 flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-secondary">
                   {isIconUrl(taxType.icon) ? (
