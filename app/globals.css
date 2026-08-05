@@ -126,6 +126,11 @@
   button {
     @apply cursor-pointer;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
 }
 
 @keyframes ticker-scroll {
