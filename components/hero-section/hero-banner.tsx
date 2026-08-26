@@ -97,7 +97,7 @@ const HeroBanner = () => {
                 {/* QR quiet zone must stay literal white for scannability */}
                 <div className="overflow-hidden rounded-lg bg-white p-2 shadow-sm transition-transform duration-300 group-hover:scale-[1.03]">
                   <Image
-                    src="/qrcode.jpeg"
+                    src="/qrcode.png"
                     alt={t("downloadAppSubtitle")}
                     width={200}
                     height={200}
