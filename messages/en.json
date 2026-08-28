@@ -419,7 +419,7 @@
     "previewNotAvailable": "Preview not available for this file type.",
     "downloadToView": "Download to view.",
     "close": "Close",
-    "downloading": "Downloading\u2026",
+    "downloading": "Downloading…",
     "download": "Download"
   },
   "orderPayment": {
@@ -442,7 +442,18 @@
     "contactModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to complete your bKash payment. Click Okay to place your order and we will reach out to arrange payment.",
     "payableModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to collect this amount. We will reach out to arrange payment.",
     "cancel": "Cancel",
-    "okay": "Okay"
+    "okay": "Okay",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total Payable",
+    "couponPlaceholder": "Coupon code",
+    "applyCoupon": "Apply",
+    "removeCoupon": "Remove",
+    "couponApplied": "Coupon applied.",
+    "couponRemoved": "Coupon removed.",
+    "couponApplyFailed": "Could not apply this coupon.",
+    "couponRemoveFailed": "Could not remove the coupon.",
+    "couponCoveredFee": "The coupon covered the full service fee. Your order is placed."
   },
   "reviewsPage": {
     "title": "My Review",
