@@ -24,32 +24,34 @@ Measured at 1440x900: navbar bottom 81 + ticker → hero occupies 117–702 (585
 ### Task 1: Compact + tokenize hero
 
 **Files:**
+
 - Modify: `components/hero-section/hero-banner.tsx` (className-only)
 
 **Interfaces:**
+
 - Consumes: nothing new.
 - Produces: nothing consumed by later tasks.
 
 - [ ] **Step 1: Apply class changes** (before → after)
 
-| Line | Before | After |
-|---|---|---|
-| 10 section | `relative w-full min-h-[65vh] bg-linear-to-b from-green-100 to-green-200 overflow-hidden` | drop `min-h-[65vh]`: `relative w-full bg-linear-to-b from-green-100 to-green-200 overflow-hidden` |
-| 51 container | `py-10 lg:py-14` | `py-6 lg:py-8` |
-| 52 grid | `min-h-90 md:min-h-105 grid items-center gap-10 lg:grid-cols-2` | `grid items-center gap-6 lg:grid-cols-2 lg:gap-10` |
-| 55 h1 | `text-4xl font-extrabold tracking-tight lg:text-5xl text-slate-900` | `text-3xl font-extrabold tracking-tight lg:text-4xl text-foreground` |
-| 58 subtitle | `text-lg text-slate-700 font-medium max-w-xl mx-auto lg:mx-0` | `text-base text-muted-foreground font-medium max-w-xl mx-auto lg:mx-0` |
-| 61 CTA row | `flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-3` | `flex flex-row flex-wrap items-center justify-center lg:justify-start gap-3 pt-2` |
-| 64 primary CTA | `bg-red-600 px-6 py-3 ... text-white ... hover:bg-red-700` | `bg-primary px-5 py-2.5 ... text-primary-foreground ... hover:bg-primary/90` |
-| 70 outline CTA | `border-red-600/50 bg-white/80 px-6 py-3 ... text-red-700 ... hover:bg-white` | `border-primary/50 bg-background/80 px-5 py-2.5 ... text-primary ... hover:bg-background` |
-| 79 QR card | `max-w-sm rounded-3xl ... bg-white/80 p-6 ... sm:p-8` | `max-w-xs rounded-2xl ... bg-card/80 p-4 ... sm:p-5` |
-| 87 card subtitle | `mt-2 text-base font-medium text-slate-800` | `mt-1 text-sm font-medium text-card-foreground` |
-| 92 QR wrapper | `mt-6` | `mt-4` |
-| 93–96 brackets | `h-6 w-6 ... border-red-500` (x4) | `h-5 w-5 ... border-primary` |
-| 97 QR frame | `rounded-xl bg-white p-3` | `rounded-lg bg-white p-2` (keep literal white) |
-| 103 QR image | `h-44 w-44 ... sm:h-48 sm:w-48` | `h-32 w-32 ... sm:h-36 sm:w-36` |
-| 109 scan line | `mt-5 ... text-sm text-slate-600` | `mt-3 ... text-xs text-muted-foreground` |
-| 114 footer | `mt-4 border-t border-slate-200 pt-3 ... text-xs ... text-slate-500` | `mt-2 ... text-[11px] ... text-muted-foreground` (drop divider, keep both strings) |
+| Line             | Before                                                                                    | After                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 10 section       | `relative w-full min-h-[65vh] bg-linear-to-b from-green-100 to-green-200 overflow-hidden` | drop `min-h-[65vh]`: `relative w-full bg-linear-to-b from-green-100 to-green-200 overflow-hidden` |
+| 51 container     | `py-10 lg:py-14`                                                                          | `py-6 lg:py-8`                                                                                    |
+| 52 grid          | `min-h-90 md:min-h-105 grid items-center gap-10 lg:grid-cols-2`                           | `grid items-center gap-6 lg:grid-cols-2 lg:gap-10`                                                |
+| 55 h1            | `text-4xl font-extrabold tracking-tight lg:text-5xl text-slate-900`                       | `text-3xl font-extrabold tracking-tight lg:text-4xl text-foreground`                              |
+| 58 subtitle      | `text-lg text-slate-700 font-medium max-w-xl mx-auto lg:mx-0`                             | `text-base text-muted-foreground font-medium max-w-xl mx-auto lg:mx-0`                            |
+| 61 CTA row       | `flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-3`       | `flex flex-row flex-wrap items-center justify-center lg:justify-start gap-3 pt-2`                 |
+| 64 primary CTA   | `bg-red-600 px-6 py-3 ... text-white ... hover:bg-red-700`                                | `bg-primary px-5 py-2.5 ... text-primary-foreground ... hover:bg-primary/90`                      |
+| 70 outline CTA   | `border-red-600/50 bg-white/80 px-6 py-3 ... text-red-700 ... hover:bg-white`             | `border-primary/50 bg-background/80 px-5 py-2.5 ... text-primary ... hover:bg-background`         |
+| 79 QR card       | `max-w-sm rounded-3xl ... bg-white/80 p-6 ... sm:p-8`                                     | `max-w-xs rounded-2xl ... bg-card/80 p-4 ... sm:p-5`                                              |
+| 87 card subtitle | `mt-2 text-base font-medium text-slate-800`                                               | `mt-1 text-sm font-medium text-card-foreground`                                                   |
+| 92 QR wrapper    | `mt-6`                                                                                    | `mt-4`                                                                                            |
+| 93–96 brackets   | `h-6 w-6 ... border-red-500` (x4)                                                         | `h-5 w-5 ... border-primary`                                                                      |
+| 97 QR frame      | `rounded-xl bg-white p-3`                                                                 | `rounded-lg bg-white p-2` (keep literal white)                                                    |
+| 103 QR image     | `h-44 w-44 ... sm:h-48 sm:w-48`                                                           | `h-32 w-32 ... sm:h-36 sm:w-36`                                                                   |
+| 109 scan line    | `mt-5 ... text-sm text-slate-600`                                                         | `mt-3 ... text-xs text-muted-foreground`                                                          |
+| 114 footer       | `mt-4 border-t border-slate-200 pt-3 ... text-xs ... text-slate-500`                      | `mt-2 ... text-[11px] ... text-muted-foreground` (drop divider, keep both strings)                |
 
 - [ ] **Step 2: Lint** — `pnpm lint`; hero file clean (repo baseline 3 errors elsewhere pre-exists).
 
@@ -63,6 +65,7 @@ git commit -m "feat(hero): compact hero so tax types surface above the fold"
 ### Task 2: TaxesTypes top padding
 
 **Files:**
+
 - Modify: `components/taxes/taxes-types.tsx:23`
 
 - [ ] **Step 1:** `scroll-mt-24 px-4 py-14 md:py-20` → `scroll-mt-24 px-4 pt-8 pb-14 md:pt-10 md:pb-16` (asymmetric: only the fold-relevant top pad shrinks).
@@ -77,6 +80,7 @@ git commit -m "feat(taxes): tighten section top padding for above-the-fold visib
 ### Task 3: Smooth scrolling
 
 **Files:**
+
 - Modify: `app/globals.css` (inside `@layer base`)
 - Modify: `app/[locale]/layout.tsx` (`<html>` tag)
 
@@ -102,6 +106,7 @@ git commit -m "feat(ux): smooth in-page anchor scrolling with reduced-motion gua
 ### Task 4: Token consistency + eyebrow extraction
 
 **Files:**
+
 - Create: `components/shared/section-eyebrow.tsx`
 - Modify: `components/how-it-works/how-it-works-section.tsx`, `components/blog/home-blog-section.tsx`, `components/reviews/testimonials-section.tsx`, `components/faq/faq-section.tsx`
 
@@ -123,19 +128,19 @@ Swap the byte-identical inline pill in all four sections (`how-it-works-section.
 
 - [ ] **Step 2: Mechanical token sweep** in the four sections:
 
-| Literal | Token |
-|---|---|
-| `text-slate-900` | `text-foreground` |
-| `text-slate-600` / `-700` / `-500` | `text-muted-foreground` |
-| `text-slate-400` | `text-muted-foreground/80` |
-| `border-slate-200(/60)` / `-100` | `border-border(/60)` |
-| `bg-white` (cards/skeletons) | `bg-card` |
-| `bg-slate-100` | `bg-muted` |
-| `bg-red-600` / `hover:bg-red-700` | `bg-primary` / `hover:bg-primary/90` |
-| `text-red-600/-700`, `border-red-600(/50)` | `text-primary`, `border-primary(/50)` |
-| `hover:bg-red-50` | `hover:bg-primary/5` |
-| `bg-green-50/50` (testimonials band) | `bg-secondary/50` |
-| gradient greens, `bg-green-600` circles, `text-green-700` accents | keep literal |
+| Literal                                                           | Token                                 |
+| ----------------------------------------------------------------- | ------------------------------------- |
+| `text-slate-900`                                                  | `text-foreground`                     |
+| `text-slate-600` / `-700` / `-500`                                | `text-muted-foreground`               |
+| `text-slate-400`                                                  | `text-muted-foreground/80`            |
+| `border-slate-200(/60)` / `-100`                                  | `border-border(/60)`                  |
+| `bg-white` (cards/skeletons)                                      | `bg-card`                             |
+| `bg-slate-100`                                                    | `bg-muted`                            |
+| `bg-red-600` / `hover:bg-red-700`                                 | `bg-primary` / `hover:bg-primary/90`  |
+| `text-red-600/-700`, `border-red-600(/50)`                        | `text-primary`, `border-primary(/50)` |
+| `hover:bg-red-50`                                                 | `hover:bg-primary/5`                  |
+| `bg-green-50/50` (testimonials band)                              | `bg-secondary/50`                     |
+| gradient greens, `bg-green-600` circles, `text-green-700` accents | keep literal                          |
 
 `components/reviews/testimonial-card.tsx` has the same literals — optional follow-up, out of scope here.
 
@@ -161,7 +166,7 @@ git commit -m "refactor(home): align home sections to semantic tokens, extract S
 ## Risks / tradeoffs
 
 - QR shrinks 176/192→128/144px and loses dominance — deliberate; still scannable (~3.8cm at sm).
-- No store URL exists in the repo (only `/qrcode.jpeg` encodes it) — mobile keeps compact QR card; adding a tap-through link would need new data.
+- No store URL exists in the repo (only `/qrcode.png` encodes it) — mobile keeps compact QR card; adding a tap-through link would need new data.
 - `slate-600/700 → muted-foreground` lightens body copy a shade — matches taxes-types subtitle already.
 - Hero height now content-driven; longer translations grow it (self-correcting).
 - Bengali renders taller lines but shorter strings — verify no `items-center` oddness.

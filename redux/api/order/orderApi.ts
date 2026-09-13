@@ -22,6 +22,16 @@ export interface IPersonalInformation {
   are_you_house_wife: boolean;
 }
 
+/** Frozen coupon snapshot the server writes onto the order when one is applied. */
+export interface IAppliedCoupon {
+  code: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  /** BDT taken off the service fee. The only field to use for money math. */
+  discount_amount: number;
+  applied_at?: string;
+}
+
 export interface IOrder {
   _id?: string;
   userId?: string;
@@ -46,6 +56,9 @@ export interface IOrder {
   fee_due_amount: number;
   is_fee_due_amount_paid: boolean;
   tax_paid_date?: string;
+  total_amount?: number;
+  total_paid_amount?: number;
+  applied_coupon?: IAppliedCoupon;
   createdAt?: string;
 }
 
@@ -69,7 +82,10 @@ export interface ITaxStepOneResponse {
 export interface ITaxStepThreeResponse {
   tax_order: IOrder;
   payable_amount: number;
-  gatewayPageURL: string;
+  /** Null when a coupon covered the whole fee — there is nothing to redirect to. */
+  gatewayPageURL: string | null;
+  /** True when the order was settled without a gateway hop. */
+  paid?: boolean;
   transaction_id: string;
 }
 

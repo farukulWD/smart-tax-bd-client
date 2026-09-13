@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { OrderActions } from "./order-actions";
 import { PayableAmountCell } from "./payable-amount-cell";
 import Link from "next/link";
+import { getPayableFeeAmount } from "@/lib/order-amounts";
 
 const statusVariant = (status: string) => {
   const normalized = status?.toLowerCase();
@@ -81,7 +82,7 @@ export const columns: ColumnDef<IOrder>[] = [
       const order = row.original;
       return (
         <PayableAmountCell
-          amount={Number(order.fee_amount || 0)}
+          amount={getPayableFeeAmount(order)}
           orderId={order._id!}
           paymentFor="fee_amount"
           isPaid={order.is_fee_amount_paid}
@@ -126,7 +127,7 @@ export const columns: ColumnDef<IOrder>[] = [
       const order = row.original;
       const unpaidServiceFee = order.is_fee_amount_paid
         ? 0
-        : Number(order.fee_amount || 0);
+        : getPayableFeeAmount(order);
       const unpaidTax = order.is_tax_payable_amount_paid
         ? 0
         : Number(order.tax_payable_amount || 0);
