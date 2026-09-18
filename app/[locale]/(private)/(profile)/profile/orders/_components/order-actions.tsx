@@ -12,12 +12,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { IOrder } from "@/redux/api/order/orderApi";
 import { Eye } from "lucide-react";
+import { useTaxTypeTitle } from "@/hooks/use-tax-type-title";
 
 interface OrderActionsProps {
   order: IOrder;
 }
 
 export function OrderActions({ order }: OrderActionsProps) {
+  const taxTypeTitle = useTaxTypeTitle();
+
   return (
     <div className="flex items-center gap-2">
       <Dialog>
@@ -73,14 +76,14 @@ export function OrderActions({ order }: OrderActionsProps) {
               </span>
             </p>
             <div className="flex flex-wrap gap-2">
-              {(order.source_of_income || []).length ? (
-                order.source_of_income.map((type, index) => (
-                  <Badge key={`${type}-${index}`} variant="outline">
-                    {type}
+              {order.tax_types?.length ? (
+                order.tax_types.map((value) => (
+                  <Badge key={value} variant="outline">
+                    {taxTypeTitle(value)}
                   </Badge>
                 ))
               ) : (
-                <span className="text-muted-foreground">No income sources</span>
+                <span className="text-muted-foreground">No tax types</span>
               )}
             </div>
           </div>
