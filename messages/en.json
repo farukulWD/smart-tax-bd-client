@@ -69,7 +69,7 @@
       "fullNamePlaceholder": "Full Name *",
       "phonePlaceholder": "Phone Number *",
       "emailPlaceholder": "Email Address *",
-      "passwordPlaceholder": "Password *",
+      "passwordPlaceholder": "Password * (at least 4 digits)",
       "confirmPasswordPlaceholder": "Confirm Password *",
       "termsPrefix": "I agree to the",
       "termsLink": "Terms of Service",
@@ -103,7 +103,7 @@
     },
     "resetPassword": {
       "tagline": "Enter your new password below",
-      "newPasswordPlaceholder": "New Password *",
+      "newPasswordPlaceholder": "New Password * (at least 4 digits)",
       "confirmPasswordPlaceholder": "Confirm Password *",
       "resetPassword": "Reset Password",
       "resetting": "Resetting Password...",
