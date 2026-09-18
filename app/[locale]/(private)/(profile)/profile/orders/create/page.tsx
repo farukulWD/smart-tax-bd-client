@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -46,17 +44,8 @@ import { readLocalized } from "@/lib/localize";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().optional(),
-  mobile: z
-    .string()
-    .min(1, "Mobile number is required")
-    .regex(/^(\+8801|01)[3-9]\d{8}$/, "Invalid mobile number format"),
   tax_types: z.array(z.string()).min(1, "Please select at least one tax type"),
   tax_year: z.string().min(1, "Tax year is required"),
-  income_from_ldt_company: z.boolean(),
-  income_from_partnership_firm: z.boolean(),
-  are_you_get_notice_from_tax_office: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -94,30 +83,10 @@ const CreateOrderForm = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      mobile: "",
       tax_types: [],
       tax_year: `${CURRENT_YEAR}-${CURRENT_YEAR + 1}`,
-      income_from_ldt_company: false,
-      income_from_partnership_firm: false,
-      are_you_get_notice_from_tax_office: false,
     },
   });
-
-  useEffect(() => {
-    if (profileData) {
-      if (profileData.name && !form.getValues("name")) {
-        form.setValue("name", profileData.name);
-      }
-      if (profileData.email && !form.getValues("email")) {
-        form.setValue("email", profileData.email);
-      }
-      if (profileData.mobile && !form.getValues("mobile")) {
-        form.setValue("mobile", profileData.mobile);
-      }
-    }
-  }, [profileData, form]);
 
   useEffect(() => {
     const matched = activeTaxTypes.some((type) => type.value === taxType);
@@ -127,21 +96,22 @@ const CreateOrderForm = () => {
   }, [taxType, activeTaxTypes, form]);
 
   const onSubmit = async (values: FormValues) => {
+    if (!profileData?.name || !profileData?.mobile) {
+      toast.error("Complete your profile before creating an order");
+      return;
+    }
+
     try {
       const orderResponse = await createTaxStepOne({
         personal_information: {
-          name: values.name,
-          ...(values.email ? { email: values.email } : {}),
-          phone: values.mobile,
+          name: profileData.name,
+          ...(profileData.email ? { email: profileData.email } : {}),
+          phone: profileData.mobile,
           are_you_student: false,
           are_you_house_wife: false,
         },
         tax_year: values.tax_year,
         tax_types: values.tax_types,
-        income_from_ldt_company: values.income_from_ldt_company,
-        income_from_partnership_firm: values.income_from_partnership_firm,
-        are_you_get_notice_from_tax_office:
-          values.are_you_get_notice_from_tax_office,
       }).unwrap();
 
       const orderId = orderResponse?.data?.tax_order?._id;
@@ -158,21 +128,6 @@ const CreateOrderForm = () => {
     }
   };
 
-  const additionalOptions = [
-    {
-      name: "income_from_ldt_company" as const,
-      label: t("incomeLtdCompany"),
-    },
-    {
-      name: "income_from_partnership_firm" as const,
-      label: t("incomePartnershipFirm"),
-    },
-    {
-      name: "are_you_get_notice_from_tax_office" as const,
-      label: t("receivedNotice"),
-    },
-  ];
-
   const selectedTaxTypes = useWatch({
     control: form.control,
     name: "tax_types",
@@ -183,7 +138,7 @@ const CreateOrderForm = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-12">
+    <div className="min-h-screen bg-slate-50/50 pb-6">
       <div className="fixed top-0 left-1/4 w-96 h-96 bg-green-100/20 rounded-full blur-3xl -z-10" />
       <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-green-100/10 rounded-full blur-3xl -z-10" />
 
@@ -216,91 +171,38 @@ const CreateOrderForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
               <h2 className="text-xl font-bold text-slate-800">
-                {t("personalInfo")}
+                {t("taxFilingYear")}
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("fullName")}</FormLabel>
+              <FormField
+                control={form.control}
+                name="tax_year"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Input
-                          placeholder={t("fullNamePlaceholder")}
-                          {...field}
-                          disabled
-                        />
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            className="w-full"
+                            placeholder={t("selectYear")}
+                          />
+                        </SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("email")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled
-                          placeholder={t("emailPlaceholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="mobile"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("mobileNumber")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t("mobilePlaceholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="tax_year"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("taxFilingYear")}</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue
-                              className="w-full"
-                              placeholder={t("selectYear")}
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {TAX_YEARS.map((year) => (
-                            <SelectItem key={year} value={year}>
-                              {year}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      <SelectContent>
+                        {TAX_YEARS.map((year) => (
+                          <SelectItem key={year} value={year}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
@@ -369,41 +271,15 @@ const CreateOrderForm = () => {
               />
             </div>
 
-            {/* <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-              <h2 className="text-xl font-bold text-slate-800">
-                {t("additionalInfo")}
-              </h2>
-              {additionalOptions.map((option) => (
-                <FormField
-                  key={option.name}
-                  control={form.control}
-                  name={option.name}
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center gap-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        {option.label}
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div> */}
-
-            <Card className="bg-slate-900 text-white rounded-3xl border-none shadow-xl overflow-hidden">
+            <Card className="sticky bottom-0 z-20 gap-3 py-5 bg-slate-900 text-white rounded-3xl border-none shadow-2xl overflow-hidden">
               <CardHeader className="pb-0">
-                <CardTitle className="text-xl">{t("orderSummary")}</CardTitle>
+                <CardTitle className="text-lg">{t("orderSummary")}</CardTitle>
                 <CardDescription className="text-slate-400">
                   {t("orderSummaryDesc")}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-6 space-y-6">
-                <div className="space-y-2 text-sm">
+              <CardContent className="space-y-4">
+                <div className="space-y-1.5 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-400">{t("taxTypesLabel")}</span>
                     <span className="font-bold">
@@ -419,7 +295,7 @@ const CreateOrderForm = () => {
                 <Button
                   type="submit"
                   disabled={isCreatingOrder}
-                  className="w-full h-14 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl"
+                  className="w-full h-12 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl"
                 >
                   {isCreatingOrder ? (
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
