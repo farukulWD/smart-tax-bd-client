@@ -69,7 +69,7 @@
       "fullNamePlaceholder": "পূর্ণ নাম *",
       "phonePlaceholder": "ফোন নম্বর *",
       "emailPlaceholder": "ইমেইল ঠিকানা *",
-      "passwordPlaceholder": "পাসওয়ার্ড *",
+      "passwordPlaceholder": "পাসওয়ার্ড * (কমপক্ষে ৪ সংখ্যার)",
       "confirmPasswordPlaceholder": "পাসওয়ার্ড নিশ্চিত করুন *",
       "termsPrefix": "আমি সম্মত",
       "termsLink": "সেবার শর্তাবলী",
@@ -103,7 +103,7 @@
     },
     "resetPassword": {
       "tagline": "নিচে আপনার নতুন পাসওয়ার্ড লিখুন",
-      "newPasswordPlaceholder": "নতুন পাসওয়ার্ড *",
+      "newPasswordPlaceholder": "নতুন পাসওয়ার্ড * (কমপক্ষে ৪ সংখ্যার)",
       "confirmPasswordPlaceholder": "পাসওয়ার্ড নিশ্চিত করুন *",
       "resetPassword": "পাসওয়ার্ড রিসেট করুন",
       "resetting": "পাসওয়ার্ড রিসেট হচ্ছে...",

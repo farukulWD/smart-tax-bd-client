@@ -11,6 +11,7 @@ import {
   useInitTaxStepThreePaymentMutation,
 } from "@/redux/api/order/orderApi";
 import { Calendar, CreditCard, Hash, Phone } from "lucide-react";
+import { useTaxTypeTitle } from "@/hooks/use-tax-type-title";
 
 interface OrderCardProps {
   order: IOrder & { _id?: string; createdAt?: string };
@@ -36,6 +37,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   const isPaid = Number(order.fee_due_amount || 0) <= 0;
 
   const [initTaxStepThreePayment] = useInitTaxStepThreePaymentMutation();
+  const taxTypeTitle = useTaxTypeTitle();
 
   const handlePayment = async () => {
     if (!order._id || isPaid) return;
@@ -104,17 +106,17 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         </div>
 
         <div className="space-y-2">
-          <div className="text-sm text-muted-foreground">Source of Income:</div>
+          <div className="text-sm text-muted-foreground">Tax Types:</div>
           <div className="flex flex-wrap gap-2">
-            {order.source_of_income && order.source_of_income.length > 0 ? (
-              order.source_of_income.map((type, index) => (
-                <Badge key={index} variant="outline">
-                  {type}
+            {order.tax_types?.length ? (
+              order.tax_types.map((value) => (
+                <Badge key={value} variant="outline">
+                  {taxTypeTitle(value)}
                 </Badge>
               ))
             ) : (
               <span className="text-sm text-muted-foreground">
-                No sources provided
+                No tax types provided
               </span>
             )}
           </div>
