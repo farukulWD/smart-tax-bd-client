@@ -184,7 +184,8 @@ export function Navbar() {
                   pathname.includes("/profile") &&
                     !pathname.includes("/profile/payments") &&
                     !pathname.includes("/profile/orders") &&
-                    !pathname.includes("/profile/my-files")
+                    !pathname.includes("/profile/my-files") &&
+                    !pathname.includes("/profile/documents")
                     ? "bg-red-100 text-red-900 border-l-4 border-red-900"
                     : "text-slate-900",
                 )}
@@ -215,6 +216,18 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 {t("orders")}
+              </Link>
+              <Link
+                href="/profile/documents"
+                className={cn(
+                  "block px-4 py-3 text-base font-medium transition-colors hover:bg-slate-50 hover:text-red-600 rounded-md",
+                  pathname.includes("/profile/documents")
+                    ? "bg-red-100 text-red-900 border-l-4 border-red-900"
+                    : "text-slate-900",
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                {t("taxDocuments")}
               </Link>
               <Link
                 href="/profile/my-files"
