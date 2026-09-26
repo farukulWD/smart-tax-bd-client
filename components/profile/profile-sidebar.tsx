@@ -11,6 +11,7 @@ import {
   BellIcon,
   ChevronDownIcon,
   CreditCardIcon,
+  FileCheckIcon,
   FileIcon,
   StarIcon,
   TruckIcon,
@@ -30,6 +31,7 @@ const ProfileSidebar = () => {
     { title: t("profile"), href: "/profile" as const, icon: <UserIcon /> },
     { title: t("payments"), href: "/profile/payments" as const, icon: <CreditCardIcon /> },
     { title: t("orders"), href: "/profile/orders" as const, icon: <TruckIcon /> },
+    { title: t("taxDocuments"), href: "/profile/documents" as const, icon: <FileCheckIcon /> },
     { title: t("notifications"), href: "/profile/notifications" as const, icon: <BellIcon /> },
     { title: t("reviews"), href: "/profile/reviews" as const, icon: <StarIcon /> },
   ];

@@ -13,6 +13,7 @@
     "payments": "Payments",
     "orders": "Orders",
     "myFiles": "My Files",
+    "taxDocuments": "Tax Documents",
     "openMenu": "Open main menu"
   },
   "footer": {
@@ -116,6 +117,7 @@
     "payments": "Payments",
     "orders": "Orders",
     "myFiles": "My Files",
+    "taxDocuments": "Tax Documents",
     "noFiles": "No files yet",
     "notifications": "Notifications",
     "reviews": "Reviews"
@@ -252,6 +254,18 @@
     "mobileNumber": "Mobile Number",
     "role": "Role",
     "memberType": "Member Type"
+  },
+  "taxDocuments": {
+    "title": "Tax Documents",
+    "description": "Acknowledgements and tax certificates issued for your filed returns.",
+    "emptyTitle": "No tax documents yet",
+    "emptyDesc": "Once your return is filed, your acknowledgement and tax certificate will appear here.",
+    "taxYear": "Tax Year {year}",
+    "otherDocuments": "Other Documents",
+    "issuedOn": "Issued on {date}",
+    "view": "View",
+    "download": "Download",
+    "errorLoading": "Could not load your tax documents."
   },
   "myFiles": {
     "title": "My Files",

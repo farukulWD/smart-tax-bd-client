@@ -1,6 +1,18 @@
 import { TResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
+// Documents issued by the admin (Acknowledgement, Tax Certificate, ...).
+export interface ITaxDocument {
+  _id: string;
+  name: string;
+  type: string;
+  file: string;
+  userId: string;
+  orderId: { _id: string; tax_year: string; status: string } | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const fileApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
@@ -18,6 +30,13 @@ const fileApi = baseApi.injectEndpoints({
     getMyFiles: builder.query<TResponse<any>, undefined>({
       query: () => ({
         url: "/files/get-user-files",
+        method: "GET",
+      }),
+      providesTags: ["files"],
+    }),
+    getMyTaxDocuments: builder.query<TResponse<ITaxDocument[]>, undefined>({
+      query: () => ({
+        url: "/files/get-user-tax-documents",
         method: "GET",
       }),
       providesTags: ["files"],
@@ -42,6 +61,7 @@ const fileApi = baseApi.injectEndpoints({
 export const {
   useUploadFileMutation,
   useGetMyFilesQuery,
+  useGetMyTaxDocumentsQuery,
   useGetSingleFileQuery,
   useDeleteFileMutation,
 } = fileApi;
