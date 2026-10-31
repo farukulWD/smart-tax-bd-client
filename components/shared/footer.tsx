@@ -74,7 +74,27 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-12 pt-8">
+        {/* Accepted payment methods (EPS gateway) */}
+        <div className="mt-12 rounded-xl bg-white p-2 sm:p-3">
+          <Image
+            src="/payments/eps-pay-with-row.png"
+            alt={t("paymentMethodsAlt")}
+            width={7826}
+            height={402}
+            sizes="(min-width: 1280px) 1200px, 100vw"
+            className="hidden h-auto w-full md:block"
+          />
+          <Image
+            src="/payments/eps-pay-with-grid.png"
+            alt={t("paymentMethodsAlt")}
+            width={4338}
+            height={780}
+            sizes="100vw"
+            className="h-auto w-full md:hidden"
+          />
+        </div>
+
+        <div className="border-t border-slate-800 mt-8 pt-8">
           <p className="text-center text-sm text-slate-500">
             © {new Date().getFullYear()} Smart Tax BD. {t("allRightsReserved")}
           </p>

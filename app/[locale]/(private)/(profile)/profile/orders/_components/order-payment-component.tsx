@@ -2,8 +2,7 @@
 
 import {
   useGetTaxOrderByIdQuery,
-  // useInitTaxStepThreePaymentMutation, // TEMPORARY: re-enable for SSLCommerz gateway
-  usePlaceTaxOrderManuallyMutation,
+  useInitTaxStepThreePaymentMutation,
 } from "@/redux/api/order/orderApi";
 import {
   useApplyCouponMutation,
@@ -16,14 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 import Link from "next/link";
@@ -42,18 +33,13 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
   const { data, isLoading, isError, refetch } = useGetTaxOrderByIdQuery(
     taxId || skipToken,
   );
-  const [placeTaxOrderManually, { isLoading: isPlacing }] =
-    usePlaceTaxOrderManuallyMutation();
+  const [initTaxStepThreePayment, { isLoading: isStartingPayment }] =
+    useInitTaxStepThreePaymentMutation();
   const [applyCoupon, { isLoading: isApplyingCoupon }] =
     useApplyCouponMutation();
   const [removeCoupon, { isLoading: isRemovingCoupon }] =
     useRemoveCouponMutation();
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [couponInput, setCouponInput] = useState("");
-
-  // TEMPORARY: SSLCommerz gateway flow disabled while bKash is handled manually.
-  // const [initTaxStepThreePayment, { isLoading: isStartingPayment }] =
-  //   useInitTaxStepThreePaymentMutation();
 
   if (!taxId) {
     return (
@@ -100,36 +86,39 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
 
   const isCouponBusy = isApplyingCoupon || isRemovingCoupon;
 
-  // TEMPORARY: bKash is handled manually for now. The SSLCommerz gateway flow
-  // below is kept (commented) so it can be restored later — just swap the
-  // payment button onClick back to `handleStartPayment`.
-  // const handleStartPayment = async () => {
-  // if (!taxId) return;
-  // try {
-  //   const res = await initTaxStepThreePayment(taxId).unwrap();
-  //   // A coupon covering the whole fee settles the order server-side and
-  //   // returns no gateway URL — nothing to redirect to.
-  //   if (res?.data?.paid) {
-  //     toast.success(t("couponCoveredFee"));
-  //     refetch();
-  //     return;
-  //   }
-  //   const gatewayUrl = res?.data?.gatewayPageURL;
-  //   if (!gatewayUrl) {
-  //     toast.error("Payment link was not found");
-  //     return;
-  //   }
-  //   window.location.href = gatewayUrl;
-  // } catch (error: any) {
-  //   const message =
-  //     error?.data?.message ||
-  //     error?.data?.error ||
-  //     error?.message ||
-  //     "Payment initialization failed";
-  //   toast.error(message);
-  //   globalErrorHandler(error);
-  // }
-  // };
+  const handleStartPayment = async () => {
+    if (!taxId) return;
+    try {
+      const res = await initTaxStepThreePayment(taxId).unwrap();
+      // Nothing to pay: a coupon covered the whole fee, or an earlier payment
+      // turned out to have gone through. The order is already placed.
+      if (res?.data?.paid) {
+        toast.success(
+          t(
+            res.data.reason === "previous_payment"
+              ? "previousPaymentConfirmed"
+              : "couponCoveredFee",
+          ),
+        );
+        refetch();
+        return;
+      }
+      const gatewayUrl = res?.data?.gatewayPageURL;
+      if (!gatewayUrl) {
+        toast.error(t("paymentLinkNotFound"));
+        return;
+      }
+      window.location.href = gatewayUrl;
+    } catch (error: any) {
+      const message =
+        error?.data?.message ||
+        error?.data?.error ||
+        error?.message ||
+        t("paymentInitFailed");
+      toast.error(message);
+      globalErrorHandler(error);
+    }
+  };
 
   const handleApplyCoupon = async () => {
     const code = couponInput.trim();
@@ -159,25 +148,6 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
         error?.message ||
         t("couponRemoveFailed");
       toast.error(message);
-    }
-  };
-
-  // TEMPORARY: places the order directly; the author contacts the user for payment.
-  const handleConfirmContactPayment = async () => {
-    if (!taxId) return;
-    try {
-      await placeTaxOrderManually(taxId).unwrap();
-      setIsContactModalOpen(false);
-      toast.success("Order placed. The author will contact you for payment.");
-      refetch();
-    } catch (error: any) {
-      const message =
-        error?.data?.message ||
-        error?.data?.error ||
-        error?.message ||
-        "Failed to place order";
-      toast.error(message);
-      globalErrorHandler(error);
     }
   };
 
@@ -303,10 +273,12 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
           <div className="flex gap-3">
             <Button
               type="button"
-              onClick={() => setIsContactModalOpen(true)}
-              disabled={isPlacing || isPaid}
+              onClick={handleStartPayment}
+              disabled={isStartingPayment || isPaid}
             >
-              {isPlacing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              {isStartingPayment && (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              )}
               {t("startPayment")}
             </Button>
             <Button type="button" variant="outline" onClick={() => refetch()}>
@@ -321,34 +293,6 @@ const OrderPaymentComponent = ({ taxId }: { taxId: string }) => {
         </CardContent>
       </Card>
 
-      <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t("contactModalTitle")}</DialogTitle>
-            <DialogDescription>
-              {t("contactModalDescription")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsContactModalOpen(false)}
-              disabled={isPlacing}
-            >
-              {t("cancel")}
-            </Button>
-            <Button
-              type="button"
-              onClick={handleConfirmContactPayment}
-              disabled={isPlacing}
-            >
-              {isPlacing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              {t("okay")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

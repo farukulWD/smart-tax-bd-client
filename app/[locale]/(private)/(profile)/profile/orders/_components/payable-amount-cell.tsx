@@ -1,16 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useCreatePaymentMutation } from "@/redux/api/payment/paymentApi";
+import { globalErrorHandler } from "@/helpers/globalErrorHandler";
 
 type PaymentFor =
   | "fee_amount"
@@ -32,10 +26,12 @@ const formatBDT = (amount: number) =>
 
 export function PayableAmountCell({
   amount,
+  orderId,
+  paymentFor,
   isPaid,
 }: PayableAmountCellProps) {
   const t = useTranslations("orderPayment");
-  const [isOpen, setIsOpen] = useState(false);
+  const [createPayment, { isLoading }] = useCreatePaymentMutation();
 
   const canPay = !isPaid && amount > 0;
 
@@ -47,30 +43,39 @@ export function PayableAmountCell({
     );
   }
 
-  return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 flex items-center gap-1"
-      >
-        {formatBDT(amount)}
-      </button>
+  const handlePay = async () => {
+    try {
+      const res = await createPayment({ orderId, paymentFor }).unwrap();
+      // An earlier payment for this amount turned out to have gone through.
+      if (res?.data?.paid) {
+        toast.success(t("previousPaymentConfirmed"));
+        return;
+      }
+      const gatewayUrl = res?.data?.gatewayPageURL;
+      if (!gatewayUrl) {
+        toast.error(t("paymentLinkNotFound"));
+        return;
+      }
+      window.location.href = gatewayUrl;
+    } catch (error: any) {
+      const message =
+        error?.data?.message ||
+        error?.data?.error ||
+        error?.message ||
+        t("paymentInitFailed");
+      toast.error(message);
+      globalErrorHandler(error);
+    }
+  };
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t("contactModalTitle")}</DialogTitle>
-            <DialogDescription>
-              {t("payableModalDescription")}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button type="button" onClick={() => setIsOpen(false)}>
-              {t("okay")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+  return (
+    <button
+      onClick={handlePay}
+      disabled={isLoading}
+      className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 flex items-center gap-1 disabled:opacity-60"
+    >
+      {isLoading && <Loader2 className="h-3 w-3 animate-spin" />}
+      {formatBDT(amount)}
+    </button>
   );
 }

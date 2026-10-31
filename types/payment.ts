@@ -4,10 +4,11 @@ export interface IPayment {
   orderId: string;
   amount: number;
   currency: string;
-  status: "pending" | "completed" | "failed";
+  status: "pending" | "completed" | "failed" | "cancelled";
   transactionId?: string;
   paymentMethod?: string;
-  gatewayPageURL?: string;
+  gatewayPageURL?: string | null;
+  paid?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -69,10 +69,12 @@ export interface ITaxStepOneResponse {
 export interface ITaxStepThreeResponse {
   tax_order: IOrder;
   payable_amount: number;
-  /** Null when a coupon covered the whole fee — there is nothing to redirect to. */
+  /** Null when there is nothing to pay — there is nothing to redirect to. */
   gatewayPageURL: string | null;
   /** True when the order was settled without a gateway hop. */
   paid?: boolean;
+  /** Why nothing was due: a full coupon, or an earlier payment that went through. */
+  reason?: "coupon" | "previous_payment";
   transaction_id: string;
 }
 
@@ -135,17 +137,6 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["orders"],
     }),
-    // TEMPORARY: places the order without the gateway (manual bKash payment).
-    placeTaxOrderManually: builder.mutation<
-      TResponse<{ tax_order: IOrder }>,
-      string
-    >({
-      query: (taxId) => ({
-        url: `/tax-orders/${taxId}/place-manual`,
-        method: "POST",
-      }),
-      invalidatesTags: ["orders"],
-    }),
     getMyOrders: builder.query<TResponse<IOrder[]>, undefined>({
       query: () => ({
         url: "/tax-orders/my-orders",
@@ -163,6 +154,5 @@ export const {
   useUpdateTaxStepOneMutation,
   useUploadTaxStepTwoDocumentsMutation,
   useInitTaxStepThreePaymentMutation,
-  usePlaceTaxOrderManuallyMutation,
   useGetMyOrdersQuery,
 } = orderApi;
