@@ -11,7 +11,7 @@ const paymentApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["payments"],
+      invalidatesTags: ["payments", "orders"],
     }),
     paymentSuccess: builder.mutation<
       TResponse<IPayment>,
@@ -22,6 +22,19 @@ const paymentApi = baseApi.injectEndpoints({
           paymentFor === "fee_amount"
             ? "/tax-orders/payment/success"
             : "/payments/success",
+        method: "POST",
+        data: { tran_id },
+      }),
+      invalidatesTags: ["payments"],
+    }),
+    // Tells the server the user came back via the fail/cancel URL. The server
+    // asks EPS for the real outcome, so this only speeds up the status update.
+    paymentClosed: builder.mutation<
+      TResponse<IPayment>,
+      { tran_id: string; status: "fail" | "cancel" }
+    >({
+      query: ({ tran_id, status }) => ({
+        url: `/payments/${status}`,
         method: "POST",
         data: { tran_id },
       }),
@@ -41,4 +54,5 @@ export const {
   useCreatePaymentMutation,
   useGetMyPaymentsQuery,
   usePaymentSuccessMutation,
+  usePaymentClosedMutation,
 } = paymentApi;

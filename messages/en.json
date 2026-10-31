@@ -22,6 +22,7 @@
     "company": "Company",
     "legal": "Legal",
     "allRightsReserved": "All rights reserved.",
+    "paymentMethodsAlt": "Pay with Visa, Mastercard, American Express, bKash, Nagad, Rocket and more — verified by EPS",
     "links": {
       "features": "Features",
       "pricing": "Pricing",
@@ -244,6 +245,7 @@
     },
     "verifying": "Verifying Payment...",
     "pleaseWait": "Please wait while we confirm your transaction.",
+    "redirecting": "Taking you to your orders in {seconds}s…",
     "transactionId": "Transaction ID:",
     "goToOrders": "Go To Orders",
     "viewPayments": "View Payments"
@@ -452,9 +454,6 @@
     "createOrder": "Create Order",
     "failedToLoad": "Failed to load order payment status.",
     "retry": "Retry",
-    "contactModalTitle": "Payment via bKash",
-    "contactModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to complete your bKash payment. Click Okay to place your order and we will reach out to arrange payment.",
-    "payableModalDescription": "We are currently working on the bKash payment method, so automatic online payment is not available yet. For now, the author will contact you directly to collect this amount. We will reach out to arrange payment.",
     "cancel": "Cancel",
     "okay": "Okay",
     "subtotal": "Subtotal",
@@ -467,7 +466,10 @@
     "couponRemoved": "Coupon removed.",
     "couponApplyFailed": "Could not apply this coupon.",
     "couponRemoveFailed": "Could not remove the coupon.",
-    "couponCoveredFee": "The coupon covered the full service fee. Your order is placed."
+    "couponCoveredFee": "The coupon covered the full service fee. Your order is placed.",
+    "previousPaymentConfirmed": "Your earlier payment went through. Your order is updated — no need to pay again.",
+    "paymentLinkNotFound": "Payment link was not found. Please try again.",
+    "paymentInitFailed": "Could not start the payment. Please try again."
   },
   "reviewsPage": {
     "title": "My Review",
